@@ -247,6 +247,8 @@
 		6FD8D27F1F27CAC000509708 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6FD8D7441F27CDA700509708 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6FD8D7451F27CDDD00509708 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		6FEF35721F28733700AEF98F /* cephes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cephes.txt; sourceTree = "<group>"; };
+		6FEF35731F28733700AEF98F /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -322,6 +324,7 @@
 				6F695ADD1F285A97004B4C3A /* beta.c */,
 				6F695ADE1F285A97004B4C3A /* btdtr.c */,
 				6F695ADF1F285A97004B4C3A /* cbrt.c */,
+				6FEF35721F28733700AEF98F /* cephes.txt */,
 				6F695AE01F285A97004B4C3A /* chbevl.c */,
 				6F695AE11F285A97004B4C3A /* chdtr.c */,
 				6F695AE21F285A97004B4C3A /* clog.c */,
@@ -397,6 +400,7 @@
 				6F695B2D1F285A97004B4C3A /* powi.c */,
 				6F695B2E1F285A97004B4C3A /* protos.h */,
 				6F695B2F1F285A97004B4C3A /* psi.c */,
+				6FEF35731F28733700AEF98F /* readme */,
 				6F695B301F285A97004B4C3A /* rgamma.c */,
 				6F695B311F285A97004B4C3A /* round.c */,
 				6F695B361F285A97004B4C3A /* setprec.c */,
