@@ -52,11 +52,11 @@ extern double ndtri ( double );
 extern double md_exp ( double );
 extern double md_fabs ( double );
 extern double md_log ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double lgam ( double );
 extern double incbet ( double, double, double );
 #else
-double ndtri(), md_exp(), md_fabs(), md_log(), sqrt(), lgam(), incbet();
+double ndtri(), md_exp(), md_fabs(), md_log(), md_sqrt(), lgam(), incbet();
 #endif
 
 double incbi( aa, bb, yy0 )
@@ -114,7 +114,7 @@ else
 
 lgm = (yp * yp - 3.0)/6.0;
 x = 2.0/( 1.0/(2.0*a-1.0)  +  1.0/(2.0*b-1.0) );
-d = yp * sqrt( x + lgm ) / x
+d = yp * md_sqrt( x + lgm ) / x
 	- ( 1.0/(2.0*b-1.0) - 1.0/(2.0*a-1.0) )
 	* (lgm + 5.0/6.0 - 2.0/(3.0*x));
 d = 2.0 * d;

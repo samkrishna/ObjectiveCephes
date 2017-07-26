@@ -469,7 +469,7 @@ static double C[] = {
 -2.53252307177582951285E6,
 -2.01889141433532773231E6
 };
-/* md_log( sqrt( 2*pi ) ) */
+/* md_log( md_sqrt( 2*pi ) ) */
 static double LS2PI  =  0.91893853320467274178;
 #define MAXLGM 2.556348e305
 #endif
@@ -499,7 +499,7 @@ static unsigned short C[] = {
 0145432,0111254,0044577,0115142,
 0145366,0071133,0050217,0005122
 };
-/* md_log( sqrt( 2*pi ) ) */
+/* md_log( md_sqrt( 2*pi ) ) */
 static unsigned short LS2P[] = {040153,037616,041445,0172645,};
 #define LS2PI *(double *)LS2P
 #define MAXLGM 2.035093e36
@@ -530,7 +530,7 @@ static unsigned short C[] = {
 0xf34c,0x892f,0x5255,0xc143,
 0xe14a,0x6a11,0xce4b,0xc13e
 };
-/* md_log( sqrt( 2*pi ) ) */
+/* md_log( md_sqrt( 2*pi ) ) */
 static unsigned short LS2P[] = {
 0xbeb5,0xc864,0x67f1,0x3fed
 };
@@ -562,7 +562,7 @@ static unsigned short C[] = {
 0xc143,0x5255,0x892f,0xf34c,
 0xc13e,0xce4b,0x6a11,0xe14a
 };
-/* md_log( sqrt( 2*pi ) ) */
+/* md_log( md_sqrt( 2*pi ) ) */
 static unsigned short LS2P[] = {
 0x3fed,0x67f1,0xc864,0xbeb5
 };

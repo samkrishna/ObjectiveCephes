@@ -43,7 +43,7 @@ Copyright 1984, 1987, 1989, 2000 by Stephen L. Moshier
 #ifdef ANSIPROT
 extern double md_gamma ( double );
 extern double md_pow ( double, double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_yn ( int, double );
 extern double jv ( double, double );
 extern double md_fabs ( double );
@@ -54,7 +54,7 @@ double yv ( double, double );
 double onef2 (double, double, double, double, double * );
 double threef0 (double, double, double, double, double * );
 #else
-double md_gamma(), md_pow(), sqrt(), md_yn(), yv(), jv(), md_fabs(), md_floor();
+double md_gamma(), md_pow(), md_sqrt(), md_yn(), yv(), jv(), md_fabs(), md_floor();
 double md_sin(), md_cos();
 double onef2(), threef0();
 #endif
@@ -257,7 +257,7 @@ else
 	ya = threef0( 1.0, 0.5, 0.5-v, -1.0/t, &threef0err );
 	}
 
-f = sqrt( PI );
+f = md_sqrt( PI );
 h = md_pow( 0.5*x, v-1.0 );
 
 if( onef2err <= threef0err )

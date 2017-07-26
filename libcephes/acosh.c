@@ -18,11 +18,11 @@
  *
  * If 1 <= x < 1.5, a rational approximation
  *
- *	sqrt(z) * P(z)/Q(z)
+ *	md_sqrt(z) * P(z)/Q(z)
  *
  * where z = x-1, is used.  Otherwise,
  *
- * md_acosh(x)  =  md_log( x + sqrt( (x-1)(x+1) ).
+ * md_acosh(x)  =  md_log( x + md_sqrt( (x-1)(x+1) ).
  *
  *
  *
@@ -49,7 +49,7 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 */
 
 
-/* md_acosh(z) = sqrt(x) * R(x), z = x + 1, interval 0 < x < 0.5 */
+/* md_acosh(z) = md_sqrt(x) * R(x), z = x + 1, interval 0 < x < 0.5 */
 
 #include "mconf.h"
 
@@ -128,9 +128,9 @@ static unsigned short Q[] = {
 extern double polevl ( double, void *, int );
 extern double p1evl ( double, void *, int );
 extern double md_log ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 #else
-double md_log(), sqrt(), polevl(), p1evl();
+double md_log(), md_sqrt(), polevl(), p1evl();
 #endif
 extern double LOGE2, INFINITY, NAN;
 
@@ -158,10 +158,10 @@ z = x - 1.0;
 
 if( z < 0.5 )
 	{
-	a = sqrt(z) * (polevl(z, P, 4) / p1evl(z, Q, 5) );
+	a = md_sqrt(z) * (polevl(z, P, 4) / p1evl(z, Q, 5) );
 	return( a );
 	}
 
-a = sqrt( z*(x+1.0) );
+a = md_sqrt( z*(x+1.0) );
 return( md_log(x + a) );
 }

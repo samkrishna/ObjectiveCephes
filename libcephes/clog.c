@@ -18,7 +18,7 @@
  * Returns complex logarithm to the base e (2.718...) of
  * the complex argument x.
  *
- * If z = x + iy, r = sqrt( x**2 + y**2 ),
+ * If z = x + iy, r = md_sqrt( x**2 + y**2 ),
  * then
  *       w = md_log(r) + i arctan(y/x).
  * 
@@ -48,7 +48,7 @@ static double redupi ( double x );
 static double ctans ( cmplx *z );
 /* These are supposed to be in some standard place. */
 double md_fabs (double);
-double sqrt (double);
+double md_sqrt (double);
 double md_pow (double, double);
 double md_log (double);
 double md_exp (double);
@@ -73,7 +73,7 @@ void md_catan ( cmplx *, cmplx * );
 static void cchsh();
 static double redupi();
 static double ctans();
-double md_cabs(), md_fabs(), sqrt(), md_pow();
+double md_cabs(), md_fabs(), md_sqrt(), md_pow();
 double md_log(), md_exp(), md_atan2(), md_cosh(), md_sinh();
 double md_asin(), md_sin(), md_cos();
 void cadd(), cmul(), md_csqrt();
@@ -88,7 +88,7 @@ register cmplx *z, *w;
 {
 double p, rr;
 
-/*rr = sqrt( z->r * z->r  +  z->i * z->i );*/
+/*rr = md_sqrt( z->r * z->r  +  z->i * z->i );*/
 rr = md_cabs(z);
 p = md_log(rr);
 #if ANSIC
@@ -593,7 +593,7 @@ ca.i = y;
 ct.r = -ca.i;	/* iz */
 ct.i = ca.r;
 
-	/* sqrt( 1 - z*z) */
+	/* md_sqrt( 1 - z*z) */
 /* cmul( &ca, &ca, &zz ) */
 zz.r = (ca.r - ca.i) * (ca.r + ca.i);	/*x * x  -  y * y */
 zz.i = 2.0 * ca.r * ca.i;

@@ -20,7 +20,7 @@
  *            pi/2
  *             -
  *            | |                 2
- * E(m)  =    |    sqrt( 1 - m md_sin t ) dt
+ * E(m)  =    |    md_sqrt( 1 - m md_sin t ) dt
  *          | |    
  *           -
  *            0

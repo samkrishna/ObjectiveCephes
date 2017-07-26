@@ -74,19 +74,19 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 #ifdef ANSIPROT
 extern double md_fabs ( double );
 extern double md_cabs ( cmplx * );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_atan2 ( double, double );
 extern double md_cos ( double );
 extern double md_sin ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_frexp ( double, int * );
 extern double md_ldexp ( double, int );
 int isnan ( double );
 void cdiv ( cmplx *, cmplx *, cmplx * );
 void cadd ( cmplx *, cmplx *, cmplx * );
 #else
-double md_fabs(), md_cabs(), sqrt(), md_atan2(), md_cos(), md_sin();
-double sqrt(), md_frexp(), md_ldexp();
+double md_fabs(), md_cabs(), md_sqrt(), md_atan2(), md_cos(), md_sin();
+double md_sqrt(), md_frexp(), md_ldexp();
 int isnan();
 void cdiv(), cadd();
 #endif
@@ -220,7 +220,7 @@ a->i = -a->i;
  *
  * then
  *
- *       a = sqrt( x**2 + y**2 ).
+ *       a = md_sqrt( x**2 + y**2 ).
  * 
  * Overflow and underflow are avoided by testing the magnitudes
  * of x and y before squaring.  If either is outside half of
@@ -320,7 +320,7 @@ x = md_ldexp( re, -e );
 y = md_ldexp( im, -e );
 		
 /* Hypotenuse of the right triangle */
-b = sqrt( x * x  +  y * y );
+b = md_sqrt( x * x  +  y * y );
 
 /* Compute the exponent of the answer. */
 y = md_frexp( b, &ey );
@@ -401,12 +401,12 @@ if( y == 0.0 )
 	if( x < 0.0 )
 		{
 		w->r = 0.0;
-		w->i = sqrt(-x);
+		w->i = md_sqrt(-x);
 		return;
 		}
 	else
 		{
-		w->r = sqrt(x);
+		w->r = md_sqrt(x);
 		w->i = 0.0;
 		return;
 		}
@@ -416,7 +416,7 @@ if( y == 0.0 )
 if( x == 0.0 )
 	{
 	r = md_fabs(y);
-	r = sqrt(0.5*r);
+	r = md_sqrt(0.5*r);
 	if( y > 0 )
 		w->r = r;
 	else
@@ -425,7 +425,7 @@ if( x == 0.0 )
 	return;
 	}
 
-/* Approximate  sqrt(x^2+y^2) - x  =  y^2/2x - y^4/24x^3 + ... .
+/* Approximate  md_sqrt(x^2+y^2) - x  =  y^2/2x - y^4/24x^3 + ... .
  * The relative error in the first term is approximately y^2/12x^2 .
  */
 if( (md_fabs(y) < 2.e-4 * md_fabs(x))
@@ -439,7 +439,7 @@ else
 	t = 0.5*(r - x);
 	}
 
-r = sqrt(t);
+r = md_sqrt(t);
 q.i = r;
 q.r = y/(2.0*r);
 /* Heron iteration in complex arithmetic */

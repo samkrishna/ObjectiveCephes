@@ -1,4 +1,4 @@
-/*							sqrt.c
+/*							md_sqrt.c
  *
  *	Square root
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, sqrt();
+ * double x, y, md_sqrt();
  *
- * y = sqrt( x );
+ * y = md_sqrt( x );
  *
  *
  *
@@ -35,7 +35,7 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * sqrt domain        x < 0            0.0
+ * md_sqrt domain        x < 0            0.0
  *
  */
 
@@ -54,7 +54,7 @@ double frexp(), ldexp();
 #endif
 extern double SQRT2;  /*  SQRT2 = 1.41421356237309504880 */
 
-double sqrt(x)
+double md_sqrt(x)
 double x;
 {
 int e;
@@ -66,7 +66,7 @@ double z, w;
 if( x <= 0.0 )
 	{
 	if( x < 0.0 )
-		mtherr( "sqrt", DOMAIN );
+		mtherr( "md_sqrt", DOMAIN );
 	return( 0.0 );
 	}
 w = x;

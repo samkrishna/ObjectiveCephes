@@ -149,10 +149,10 @@ static unsigned short A[] = {
 
 
 
-/* Chebyshev coefficients for md_exp(x) sqrt(x) K1(x)
+/* Chebyshev coefficients for md_exp(x) md_sqrt(x) K1(x)
  * in the interval [2,infinity].
  *
- * lim(x->inf){ md_exp(x) sqrt(x) K1(x) } = sqrt(pi/2).
+ * lim(x->inf){ md_exp(x) md_sqrt(x) K1(x) } = md_sqrt(pi/2).
  */
 
 #ifdef UNK
@@ -281,9 +281,9 @@ extern double chbevl ( double, void *, int );
 extern double md_exp ( double );
 extern double i1 ( double );
 extern double md_log ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 #else
-double chbevl(), md_exp(), i1(), md_log(), sqrt();
+double chbevl(), md_exp(), i1(), md_log(), md_sqrt();
 #endif
 extern double PI;
 extern double MINLOG, MAXNUM;
@@ -307,7 +307,7 @@ if( x <= 2.0 )
 	return( y );
 	}
 
-return(  md_exp(-x) * chbevl( 8.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  md_exp(-x) * chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x) );
 }
 
 
@@ -331,5 +331,5 @@ if( x <= 2.0 )
 	return( y * md_exp(x) );
 	}
 
-return(  chbevl( 8.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x) );
 }

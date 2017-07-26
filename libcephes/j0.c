@@ -464,10 +464,10 @@ extern double p1evl ( double, void *, int );
 extern double md_log ( double );
 extern double md_sin ( double );
 extern double md_cos ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 double md_j0 ( double );
 #else
-double polevl(), p1evl(), md_log(), md_sin(), md_cos(), sqrt();
+double polevl(), p1evl(), md_log(), md_sin(), md_cos(), md_sqrt();
 double md_j0();
 #endif
 extern double TWOOPI, SQ2OPI, PIO4;
@@ -497,7 +497,7 @@ double x;
     q = polevl( q, QP, 7)/p1evl( q, QQ, 7 );
     xn = x - PIO4;
     p = p * md_cos(xn) - w * q * md_sin(xn);
-    return( p * SQ2OPI / sqrt(x) );
+    return( p * SQ2OPI / md_sqrt(x) );
 }
 
 /*							md_y0() 2	*/
@@ -539,5 +539,5 @@ p = polevl( z, PP, 6)/polevl( z, PQ, 6 );
 q = polevl( z, QP, 7)/p1evl( z, QQ, 7 );
 xn = x - PIO4;
 p = p * md_sin(xn) + w * q * md_cos(xn);
-return( p * SQ2OPI / sqrt(x) );
+return( p * SQ2OPI / md_sqrt(x) );
 }

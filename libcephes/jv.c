@@ -67,7 +67,7 @@ extern double md_frexp ( double, int * );
 extern double polevl ( double, void *, int );
 extern double md_j0 ( double );
 extern double md_j1 ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_cbrt ( double );
 extern double md_exp ( double );
 extern double md_log ( double );
@@ -84,7 +84,7 @@ static double jnx(double, double);
 static double jnt(double, double);
 #else
 int airy();
-double md_fabs(), md_floor(), md_frexp(), polevl(), md_j0(), md_j1(), sqrt(), md_cbrt();
+double md_fabs(), md_floor(), md_frexp(), polevl(), md_j0(), md_j1(), md_sqrt(), md_cbrt();
 double md_exp(), md_log(), md_sin(), md_cos(), md_acos(), md_pow(), md_gamma(), lgam();
 static double recur(), jvs(), hankel(), jnx(), jnt();
 #endif
@@ -136,8 +136,8 @@ y = md_fabs(x);
 if( y < MACHEP )
 	goto underf;
 
-k = 3.6 * sqrt(y);
-t = 3.6 * sqrt(an);
+k = 3.6 * md_sqrt(y);
+t = 3.6 * md_sqrt(an);
 if( (y < t) && (an > 21.0) )
 	return( sign * jvs(n,x) );
 if( (an < k) && (y > 21.0) )
@@ -552,7 +552,7 @@ while( t > MACHEP )
 
 hank1:
 u = x - (0.5*n + 0.25) * PI;
-t = sqrt( 2.0/(PI*x) ) * ( pp * md_cos(u) - qq * md_sin(u) );
+t = md_sqrt( 2.0/(PI*x) ) * ( pp * md_cos(u) - qq * md_sin(u) );
 #if DEBUG
 printf( "hank: %.6e\n", t );
 #endif
@@ -667,14 +667,14 @@ if( zz == 0.0 )
 
 if( zz > 0.0 )
 	{
-	sz = sqrt( zz );
+	sz = md_sqrt( zz );
 	t = 1.5 * (md_log( (1.0+sz)/z ) - sz );	/* zeta ** 3/2		*/
 	zeta = md_cbrt( t * t );
 	nflg = 1;
 	}
 else
 	{
-	sz = sqrt(-zz);
+	sz = md_sqrt(-zz);
 	t = 1.5 * (sz - md_acos(1.0/z));
 	zeta = -md_cbrt( t * t );
 	nflg = -1;
@@ -784,7 +784,7 @@ for( k=0; k<=3; k++ )
 
 /* normalizing factor ( 4*zeta/(1 - z**2) )**1/4	*/
 t = 4.0 * zeta/zz;
-t = sqrt( sqrt(t) );
+t = md_sqrt( md_sqrt(t) );
 
 t *= ai*pp/md_cbrt(n)  +  aip*qq/(n23*n);
 return(t);

@@ -67,7 +67,7 @@ where  p(m) is the psi function: p(1) = -EUL and
 For large x,
                                          2        2     2
                                       u-1     (u-1 )(u-3 )
-K (z)  =  sqrt(pi/2z) md_exp(-z) { 1 + ------- + ------------ + ...}
+K (z)  =  md_sqrt(pi/2z) md_exp(-z) { 1 + ------- + ------------ + ...}
  v                                        1            2
                                     1! (8z)     2! (8z)
 asymptotically, where
@@ -85,9 +85,9 @@ asymptotically, where
 extern double md_fabs ( double );
 extern double md_exp ( double );
 extern double md_log ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 #else
-double md_fabs(), md_exp(), md_log(), sqrt();
+double md_fabs(), md_exp(), md_log(), md_sqrt();
 #endif
 extern double MACHEP, MAXNUM, MAXLOG, PI;
 
@@ -250,6 +250,6 @@ do
 while( md_fabs(t/s) > MACHEP );
 
 adone:
-ans = md_exp(-x) * sqrt( PI/(2.0*x) ) * s;
+ans = md_exp(-x) * md_sqrt( PI/(2.0*x) ) * s;
 return(ans);
 }

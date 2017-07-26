@@ -55,7 +55,7 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 static char fname[] = {"md_log"};
 
 /* Coefficients for md_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
- * 1/sqrt(2) <= x < sqrt(2)
+ * 1/md_sqrt(2) <= x < md_sqrt(2)
  */
 #ifdef UNK
 static double P[] = {
@@ -136,7 +136,7 @@ static unsigned short Q[] = {
 
 /* Coefficients for md_log(x) = z + z**3 P(z)/Q(z),
  * where z = 2(x-1)/(x+1)
- * 1/sqrt(2) <= x < sqrt(2)
+ * 1/md_sqrt(2) <= x < md_sqrt(2)
  */
 
 #ifdef UNK

@@ -60,12 +60,12 @@ Copyright 1995 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_acos ( double );
 extern double md_asin ( double );
 extern double md_atan ( double );
 #else
-double sqrt(), md_acos(), md_asin(), md_atan();
+double md_sqrt(), md_acos(), md_asin(), md_atan();
 #endif
 extern double PI;
 
@@ -96,14 +96,14 @@ if (rr == 0.0 || pp == 0.0 || qq == 0.0)
 rt = (rr - (pr * pr) / pp) / qq;
 if (rt <= 0.75)
   {
-    rt = sqrt(rt);
+    rt = md_sqrt(rt);
     qt = md_asin(rt);
     if (pq < 0.0)
       qt = PI - qt;
   }
 else
   {
-    pt = pq / sqrt(pp*qq);
+    pt = pq / md_sqrt(pp*qq);
     qt = md_acos(pt);
   }
 return qt;

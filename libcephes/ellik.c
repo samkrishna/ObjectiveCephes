@@ -24,7 +24,7 @@
  *                |           dt
  * F(phi_\m)  =    |    ------------------
  *                |                   2
- *              | |    sqrt( 1 - m md_sin t )
+ *              | |    md_sqrt( 1 - m md_sin t )
  *               -
  *                0
  *
@@ -55,7 +55,7 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_fabs ( double );
 extern double md_log ( double );
 extern double md_tan ( double );
@@ -64,7 +64,7 @@ extern double md_floor ( double );
 extern double ellpk ( double );
 double ellik ( double, double );
 #else
-double sqrt(), md_fabs(), md_log(), md_tan(), md_atan(), md_floor(), ellpk();
+double md_sqrt(), md_fabs(), md_log(), md_tan(), md_atan(), md_floor(), ellpk();
 double ellik();
 #endif
 extern double PI, PIO2, MACHEP, MAXNUM;
@@ -104,7 +104,7 @@ if( phi < 0.0 )
 	}
 else
 	sign = 0;
-b = sqrt(a);
+b = md_sqrt(a);
 t = md_tan( phi );
 if( md_fabs(t) > 10.0 )
 	{
@@ -121,7 +121,7 @@ if( md_fabs(t) > 10.0 )
 		}
 	}
 a = 1.0;
-c = sqrt(m);
+c = md_sqrt(m);
 d = 1;
 mod = 0;
 
@@ -132,7 +132,7 @@ while( md_fabs(c/a) > MACHEP )
 	mod = (phi + PIO2)/PI;
 	t = t * ( 1.0 + temp )/( 1.0 - temp * t * t );
 	c = ( a - b )/2.0;
-	temp = sqrt( a * b );
+	temp = md_sqrt( a * b );
 	a = ( a + b )/2.0;
 	b = temp;
 	d += d;

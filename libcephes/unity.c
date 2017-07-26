@@ -28,7 +28,7 @@ extern double INFINITY;
 /* md_log1p(x) = md_log(1 + x)  */
 
 /* Coefficients for md_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
- * 1/sqrt(2) <= x < sqrt(2)
+ * 1/md_sqrt(2) <= x < md_sqrt(2)
  * Theoretical peak relative error = 2.32e-20
  */
 static double LP[] = {

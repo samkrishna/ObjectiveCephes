@@ -825,13 +825,13 @@ static unsigned short APGD[40] = {
 #ifdef ANSIPROT
 extern double md_fabs ( double );
 extern double md_exp ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double polevl ( double, void *, int );
 extern double p1evl ( double, void *, int );
 extern double md_sin ( double );
 extern double md_cos ( double );
 #else
-double md_fabs(), md_exp(), sqrt();
+double md_fabs(), md_exp(), md_sqrt();
 double polevl(), p1evl(), md_sin(), md_cos();
 #endif
 
@@ -854,9 +854,9 @@ if( x > MAXAIRY )
 if( x < -2.09 )
 	{
 	domflg = 15;
-	t = sqrt(-x);
+	t = md_sqrt(-x);
 	zeta = -2.0 * x * t / 3.0;
-	t = sqrt(t);
+	t = md_sqrt(t);
 	k = sqpii / t;
 	z = 1.0/zeta;
 	zz = z * z;
@@ -878,10 +878,10 @@ if( x < -2.09 )
 if( x >= 2.09 )	/* md_cbrt(9) */
 	{
 	domflg = 5;
-	t = sqrt(x);
+	t = md_sqrt(x);
 	zeta = 2.0 * x * t / 3.0;
 	g = md_exp( zeta );
-	t = sqrt(t);
+	t = md_sqrt(t);
 	k = 2.0 * t * g;
 	z = 1.0/zeta;
 	f = polevl( z, AN, 7 ) / polevl( z, AD, 7 );

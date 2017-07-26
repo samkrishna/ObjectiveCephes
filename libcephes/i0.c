@@ -224,10 +224,10 @@ static unsigned short A[] = {
 #endif
 
 
-/* Chebyshev coefficients for md_exp(-x) sqrt(x) I0(x)
+/* Chebyshev coefficients for md_exp(-x) md_sqrt(x) I0(x)
  * in the inverted interval [8,infinity].
  *
- * lim(x->inf){ md_exp(-x) sqrt(x) I0(x) } = 1/sqrt(2pi).
+ * lim(x->inf){ md_exp(-x) md_sqrt(x) I0(x) } = 1/md_sqrt(2pi).
  */
 
 #ifdef UNK
@@ -354,9 +354,9 @@ static unsigned short B[] = {
 #ifdef ANSIPROT
 extern double chbevl ( double, void *, int );
 extern double md_exp ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 #else
-double chbevl(), md_exp(), sqrt();
+double chbevl(), md_exp(), md_sqrt();
 #endif
 
 double i0(x)
@@ -372,7 +372,7 @@ if( x <= 8.0 )
 	return( md_exp(x) * chbevl( y, A, 30 ) );
 	}
 
-return(  md_exp(x) * chbevl( 32.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  md_exp(x) * chbevl( 32.0/x - 2.0, B, 25 ) / md_sqrt(x) );
 
 }
 
@@ -392,6 +392,6 @@ if( x <= 8.0 )
 	return( chbevl( y, A, 30 ) );
 	}
 
-return(  chbevl( 32.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  chbevl( 32.0/x - 2.0, B, 25 ) / md_sqrt(x) );
 
 }

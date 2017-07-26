@@ -20,11 +20,11 @@
  *
  *
  * For small arguments 0 < y < md_exp(-2), the program computes
- * z = sqrt( -2.0 * md_log(y) );  then the approximation is
+ * z = md_sqrt( -2.0 * md_log(y) );  then the approximation is
  * x = z - md_log(z)/z  - (1/z) P(1/z) / Q(1/z).
  * There are two rational functions P/Q, one for 0 < y < md_exp(-32)
  * and the other for y up to md_exp(-2).  For larger arguments,
- * w = y - 0.5, and  x/sqrt(2pi) = w + w**3 R(w**2)/S(w**2)).
+ * w = y - 0.5, and  x/md_sqrt(2pi) = w + w**3 R(w**2)/S(w**2)).
  *
  *
  * ACCURACY:
@@ -55,7 +55,7 @@ Copyright 1984, 1987, 1989, 2000 by Stephen L. Moshier
 extern double MAXNUM;
 
 #ifdef UNK
-/* sqrt(2pi) */
+/* md_sqrt(2pi) */
 static double s2pi = 2.50662827463100050242E0;
 #endif
 
@@ -159,7 +159,7 @@ static unsigned short Q0[32] = {
 #endif
 
 
-/* Approximation for interval z = sqrt(-2 md_log y ) between 2 and 8
+/* Approximation for interval z = md_sqrt(-2 md_log y ) between 2 and 8
  * i.e., y between md_exp(-2) = .135 and md_exp(-32) = 1.27e-14.
  */
 #ifdef UNK
@@ -259,7 +259,7 @@ static unsigned short Q1[32] = {
 };
 #endif
 
-/* Approximation for interval z = sqrt(-2 md_log y ) between 8 and 64
+/* Approximation for interval z = md_sqrt(-2 md_log y ) between 8 and 64
  * i.e., y between md_exp(-32) = 1.27e-14 and md_exp(-2048) = 3.67e-890.
  */
 
@@ -364,9 +364,9 @@ static unsigned short Q2[32] = {
 extern double polevl ( double, void *, int );
 extern double p1evl ( double, void *, int );
 extern double md_log ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 #else
-double polevl(), p1evl(), md_log(), sqrt();
+double polevl(), p1evl(), md_log(), md_sqrt();
 #endif
 
 double ndtri(md_y0)
@@ -402,7 +402,7 @@ if( y > 0.13533528323661269189 )
 	return(x);
 	}
 
-x = sqrt( -2.0 * md_log(y) );
+x = md_sqrt( -2.0 * md_log(y) );
 x0 = x - md_log(x)/x;
 
 z = 1.0/x;

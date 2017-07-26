@@ -24,7 +24,7 @@
  *
  *  where
  *
- *  t = 1 - d - ndtri(p) sqrt(d)
+ *  t = 1 - d - ndtri(p) md_sqrt(d)
  * 
  * and
  *
@@ -58,10 +58,10 @@ extern double ndtri ( double );
 extern double md_exp ( double );
 extern double md_fabs ( double );
 extern double md_log ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double lgam ( double );
 #else
-double igamc(), ndtri(), md_exp(), md_fabs(), md_log(), sqrt(), lgam();
+double igamc(), ndtri(), md_exp(), md_fabs(), md_log(), md_sqrt(), lgam();
 #endif
 
 double igami( a, md_y0 )
@@ -82,7 +82,7 @@ dithresh = 5.0 * MACHEP;
 
 /* approximation to inverse function */
 d = 1.0/(9.0*a);
-y = ( 1.0 - d - ndtri(md_y0) * sqrt(d) );
+y = ( 1.0 - d - ndtri(md_y0) * md_sqrt(d) );
 x = a * y * y * y;
 
 lgm = lgam(a);

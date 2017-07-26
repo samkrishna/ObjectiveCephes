@@ -47,10 +47,10 @@
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_fabs ( double );
 #else
-double sqrt(), md_fabs();
+double md_sqrt(), md_fabs();
 #endif
 
 void eigens( A, RR, E, N )
@@ -90,7 +90,7 @@ for( I=0; I<N; I++ )
 	}
 if( ANORM <= 0.0 )
 	goto done;
-ANORM = sqrt( ANORM + ANORM );
+ANORM = md_sqrt( ANORM + ANORM );
 ANORMX = ANORM * RANGE / N;
 THR = ANORM;
 
@@ -120,12 +120,12 @@ for( M=L+1; M<N; M++ )
 	ALL=A[LL];
 	AMM=A[MM];
 	X=(ALL-AMM)/2.0;
-	Y=-ALM/sqrt(ALM*ALM+X*X);
+	Y=-ALM/md_sqrt(ALM*ALM+X*X);
 	if(X < 0.0)
 		Y=-Y;
-	SINX = Y / sqrt( 2.0 * (1.0 + sqrt( 1.0-Y*Y)) );
+	SINX = Y / md_sqrt( 2.0 * (1.0 + md_sqrt( 1.0-Y*Y)) );
 	SINX2=SINX*SINX;
-	COSX=sqrt(1.0-SINX2);
+	COSX=md_sqrt(1.0-SINX2);
 	COSX2=COSX*COSX;
 	SINCS=SINX*COSX;
 

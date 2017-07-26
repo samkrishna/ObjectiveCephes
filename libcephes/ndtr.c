@@ -21,14 +21,14 @@
  *                             -
  *                   1        | |          2
  *    ndtr(x)  = ---------    |    md_exp( - t /2 ) dt
- *               sqrt(2pi)  | |
+ *               md_sqrt(2pi)  | |
  *                           -
  *                          -inf.
  *
  *             =  ( 1 + md_erf(z) ) / 2
  *             =  md_erfc(z) / 2
  *
- * where z = x/sqrt(2). Computation is via the functions
+ * where z = x/md_sqrt(2). Computation is via the functions
  * md_erf and md_erfc with care to avoid error amplification in computing md_exp(-x^2).
  *
  *
@@ -67,7 +67,7 @@
  *                            -
  *                 2         | |          2
  *   md_erf(x)  =  --------     |    md_exp( - t  ) dt.
- *              sqrt(pi)   | |
+ *              md_sqrt(pi)   | |
  *                          -
  *                           0
  *
@@ -110,7 +110,7 @@
  *                             -
  *                  2         | |          2
  *   md_erfc(x)  =  --------     |    md_exp( - t  ) dt
- *               sqrt(pi)   | |
+ *               md_sqrt(pi)   | |
  *                           -
  *                            x
  *
@@ -390,14 +390,14 @@ extern double p1evl ( double, void *, int );
 extern double md_exp ( double );
 extern double md_log ( double );
 extern double md_fabs ( double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double expx2 ( double, int );
 double md_erf ( double );
 double md_erfc ( double );
 static double erfce ( double );
 #else
 double polevl(), p1evl(), md_exp(), md_log(), md_fabs();
-double md_erf(), md_erfc(), expx2(), sqrt();
+double md_erf(), md_erfc(), expx2(), md_sqrt();
 static double erfce();
 #endif
 
@@ -420,7 +420,7 @@ else
 	y = 0.5 * erfce(z);
 	/* Multiply by md_exp(-x^2 / 2)  */
 	z = expx2(a, -1);
-	y = y * sqrt(z);
+	y = y * md_sqrt(z);
 #else
 	y = 0.5 * md_erfc(z);
 #endif

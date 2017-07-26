@@ -20,7 +20,7 @@
  * is used for |x| in the interval [0, 0.5].  If |x| > 0.5 it is
  * transformed by the identity
  *
- *    md_asin(x) = pi/2 - 2 md_asin( sqrt( (1-x)/2 ) ).
+ *    md_asin(x) = pi/2 - 2 md_asin( md_sqrt( (1-x)/2 ) ).
  *
  *
  * ACCURACY:
@@ -60,11 +60,11 @@
  * near 1, there is cancellation error in subtracting md_asin(x)
  * from pi/2.  Hence if x < -0.5,
  *
- *    md_acos(x) =	 pi - 2.0 * md_asin( sqrt((1+x)/2) );
+ *    md_acos(x) =	 pi - 2.0 * md_asin( md_sqrt((1+x)/2) );
  *
  * or if x > +0.5,
  *
- *    md_acos(x) =	 2.0 * md_asin(  sqrt((1-x)/2) ).
+ *    md_acos(x) =	 2.0 * md_asin(  md_sqrt((1-x)/2) ).
  *
  *
  * ACCURACY:
@@ -166,7 +166,7 @@ static short Q[20] = {
 };
 #endif
 
-/* arcsin(1-x) = pi/2 - sqrt(2x)(1+R(x))
+/* arcsin(1-x) = pi/2 - md_sqrt(2x)(1+R(x))
    0 <= x <= 0.5
    Peak relative error = 4.2e-18  */
 #if UNK
@@ -244,10 +244,10 @@ static short S[16] = {
 #ifdef ANSIPROT
 extern double polevl ( double, void *, int );
 extern double p1evl ( double, void *, int );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 double md_asin ( double );
 #else
-double sqrt(), polevl(), p1evl();
+double md_sqrt(), polevl(), p1evl();
 double md_asin();
 #endif
 extern double PIO2, PIO4, NAN;
@@ -277,10 +277,10 @@ if( a > 1.0 )
 
 if( a > 0.625 )
 	{
-	/* arcsin(1-x) = pi/2 - sqrt(2x)(1+R(x))  */
+	/* arcsin(1-x) = pi/2 - md_sqrt(2x)(1+R(x))  */
 	zz = 1.0 - a;
 	p = zz * polevl( zz, R, 4)/p1evl( zz, S, 4);
-	zz = sqrt(zz+zz);
+	zz = md_sqrt(zz+zz);
 	z = PIO4 - zz;
 	zz = zz * p - MOREBITS;
 	z = z - zz;
@@ -315,7 +315,7 @@ if( (x < -1.0) || (x > 1.0) )
 	}
 if( x > 0.5 )
 	{
-	return( 2.0 * md_asin(  sqrt(0.5 - 0.5*x) ) );
+	return( 2.0 * md_asin(  md_sqrt(0.5 - 0.5*x) ) );
 	}
 z = PIO4 - md_asin(x);
 z = z + MOREBITS;

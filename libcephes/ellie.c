@@ -21,7 +21,7 @@
  *                 -
  *                | |
  *                |                   2
- * E(phi_\m)  =    |    sqrt( 1 - m md_sin t ) dt
+ * E(phi_\m)  =    |    md_sqrt( 1 - m md_sin t ) dt
  *                |
  *              | |    
  *               -
@@ -54,7 +54,7 @@ Copyright 1984, 1987, 1993, 2000 by Stephen L. Moshier
 #include "mconf.h"
 extern double PI, PIO2, MACHEP;
 #ifdef ANSIPROT
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_fabs ( double );
 extern double md_log ( double );
 extern double md_sin ( double x );
@@ -65,7 +65,7 @@ extern double ellpe ( double );
 extern double ellpk ( double );
 double ellie ( double, double );
 #else
-double sqrt(), md_fabs(), md_log(), md_sin(), md_tan(), md_atan(), md_floor();
+double md_sqrt(), md_fabs(), md_log(), md_sin(), md_tan(), md_atan(), md_floor();
 double ellpe(), ellpk(), ellie();
 #endif
 
@@ -100,7 +100,7 @@ if( a == 0.0 )
 	goto done;
 	}
 t = md_tan( lphi );
-b = sqrt(a);
+b = md_sqrt(a);
 /* Thanks to Brian Fitzgerald <fitzgb@mml0.meche.rpi.edu>
    for pointing out an instability near odd multiples of pi/2.  */
 if( md_fabs(t) > 10.0 )
@@ -115,7 +115,7 @@ if( md_fabs(t) > 10.0 )
 		goto done;
 		}
 	}
-c = sqrt(m);
+c = md_sqrt(m);
 a = 1.0;
 d = 1;
 e = 0.0;
@@ -128,7 +128,7 @@ while( md_fabs(c/a) > MACHEP )
 	mod = (lphi + PIO2)/PI;
 	t = t * ( 1.0 + temp )/( 1.0 - temp * t * t );
 	c = ( a - b )/2.0;
-	temp = sqrt( a * b );
+	temp = md_sqrt( a * b );
 	a = ( a + b )/2.0;
 	b = temp;
 	d += d;

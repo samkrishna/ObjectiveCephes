@@ -63,7 +63,7 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_fabs ( double );
 extern double md_sin ( double );
 extern double md_cos ( double );
@@ -74,7 +74,7 @@ extern double md_cosh ( double );
 extern double md_atan ( double );
 extern double md_exp ( double );
 #else
-double sqrt(), md_fabs(), md_sin(), md_cos(), md_asin(), md_tanh();
+double md_sqrt(), md_fabs(), md_sin(), md_cos(), md_asin(), md_tanh();
 double md_sinh(), md_cosh(), md_atan(), md_exp();
 #endif
 extern double PIO2, MACHEP;
@@ -129,8 +129,8 @@ if( m >= 0.9999999999 )
 
 /*	A. G. M. scale		*/
 a[0] = 1.0;
-b = sqrt(1.0 - m);
-c[0] = sqrt(m);
+b = md_sqrt(1.0 - m);
+c[0] = md_sqrt(m);
 twon = 1.0;
 i = 0;
 
@@ -144,7 +144,7 @@ while( md_fabs(c[i]/a[i]) > MACHEP )
 	ai = a[i];
 	++i;
 	c[i] = ( ai - b )/2.0;
-	t = sqrt( ai * b );
+	t = md_sqrt( ai * b );
 	a[i] = ( ai + b )/2.0;
 	b = t;
 	twon *= 2.0;

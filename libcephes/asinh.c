@@ -19,7 +19,7 @@
  * If |x| < 0.5, the function is approximated by a rational
  * form  x + x**3 P(x)/Q(x).  Otherwise,
  *
- *     md_asinh(x) = md_log( x + sqrt(1 + x*x) ).
+ *     md_asinh(x) = md_log( x + md_sqrt(1 + x*x) ).
  *
  *
  *
@@ -113,10 +113,10 @@ static unsigned short Q[] = {
 #ifdef ANSIPROT
 extern double polevl ( double, void *, int );
 extern double p1evl ( double, void *, int );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_log ( double );
 #else
-double md_log(), sqrt(), polevl(), p1evl();
+double md_log(), md_sqrt(), polevl(), p1evl();
 #endif
 extern double LOGE2, INFINITY;
 
@@ -160,6 +160,6 @@ if( x < 0.5 )
 	return(a);
 	}	
 
-a = sqrt( z + 1.0 );
+a = md_sqrt( z + 1.0 );
 return( sign * md_log(x + a) );
 }

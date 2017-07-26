@@ -24,7 +24,7 @@
  *             | ( (k+1)/2 )           |  (     x   )
  *       ----------------------        |  ( 1 + --- )        dx
  *                     -               |  (      k  )
- *       sqrt( k pi ) | ( k/2 )        |
+ *       md_sqrt( k pi ) | ( k/2 )        |
  *                                   | |
  *                                    -
  *                                   -inf.
@@ -88,13 +88,13 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 extern double PI, MACHEP, MAXNUM;
 #ifdef ANSIPROT
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_atan ( double );
 extern double incbet ( double, double, double );
 extern double incbi ( double, double, double );
 extern double md_fabs ( double );
 #else
-double sqrt(), md_atan(), incbet(), incbi(), md_fabs();
+double md_sqrt(), md_atan(), incbet(), incbi(), md_fabs();
 #endif
 
 double stdtr( k, t )
@@ -137,7 +137,7 @@ if( (k & 1) != 0)
 
 	/*	computation for odd k	*/
 
-	xsqk = x/sqrt(rk);
+	xsqk = x/md_sqrt(rk);
 	p = md_atan( xsqk );
 	if( k > 1 )
 		{
@@ -171,7 +171,7 @@ else
 		f += tz;
 		j += 2;
 		}
-	p = f * x/sqrt(z*rk);
+	p = f * x/md_sqrt(z*rk);
 	}
 
 /*	common exit	*/
@@ -205,7 +205,7 @@ if( p > 0.25 && p < 0.75 )
 		return( 0.0 );
 	z = 1.0 - 2.0 * p;
 	z = incbi( 0.5, 0.5*rk, md_fabs(z) );
-	t = sqrt( rk*z/(1.0-z) );
+	t = md_sqrt( rk*z/(1.0-z) );
 	if( p < 0.5 )
 		t = -t;
 	return( t );
@@ -220,6 +220,6 @@ z = incbi( 0.5*rk, 0.5, 2.0*p );
 
 if( MAXNUM * z < rk )
 	return(rflg* MAXNUM);
-t = sqrt( rk/z - rk );
+t = md_sqrt( rk/z - rk );
 return( rflg * t );
 }

@@ -7,7 +7,7 @@
 #include "mconf.h"
 #ifdef ANSIPROT
 extern double md_atan2 ( double, double );
-extern double sqrt ( double );
+extern double md_sqrt ( double );
 extern double md_fabs ( double );
 extern double md_sin ( double );
 extern double md_cos ( double );
@@ -22,7 +22,7 @@ extern void polsbt ( double a[], int na, double b[], int nb, double c[] );
 extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
 #else
-double md_atan2(), sqrt(), md_fabs(), md_sin(), md_cos();
+double md_atan2(), md_sqrt(), md_fabs(), md_sin(), md_cos();
 void polclr(), polmov(), polsbt(), poladd(), polsub(), polmul();
 int poldiv();
 void * malloc();
@@ -159,7 +159,7 @@ nzero:
     {
       if (n & 1)
         {
-	  printf("error, sqrt of odd polynomial\n");
+	  printf("error, md_sqrt of odd polynomial\n");
 	  return;
 	}
       /* Divide by x^n.  */
@@ -171,10 +171,10 @@ nzero:
   for( i=1; i<=nn; i++ )
     x[i] /= t;
   x[0] = 0.0;
-  /* series development sqrt(1+x) = 1  +  x / 2  -  x**2 / 8  +  x**3 / 16
+  /* series development md_sqrt(1+x) = 1  +  x / 2  -  x**2 / 8  +  x**3 / 16
      hopes that first (constant) term is greater than what follows   */
   polsbt( x, nn, psqrt, nn, y);
-  t = sqrt( t );
+  t = md_sqrt( t );
   for( i=0; i<=nn; i++ )
     y[i] *= t;
 
