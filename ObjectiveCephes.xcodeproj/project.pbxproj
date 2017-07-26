@@ -130,11 +130,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6F695AD41F285A97004B4C3A /* acosh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = acosh.c; sourceTree = "<group>"; };
-		6F695AD51F285A97004B4C3A /* airy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = airy.c; sourceTree = "<group>"; };
-		6F695AD61F285A97004B4C3A /* arcdot.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = arcdot.c; sourceTree = "<group>"; };
-		6F695AD71F285A97004B4C3A /* asin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = asin.c; sourceTree = "<group>"; };
-		6F695AD81F285A97004B4C3A /* asinh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = asinh.c; sourceTree = "<group>"; };
+		6F695AD41F285A97004B4C3A /* acosh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = acosh.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		6F695AD51F285A97004B4C3A /* airy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = airy.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		6F695AD61F285A97004B4C3A /* arcdot.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = arcdot.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		6F695AD71F285A97004B4C3A /* asin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = asin.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		6F695AD81F285A97004B4C3A /* asinh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = asinh.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		6F695AD91F285A97004B4C3A /* atan.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = atan.c; sourceTree = "<group>"; };
 		6F695ADA1F285A97004B4C3A /* atanh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = atanh.c; sourceTree = "<group>"; };
 		6F695ADB1F285A97004B4C3A /* bdtr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bdtr.c; sourceTree = "<group>"; };
@@ -144,9 +144,9 @@
 		6F695ADF1F285A97004B4C3A /* cbrt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cbrt.c; sourceTree = "<group>"; };
 		6F695AE01F285A97004B4C3A /* chbevl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chbevl.c; sourceTree = "<group>"; };
 		6F695AE11F285A97004B4C3A /* chdtr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chdtr.c; sourceTree = "<group>"; };
-		6F695AE21F285A97004B4C3A /* clog.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = clog.c; sourceTree = "<group>"; };
-		6F695AE31F285A97004B4C3A /* cmplx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cmplx.c; sourceTree = "<group>"; };
-		6F695AE41F285A97004B4C3A /* const.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = const.c; sourceTree = "<group>"; };
+		6F695AE21F285A97004B4C3A /* clog.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = clog.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		6F695AE31F285A97004B4C3A /* cmplx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = cmplx.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		6F695AE41F285A97004B4C3A /* const.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = const.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		6F695AE51F285A97004B4C3A /* cosh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cosh.c; sourceTree = "<group>"; };
 		6F695AE61F285A97004B4C3A /* cpmul_wrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpmul_wrap.c; sourceTree = "<group>"; };
 		6F695AE71F285A97004B4C3A /* cpmul.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpmul.c; sourceTree = "<group>"; };
@@ -247,7 +247,7 @@
 		6FD8D27F1F27CAC000509708 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6FD8D7441F27CDA700509708 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6FD8D7451F27CDDD00509708 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		6FEF35721F28733700AEF98F /* cephes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cephes.txt; sourceTree = "<group>"; };
+		6FEF35721F28733700AEF98F /* cephes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = cephes.txt; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = "<none>"; };
 		6FEF35731F28733700AEF98F /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -778,7 +778,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/libcephes/qfloat",
 					"$(PROJECT_DIR)/libcephes",
 				);
 				OTHER_CFLAGS = (
@@ -809,7 +808,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/libcephes/qfloat",
 					"$(PROJECT_DIR)/libcephes",
 				);
 				OTHER_CFLAGS = (
