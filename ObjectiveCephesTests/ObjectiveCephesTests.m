@@ -76,4 +76,40 @@
     XCTAssertEqual( incbi(x, y, z), u);
 
 }
+
+- (void)testDistributionCases
+{
+    double k = 2;
+    double n = 10;
+    double p = 0.5;
+    double y = 0.6;
+    XCTAssertEqualWithAccuracy(bdtr(k, n, p), incbet(n-k, k+1, 1-p), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(bdtrc(k, n, p), incbet(k+1, n-k, p), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(bdtri(k, n, y), 1-incbi(n-k, k+1, y), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(btdtr(k, n, y), incbet(k, n, y), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(chdtr(k, y), igam(k/2, y/2), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(chdtrc(k, y), igamc(k/2, y/2), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(chdtri(k, y), 2 * igami(k / 2, y), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(fdtr(k, n, y), incbet(k/2, n/2,k*y/(n + k*y)), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(fdtrc(k, n, y), incbet(n/2, k/2, n/(n + k*y)), 0.0000000000005);
+    double z = incbi( n/2, k/2, p);
+    XCTAssertEqualWithAccuracy(fdtri(k, n, p), n*(1-z)/(k*z), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(gdtr(k, n, y), igam(n, k*y), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(gdtrc(k, n, y), igamc(n, k*y), 0.0000000000005);
+    double w = nbdtr(k, n, p);
+    XCTAssertEqualWithAccuracy(w, incbet(n, k+1, p), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(nbdtrc(k, n, p), incbet(k+1, n, 1-p), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(nbdtri(k, n, w), p, 0.0000000000005);
+    w = ndtr(y);
+    XCTAssertEqualWithAccuracy(w, (1+erf(y/sqrt(2)))/2, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(ndtri(w), y, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(pdtr(k, n), igamc(k+1, n), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(pdtrc(k, n), igam(k+1, n), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(pdtri(k, y), igami(k+1, y), 0.0000000000005);
+    w = stdtr( k, y);
+    z = k/(k + y*y);
+    double zed = 1 - 0.5 * incbet(k / 2, (1.0 / 2.0), z);
+    XCTAssertEqualWithAccuracy(w, zed, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(stdtri(k, w), y, 0.0000000000005);
+}
 @end
