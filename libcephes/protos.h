@@ -96,7 +96,7 @@ extern double ldexp ( double x, int pw2 );
 /* extern int isnan ( double x ); */
 /* extern int isfinite ( double x ); */
 extern int fresnl ( double xxa, double *x, double *y);
-extern double gamma ( double x );
+extern double md_gamma ( double x );
 extern double lgam ( double x );
 extern double gdtr ( double a, double b, double x );
 extern double gdtrc ( double a, double b, double x );
