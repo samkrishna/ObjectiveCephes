@@ -42,7 +42,8 @@
  *    IEEE      0, 30       60000       4.2e-16     1.1e-16
  *
  */
-/*							md_y0.c
+
+/*							md_y0.c
  *
  *	Bessel function of the second kind, order zero
  *
@@ -82,7 +83,7 @@
  *    IEEE      0, 30       30000       1.3e-15     1.6e-16
  *
  */
-
+
 /*
 Cephes Math Library Release 2.8:  June, 2000
 Copyright 1984, 1987, 1989, 2000 by Stephen L. Moshier

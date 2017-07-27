@@ -33,7 +33,8 @@
  *
  *
  */
-/*							md_y1.c
+
+/*							md_y1.c
  *
  *	Bessel function of second kind of order one
  *
@@ -70,7 +71,7 @@
  * (error criterion relative when |md_y1| > 1).
  *
  */
-
+
 
 /*
 Cephes Math Library Release 2.8:  June, 2000
