@@ -62,4 +62,18 @@
     XCTAssertEqualWithAccuracy(kn(n, x), 9.431049101, .0000000005, @"result = %.14f", kn(n, x));
 }
 
+- (void)testBetaCases
+{
+    double x = 5.57;
+    double y = 2.2;
+    double u = 0.3;
+    double z = beta(x, y);
+    double gammaResult = md_gamma(x) * md_gamma(y) / md_gamma(7.77);
+    XCTAssertEqualWithAccuracy(z, gammaResult, 0.0000000000000005, @"result is %.20f", gammaResult);
+    XCTAssertEqual( lbeta(x, y), md_log(z));
+    z = incbet(x, y, u);
+    XCTAssertEqualWithAccuracy(z, 0.00761009624, 0.00000000001, @"result = %0.12f", z);
+    XCTAssertEqual( incbi(x, y, z), u);
+
+}
 @end
