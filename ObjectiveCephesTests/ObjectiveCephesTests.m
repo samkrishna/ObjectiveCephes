@@ -112,4 +112,38 @@
     XCTAssertEqualWithAccuracy(w, zed, 0.0000000000005);
     XCTAssertEqualWithAccuracy(stdtri(k, w), y, 0.0000000000005);
 }
+
+- (void)testEllipticCases
+{
+    double x = 0.3;
+    XCTAssertEqualWithAccuracy(ellpk(1-x*x), 1.608048620, 0.0000000005);
+    XCTAssertEqualWithAccuracy(ellik(asin(0.2), x*x), .2014795901, 0.0000000005);
+    XCTAssertEqualWithAccuracy(ellpe(1-x*x), 1.534833465, 0.0000000005);
+    XCTAssertEqualWithAccuracy(ellie(asin(0.2), x*x), .2012363833, 0.0000000005);
+    double phi = PIO4;
+    double m = 0.3;
+    double u = ellik(phi, m);
+
+    // 2017-07-27 14:12:00 -0700
+    // There's some weird Clang shit going on that prevents a pure declaration of the double pointers
+    // where some are initialized NULL and some are not. As a result, this causes an EXC_BAD_ACCESS in the
+    // guts of the ellpj code. I had to explicitly malloc the pointers to get past this issue.
+    double *sn = (double *)malloc(sizeof(double));
+    double *cn = (double *)malloc(sizeof(double));
+    double *dn = (double *)malloc(sizeof(double));
+    double *phi_out = (double *)malloc(sizeof(double));
+    int flag = ellpj(u, m, sn, cn, dn, phi_out);
+
+    XCTAssertEqualWithAccuracy(flag, 0, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(phi, *phi_out, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(*sn, md_sin(*phi_out), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(*cn, md_cos(*phi_out), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(*dn, md_sqrt(1-m * md_sin(*phi_out) * md_sin(*phi_out)), 0.0000000000005);
+
+    free(sn);
+    free(cn);
+    free(dn);
+    free(phi_out);
+}
+
 @end
