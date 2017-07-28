@@ -125,9 +125,9 @@
     double u = ellik(phi, m);
 
     // 2017-07-27 14:12:00 -0700
-    // There's some weird Clang shit going on that prevents a pure declaration of the double pointers
-    // where some are initialized NULL and some are not. As a result, this causes an EXC_BAD_ACCESS in the
-    // guts of the ellpj code. I had to explicitly malloc the pointers to get past this issue.
+    // There's some weird Clang shit going on that causes the declaration of the double pointers
+    // to inconsistently be initialized NULL/not NULL. As a result, this causes an EXC_BAD_ACCESS in the
+    // guts of the ellpj() code. I had to explicitly malloc the pointers to get past this issue.
     double *sn = (double *)malloc(sizeof(double));
     double *cn = (double *)malloc(sizeof(double));
     double *dn = (double *)malloc(sizeof(double));
