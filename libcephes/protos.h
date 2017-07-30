@@ -76,22 +76,22 @@ extern double ellik ( double phi, double m );
 extern double ellpe ( double x );
 extern int ellpj ( double u, double m, double *x, double *y, double *z, double *a );
 extern double ellpk ( double x );
-extern double exp ( double x );
-extern double exp10 ( double x );
+extern double md_exp ( double x );
+extern double md_exp10 ( double x );
 /* extern double exp1m ( double x ); */
-extern double exp2 ( double x );
-extern double expn ( int n, double x );
+extern double md_exp2 ( double x );
+extern double md_expn ( int n, double x );
 extern double ei ( double x );
-extern double fabs ( double x );
+extern double md_fabs ( double x );
 extern double fac ( int i );
 extern double fdtrc ( int ia, int ib, double x );
 extern double fdtr ( int ia, int ib, double x );
 extern double fdtri ( int ia, int ib, double y );
-extern double ceil ( double x );
-extern double floor ( double x );
-extern double frexp ( double x, int *n);
+extern double md_ceil ( double x );
+extern double md_floor ( double x );
+extern double md_frexp ( double x, int *n);
 /* extern double frexp ( double x, int *pw2 ); */
-extern double ldexp ( double x, int pw2 );
+extern double md_ldexp ( double x, int pw2 );
 /* extern int signbit ( double x ); */
 /* extern int isnan ( double x ); */
 /* extern int isfinite ( double x ); */
@@ -171,7 +171,7 @@ extern double tandg ( double x );
 extern double cotdg ( double x );
 extern double md_tanh ( double x );
 extern double md_log1p ( double x );
-extern double expm1 ( double x );
+extern double md_expm1 ( double x );
 extern double cosm1 ( double x );
 extern double md_yn ( int n, double x );
 extern double yv ( double n, double x );

@@ -86,7 +86,7 @@ static double EQ[4] = {
  2.0000000000000000000897E0,
 };
 
-double expm1(x)
+double md_expm1(x)
 double x;
 {
 double r, xx;
