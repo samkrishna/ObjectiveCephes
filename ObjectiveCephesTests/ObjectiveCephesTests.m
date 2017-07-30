@@ -146,4 +146,26 @@
     free(phi_out);
 }
 
+- (void)testExpLogCases
+{
+    double e = md_exp(1);
+    XCTAssertEqualWithAccuracy(md_log(md_pow(e, e)), e, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_log(e*e), 2, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(1 / md_log(2), LOG2E, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_exp(-1), 1/e, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_exp(LOGE2), 2, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_log10(10000), 4, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_log10(md_sqrt(10)), 0.5, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_exp2(8), 256, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_log2(SQRT2), 0.5, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_log2(256), 8, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_log1p(0.5), md_log(1.5), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_expm1(0.5), md_exp(0.5)-1, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(expx2(2, -1), md_exp(-4), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(expx2(0.5, 1), md_exp(0.25), 0.0000000000005);
+
+    // No idea what to do with this since SQRTH has a weird unsigned short array
+//    XCTAssertEqualWithAccuracy(md_exp2(-1/2), SQRTH, 0.0000000000005);
+}
+
 @end
