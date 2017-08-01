@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double m1, y, md_ellpk();
+ * double m1, y, cfs_ellpk();
  *
- * y = md_ellpk( m1 );
+ * y = cfs_ellpk( m1 );
  *
  *
  *
@@ -24,13 +24,13 @@
  *            |           dt
  * K(m)  =    |    ------------------
  *            |                   2
- *          | |    md_sqrt( 1 - m md_sin t )
+ *          | |    cfs_sqrt( 1 - m cfs_sin t )
  *           -
  *            0
  *
  * where m = 1 - m1, using the approximation
  *
- *     P(x)  -  md_log x Q(x).
+ *     P(x)  -  cfs_log x Q(x).
  *
  * The argument m1 is used rather than m so that the logarithmic
  * singularity at m = 1 will be shifted to the origin; this
@@ -48,7 +48,7 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_ellpk domain       x<0, x>1           0.0
+ * cfs_ellpk domain       x<0, x>1           0.0
  *
  */
 
@@ -193,19 +193,19 @@ static double Q[] =
  1.24999999999870820058E-1,
  4.99999999999999999821E-1
 };
-static double C1 = 1.3862943611198906188E0; /* md_log(4) */
+static double C1 = 1.3862943611198906188E0; /* cfs_log(4) */
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_log ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_log ( double );
 #else
-double md_polevl(), md_p1evl(), md_log();
+double cfs_polevl(), cfs_p1evl(), cfs_log();
 #endif
 extern double MACHEP, MAXNUM;
 
-double md_ellpk(x)
+double cfs_ellpk(x)
 double x;
 {
 
@@ -217,7 +217,7 @@ if( (x < 0.0) || (x > 1.0) )
 
 if( x > MACHEP )
 	{
-	return( md_polevl(x,P,10) - md_log(x) * md_polevl(x,Q,10) );
+	return( cfs_polevl(x,P,10) - cfs_log(x) * cfs_polevl(x,Q,10) );
 	}
 else
 	{
@@ -228,7 +228,7 @@ else
 		}
 	else
 		{
-		return( C1 - 0.5 * md_log(x) );
+		return( C1 - 0.5 * cfs_log(x) );
 		}
 	}
 }

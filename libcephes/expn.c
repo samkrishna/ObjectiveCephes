@@ -1,4 +1,4 @@
-/*							md_expn.c
+/*							cfs_expn.c
  *
  *		Exponential integral En
  *
@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * int n;
- * double x, y, md_expn();
+ * double x, y, cfs_expn();
  *
- * y = md_expn( n, x );
+ * y = cfs_expn( n, x );
  *
  *
  *
@@ -43,26 +43,26 @@
  *
  */
 
-/*							md_expn.c	*/
+/*							cfs_expn.c	*/
 
 /* Cephes Math Library Release 2.8:  June, 2000
    Copyright 1985, 2000 by Stephen L. Moshier */
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_pow ( double, double );
-extern double md_gamma ( double );
-extern double md_log ( double );
-extern double md_exp ( double );
-extern double md_fabs ( double );
+extern double cfs_pow ( double, double );
+extern double cfs_gamma ( double );
+extern double cfs_log ( double );
+extern double cfs_exp ( double );
+extern double cfs_fabs ( double );
 #else
-double md_pow(), md_gamma(), md_log(), md_exp(), md_fabs();
+double cfs_pow(), cfs_gamma(), cfs_log(), cfs_exp(), cfs_fabs();
 #endif
 #define EUL 0.57721566490153286060
 #define BIG  1.44115188075855872E+17
 extern double MAXNUM, MACHEP, MAXLOG;
 
-double md_expn( n, x )
+double cfs_expn( n, x )
 int n;
 double x;
 {
@@ -77,7 +77,7 @@ if( n < 0 )
 
 if( x < 0 )
 	{
-domerr:	mtherr( "md_expn", DOMAIN );
+domerr:	mtherr( "cfs_expn", DOMAIN );
 	return( MAXNUM );
 	}
 
@@ -88,7 +88,7 @@ if( x == 0.0 )
 	{
 	if( n < 2 )
 		{
-		mtherr( "md_expn", SING );
+		mtherr( "cfs_expn", SING );
 		return( MAXNUM );
 		}
 	else
@@ -96,9 +96,9 @@ if( x == 0.0 )
 	}
 
 if( n == 0 )
-	return( md_exp(-x)/x );
+	return( cfs_exp(-x)/x );
 
-/*							md_expn.c	*/
+/*							cfs_expn.c	*/
 /*		Expansion for large n		*/
 
 if( n > 5000 )
@@ -109,18 +109,18 @@ if( n > 5000 )
 	ans = yk * t * (6.0 * x * x  -  8.0 * t * x  +  t * t);
 	ans = yk * (ans + t * (t  -  2.0 * x));
 	ans = yk * (ans + t);
-	ans = (ans + 1.0) * md_exp( -x ) / xk;
+	ans = (ans + 1.0) * cfs_exp( -x ) / xk;
 	goto done;
 	}
 
 if( x > 1.0 )
 	goto cfrac;
 
-/*							md_expn.c	*/
+/*							cfs_expn.c	*/
 
 /*		Power series expansion		*/
 
-psi = -EUL - md_log(x);
+psi = -EUL - cfs_log(x);
 for( i=1; i<n; i++ )
 	psi = psi + 1.0/i;
 
@@ -142,7 +142,7 @@ do
 		ans += yk/pk;
 		}
 	if( ans != 0.0 )
-		t = md_fabs(yk/ans);
+		t = cfs_fabs(yk/ans);
 	else
 		t = 1.0;
 	}
@@ -150,10 +150,10 @@ while( t > MACHEP );
 k = xk;
 t = n;
 r = n - 1;
-ans = (md_pow(z, r) * psi / md_gamma(t)) - ans;
+ans = (cfs_pow(z, r) * psi / cfs_gamma(t)) - ans;
 goto done;
 
-/*							md_expn.c	*/
+/*							cfs_expn.c	*/
 /*		continued fraction		*/
 cfrac:
 k = 1;
@@ -181,7 +181,7 @@ do
 	if( qk != 0 )
 		{
 		r = pk/qk;
-		t = md_fabs( (ans - r)/r );
+		t = cfs_fabs( (ans - r)/r );
 		ans = r;
 		}
 	else
@@ -190,7 +190,7 @@ do
 	pkm1 = pk;
 	qkm2 = qkm1;
 	qkm1 = qk;
-if( md_fabs(pk) > big )
+if( cfs_fabs(pk) > big )
 		{
 		pkm2 /= big;
 		pkm1 /= big;
@@ -200,7 +200,7 @@ if( md_fabs(pk) > big )
 	}
 while( t > MACHEP );
 
-ans *= md_exp( -x );
+ans *= cfs_exp( -x );
 
 done:
 return( ans );

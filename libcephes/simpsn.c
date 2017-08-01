@@ -64,7 +64,7 @@ static double simcon[] =
 */
 
 /*							simpsn.c 3	*/
-double md_simpsn( f, delta )
+double cfs_simpsn( f, delta )
 double f[];	/* tabulated function */
 double delta;	/* spacing of arguments */
 {

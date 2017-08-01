@@ -1,4 +1,4 @@
-/*							md_exp2.c
+/*							cfs_exp2.c
  *
  *	Base 2 exponential function
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_exp2();
+ * double x, y, cfs_exp2();
  *
- * y = md_exp2( x );
+ * y = cfs_exp2( x );
  *
  *
  *
@@ -35,14 +35,14 @@
  *    IEEE    -1022,+1024   30000       1.8e-16     5.4e-17
  *
  *
- * See md_exp.c for comments on error amplification.
+ * See cfs_exp.c for comments on error amplification.
  *
  *
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_exp underflow    x < -MAXL2        0.0
- * md_exp overflow     x > MAXL2         MAXNUM
+ * cfs_exp underflow    x < -MAXL2        0.0
+ * cfs_exp overflow     x > MAXL2         MAXNUM
  *
  * For DEC arithmetic, MAXL2 = 127.
  * For IEEE arithmetic, MAXL2 = 1024.
@@ -119,29 +119,29 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_floor ( double );
-extern double md_ldexp ( double, int );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_floor ( double );
+extern double cfs_ldexp ( double, int );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
 #else
-double md_polevl(), md_p1evl(), md_floor(), md_ldexp();
-int md_isnan(), md_isfinite();
+double cfs_polevl(), cfs_p1evl(), cfs_floor(), cfs_ldexp();
+int cfs_isnan(), cfs_isfinite();
 #endif
 #ifdef INFINITIES
 extern double INFINITY;
 #endif
 extern double MAXNUM;
 
-double md_exp2(x)
+double cfs_exp2(x)
 double x;
 {
 double px, xx;
 short n;
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 if( x > MAXL2)
@@ -149,7 +149,7 @@ if( x > MAXL2)
 #ifdef INFINITIES
 	return( INFINITY );
 #else
-	mtherr( "md_exp2", OVERFLOW );
+	mtherr( "cfs_exp2", OVERFLOW );
 	return( MAXNUM );
 #endif
 	}
@@ -157,27 +157,27 @@ if( x > MAXL2)
 if( x < MINL2 )
 	{
 #ifndef INFINITIES
-	mtherr( "md_exp2", UNDERFLOW );
+	mtherr( "cfs_exp2", UNDERFLOW );
 #endif
 	return(0.0);
 	}
 
 xx = x;	/* save x */
 /* separate into integer and fractional parts */
-px = md_floor(x+0.5);
+px = cfs_floor(x+0.5);
 n = px;
 x = x - px;
 
 /* rational approximation
- * md_exp2(x) = 1 +  2xP(xx)/(Q(xx) - P(xx))
+ * cfs_exp2(x) = 1 +  2xP(xx)/(Q(xx) - P(xx))
  * where xx = x**2
  */
 xx = x * x;
-px = x * md_polevl( xx, P, 2 );
-x =  px / ( md_p1evl( xx, Q, 2 ) - px );
-x = 1.0 + md_ldexp( x, 1 );
+px = x * cfs_polevl( xx, P, 2 );
+x =  px / ( cfs_p1evl( xx, Q, 2 ) - px );
+x = 1.0 + cfs_ldexp( x, 1 );
 
 /* scale by power of 2 */
-x = md_ldexp( x, n );
+x = cfs_ldexp( x, n );
 return(x);
 }

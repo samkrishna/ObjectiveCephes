@@ -1,4 +1,4 @@
-/*							md_sinh.c
+/*							cfs_sinh.c
  *
  *	Hyperbolic sine
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_sinh();
+ * double x, y, cfs_sinh();
  *
- * y = md_sinh( x );
+ * y = cfs_sinh( x );
  *
  *
  *
@@ -19,7 +19,7 @@
  *
  * The range is partitioned into two segments.  If |x| <= 1, a
  * rational function of the form x + x**3 P(x)/Q(x) is employed.
- * Otherwise the calculation is md_sinh(x) = ( md_exp(x) - md_exp(-x) )/2.
+ * Otherwise the calculation is cfs_sinh(x) = ( cfs_exp(x) - cfs_exp(-x) )/2.
  *
  *
  *
@@ -99,16 +99,16 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_exp ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
+extern double cfs_fabs ( double );
+extern double cfs_exp ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
 #else
-double md_fabs(), md_exp(), md_polevl(), md_p1evl();
+double cfs_fabs(), cfs_exp(), cfs_polevl(), cfs_p1evl();
 #endif
 extern double INFINITY, MINLOG, MAXLOG, LOGE2;
 
-double md_sinh(x)
+double cfs_sinh(x)
 double x;
 {
 double a;
@@ -117,10 +117,10 @@ double a;
 if( x == 0.0 )
 	return(x);
 #endif
-a = md_fabs(x);
+a = cfs_fabs(x);
 if( (x > (MAXLOG + LOGE2)) || (x > -(MINLOG-LOGE2) ) )
 	{
-	mtherr( "md_sinh", DOMAIN );
+	mtherr( "cfs_sinh", DOMAIN );
 	if( x > 0 )
 		return( INFINITY );
 	else
@@ -130,13 +130,13 @@ if( a > 1.0 )
 	{
 	if( a >= (MAXLOG - LOGE2) )
 		{
-		a = md_exp(0.5*a);
+		a = cfs_exp(0.5*a);
 		a = (0.5 * a) * a;
 		if( x < 0 )
 			a = -a;
 		return(a);
 		}
-	a = md_exp(a);
+	a = cfs_exp(a);
 	a = 0.5*a - (0.5/a);
 	if( x < 0 )
 		a = -a;
@@ -144,5 +144,5 @@ if( a > 1.0 )
 	}
 
 a *= a;
-return( x + x * a * (md_polevl(a,P,3)/md_p1evl(a,Q,3)) );
+return( x + x * a * (cfs_polevl(a,P,3)/cfs_p1evl(a,Q,3)) );
 }

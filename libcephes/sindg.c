@@ -1,4 +1,4 @@
-/*							md_sindg.c
+/*							cfs_sindg.c
  *
  *	Circular sine of angle in degrees
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_sindg();
+ * double x, y, cfs_sindg();
  *
- * y = md_sindg( x );
+ * y = cfs_sindg( x );
  *
  *
  *
@@ -34,7 +34,7 @@
  * ERROR MESSAGES:
  *
  *   message           condition        value returned
- * md_sindg total loss   x > 8.0e14 (DEC)      0.0
+ * cfs_sindg total loss   x > 8.0e14 (DEC)      0.0
  *                    x > 1.0e14 (IEEE)
  *
  */
@@ -69,7 +69,7 @@
  * arithmetic   domain      # trials      peak         rms
  *    DEC      +-1000         3400       3.5e-17     9.1e-18
  *    IEEE     +-1000        30000       2.1e-16     5.7e-17
- *  See also md_sin().
+ *  See also cfs_sin().
  *
  */
 
@@ -175,15 +175,15 @@ static double lossth = 1.0e14;
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_floor ( double );
-extern double md_ldexp ( double, int );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_floor ( double );
+extern double cfs_ldexp ( double, int );
 #else
-double md_polevl(), md_floor(), md_ldexp();
+double cfs_polevl(), cfs_floor(), cfs_ldexp();
 #endif
 extern double PIO4;
 
-double md_sindg(x)
+double cfs_sindg(x)
 double x;
 {
 double y, z, zz;
@@ -199,16 +199,16 @@ if( x < 0 )
 
 if( x > lossth )
 	{
-	mtherr( "md_sindg", TLOSS );
+	mtherr( "cfs_sindg", TLOSS );
 	return(0.0);
 	}
 
-y = md_floor( x/45.0 ); /* integer part of x/PIO4 */
+y = cfs_floor( x/45.0 ); /* integer part of x/PIO4 */
 
 /* strip high bits of integer part to prevent integer overflow */
-z = md_ldexp( y, -4 );
-z = md_floor(z);           /* integer part of y/8 */
-z = y - md_ldexp( z, 4 );  /* y - 16 * (y/16) */
+z = cfs_ldexp( y, -4 );
+z = cfs_floor(z);           /* integer part of y/8 */
+z = y - cfs_ldexp( z, 4 );  /* y - 16 * (y/16) */
 
 j = z; /* convert to integer for tests on the phase angle */
 /* map zeros to origin */
@@ -231,11 +231,11 @@ zz = z * z;
 
 if( (j==1) || (j==2) )
 	{
-	y = 1.0 - zz * md_polevl( zz, coscof, 6 );
+	y = 1.0 - zz * cfs_polevl( zz, coscof, 6 );
 	}
 else
 	{
-	y = z  +  z * (zz * md_polevl( zz, sincof, 5 ));
+	y = z  +  z * (zz * cfs_polevl( zz, sincof, 5 ));
 	}
 
 if(sign < 0)
@@ -265,10 +265,10 @@ if( x > lossth )
 	return(0.0);
 	}
 
-y = md_floor( x/45.0 );
-z = md_ldexp( y, -4 );
-z = md_floor(z);		/* integer part of y/8 */
-z = y - md_ldexp( z, 4 );  /* y - 16 * (y/16) */
+y = cfs_floor( x/45.0 );
+z = cfs_ldexp( y, -4 );
+z = cfs_floor(z);		/* integer part of y/8 */
+z = y - cfs_ldexp( z, 4 );  /* y - 16 * (y/16) */
 
 /* integer and fractional part modulo one octant */
 j = z;
@@ -294,11 +294,11 @@ zz = z * z;
 
 if( (j==1) || (j==2) )
 	{
-	y = z  +  z * (zz * md_polevl( zz, sincof, 5 ));
+	y = z  +  z * (zz * cfs_polevl( zz, sincof, 5 ));
 	}
 else
 	{
-	y = 1.0 - zz * md_polevl( zz, coscof, 6 );
+	y = 1.0 - zz * cfs_polevl( zz, coscof, 6 );
 	}
 
 if(sign < 0)

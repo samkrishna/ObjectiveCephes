@@ -1,14 +1,14 @@
 /*							igam.c
  *
- *	Incomplete md_gamma integral
+ *	Incomplete cfs_gamma integral
  *
  *
  *
  * SYNOPSIS:
  *
- * double a, x, y, md_igam();
+ * double a, x, y, cfs_igam();
  *
- * y = md_igam( a, x );
+ * y = cfs_igam( a, x );
  *
  * DESCRIPTION:
  *
@@ -38,15 +38,15 @@
 
 /*							igamc()
  *
- *	Complemented incomplete md_gamma integral
+ *	Complemented incomplete cfs_gamma integral
  *
  *
  *
  * SYNOPSIS:
  *
- * double a, x, y, md_igamc();
+ * double a, x, y, cfs_igamc();
  *
- * y = md_igamc( a, x );
+ * y = cfs_igamc( a, x );
  *
  * DESCRIPTION:
  *
@@ -85,21 +85,21 @@ Copyright 1985, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_lgam ( double );
-extern double md_exp ( double );
-extern double md_log ( double );
-extern double md_fabs ( double );
-extern double md_igam ( double, double );
-extern double md_igamc ( double, double );
+extern double cfs_lgam ( double );
+extern double cfs_exp ( double );
+extern double cfs_log ( double );
+extern double cfs_fabs ( double );
+extern double cfs_igam ( double, double );
+extern double cfs_igamc ( double, double );
 #else
-double md_lgam(), md_exp(), md_log(), md_fabs(), md_igam(), md_igamc();
+double cfs_lgam(), cfs_exp(), cfs_log(), cfs_fabs(), cfs_igam(), cfs_igamc();
 #endif
 
 extern double MACHEP, MAXLOG;
 static double big = 4.503599627370496e15;
 static double biginv =  2.22044604925031308085e-16;
 
-double md_igamc( a, x )
+double cfs_igamc( a, x )
 double a, x;
 {
 double ans, ax, c, yc, r, t, y, z;
@@ -109,15 +109,15 @@ if( (x <= 0) || ( a <= 0) )
 	return( 1.0 );
 
 if( (x < 1.0) || (x < a) )
-	return( 1.0 - md_igam(a,x) );
+	return( 1.0 - cfs_igam(a,x) );
 
-ax = a * md_log(x) - x - md_lgam(a);
+ax = a * cfs_log(x) - x - cfs_lgam(a);
 if( ax < -MAXLOG )
 	{
 	mtherr( "igamc", UNDERFLOW );
 	return( 0.0 );
 	}
-ax = md_exp(ax);
+ax = cfs_exp(ax);
 
 /* continued fraction */
 y = 1.0 - a;
@@ -140,7 +140,7 @@ do
 	if( qk != 0 )
 		{
 		r = pk/qk;
-		t = md_fabs( (ans - r)/r );
+		t = cfs_fabs( (ans - r)/r );
 		ans = r;
 		}
 	else
@@ -149,7 +149,7 @@ do
 	pkm1 = pk;
 	qkm2 = qkm1;
 	qkm1 = qk;
-	if( md_fabs(pk) > big )
+	if( cfs_fabs(pk) > big )
 		{
 		pkm2 *= biginv;
 		pkm1 *= biginv;
@@ -164,7 +164,7 @@ return( ans * ax );
 
 
 
-/* left tail of incomplete md_gamma function:
+/* left tail of incomplete cfs_gamma function:
  *
  *          inf.      k
  *   a  -x   -       x
@@ -174,7 +174,7 @@ return( ans * ax );
  *
  */
 
-double md_igam( a, x )
+double cfs_igam( a, x )
 double a, x;
 {
 double ans, ax, c, r;
@@ -183,16 +183,16 @@ if( (x <= 0) || ( a <= 0) )
 	return( 0.0 );
 
 if( (x > 1.0) && (x > a ) )
-	return( 1.0 - md_igamc(a,x) );
+	return( 1.0 - cfs_igamc(a,x) );
 
-/* Compute  x**a * md_exp(-x) / md_gamma(a)  */
-ax = a * md_log(x) - x - md_lgam(a);
+/* Compute  x**a * cfs_exp(-x) / cfs_gamma(a)  */
+ax = a * cfs_log(x) - x - cfs_lgam(a);
 if( ax < -MAXLOG )
 	{
 	mtherr( "igam", UNDERFLOW );
 	return( 0.0 );
 	}
-ax = md_exp(ax);
+ax = cfs_exp(ax);
 
 /* power series */
 r = a;

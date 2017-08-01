@@ -14,8 +14,8 @@ void * malloc();
 void free ();
 #endif
 
-extern double md_simpsn( double f[], double h);
-double md_simpsn_wrap( f, n, h )
+extern double cfs_simpsn( double f[], double h);
+double cfs_simpsn_wrap( f, n, h )
 double f[];	/* tabulated function */
 int n;
 double h;
@@ -26,7 +26,7 @@ double h;
   for (j=0; j<n/8; j++) {
     g[0] = f[j*8];
     for (k=1; k<=8; k++) g[k] = f[k+j*8];
-    ans += md_simpsn(g, h);
+    ans += cfs_simpsn(g, h);
   }
   free(g);
   return ans;

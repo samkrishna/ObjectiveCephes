@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * int k, n;
- * double p, y, md_bdtr();
+ * double p, y, cfs_bdtr();
  *
- * y = md_bdtr( k, n, p );
+ * y = cfs_bdtr( k, n, p );
  *
  * DESCRIPTION:
  *
@@ -25,7 +25,7 @@
  * The terms are not summed directly; instead the incomplete
  * beta integral is employed, according to the formula
  *
- * y = md_bdtr( k, n, p ) = md_incbet( n-k, k+1, 1-p ).
+ * y = cfs_bdtr( k, n, p ) = cfs_incbet( n-k, k+1, 1-p ).
  *
  * The arguments must be positive, with p ranging from 0 to 1.
  *
@@ -47,7 +47,7 @@
  *                     x < 0, x > 1
  */
 
-/*							md_bdtrc()
+/*							cfs_bdtrc()
  *
  *	Complemented binomial distribution
  *
@@ -56,9 +56,9 @@
  * SYNOPSIS:
  *
  * int k, n;
- * double p, y, md_bdtrc();
+ * double p, y, cfs_bdtrc();
  *
- * y = md_bdtrc( k, n, p );
+ * y = cfs_bdtrc( k, n, p );
  *
  * DESCRIPTION:
  *
@@ -74,7 +74,7 @@
  * The terms are not summed directly; instead the incomplete
  * beta integral is employed, according to the formula
  *
- * y = md_bdtrc( k, n, p ) = md_incbet( k+1, n-k, p ).
+ * y = cfs_bdtrc( k, n, p ) = cfs_incbet( k+1, n-k, p ).
  *
  * The arguments must be positive, with p ranging from 0 to 1.
  *
@@ -95,7 +95,7 @@
  * bdtrc domain      x<0, x>1, n<k       0.0
  */
 
-/*							md_bdtri()
+/*							cfs_bdtri()
  *
  *	Inverse binomial distribution
  *
@@ -104,9 +104,9 @@
  * SYNOPSIS:
  *
  * int k, n;
- * double p, y, md_bdtri();
+ * double p, y, cfs_bdtri();
  *
- * p = md_bdtr( k, n, y );
+ * p = cfs_bdtr( k, n, y );
  *
  * DESCRIPTION:
  *
@@ -117,7 +117,7 @@
  * This is accomplished using the inverse beta integral
  * function and the relation
  *
- * 1 - p = md_incbi( n-k, k+1, y ).
+ * 1 - p = cfs_incbi( n-k, k+1, y ).
  *
  * ACCURACY:
  *
@@ -140,7 +140,7 @@
  *                  x < 0, x > 1
  */
 
-/*								md_bdtr() */
+/*								cfs_bdtr() */
 
 
 /*
@@ -150,16 +150,16 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_incbet ( double, double, double );
-extern double md_incbi ( double, double, double );
-extern double md_pow ( double, double );
-extern double md_log1p ( double );
-extern double md_expm1 ( double );
+extern double cfs_incbet ( double, double, double );
+extern double cfs_incbi ( double, double, double );
+extern double cfs_pow ( double, double );
+extern double cfs_log1p ( double );
+extern double cfs_expm1 ( double );
 #else
-double md_incbet(), md_incbi(), md_pow(), md_log1p(), md_expm1();
+double cfs_incbet(), cfs_incbi(), cfs_pow(), cfs_log1p(), cfs_expm1();
 #endif
 
-double md_bdtrc( k, n, p )
+double cfs_bdtrc( k, n, p )
 int k, n;
 double p;
 {
@@ -183,21 +183,21 @@ dn = n - k;
 if( k == 0 )
 	{
 	if( p < .01 )
-		dk = -md_expm1( dn * md_log1p(-p) );
+		dk = -cfs_expm1( dn * cfs_log1p(-p) );
 	else
-		dk = 1.0 - md_pow( 1.0-p, dn );
+		dk = 1.0 - cfs_pow( 1.0-p, dn );
 	}
 else
 	{
 	dk = k + 1;
-	dk = md_incbet( dk, dn, p );
+	dk = cfs_incbet( dk, dn, p );
 	}
 return( dk );
 }
 
 
 
-double md_bdtr( k, n, p )
+double cfs_bdtr( k, n, p )
 int k, n;
 double p;
 {
@@ -218,18 +218,18 @@ if( k == n )
 dn = n - k;
 if( k == 0 )
 	{
-	dk = md_pow( 1.0-p, dn );
+	dk = cfs_pow( 1.0-p, dn );
 	}
 else
 	{
 	dk = k + 1;
-	dk = md_incbet( dn, dk, 1.0 - p );
+	dk = cfs_incbet( dn, dk, 1.0 - p );
 	}
 return( dk );
 }
 
 
-double md_bdtri( k, n, y )
+double cfs_bdtri( k, n, y )
 int k, n;
 double y;
 {
@@ -248,18 +248,18 @@ dn = n - k;
 if( k == 0 )
 	{
 	if( y > 0.8 )
-		p = -md_expm1( md_log1p(y-1.0) / dn );
+		p = -cfs_expm1( cfs_log1p(y-1.0) / dn );
 	else
-		p = 1.0 - md_pow( y, 1.0/dn );
+		p = 1.0 - cfs_pow( y, 1.0/dn );
 	}
 else
 	{
 	dk = k + 1;
-	p = md_incbet( dn, dk, 0.5 );
+	p = cfs_incbet( dn, dk, 0.5 );
 	if( p > 0.5 )
-		p = md_incbi( dk, dn, 1.0-y );
+		p = cfs_incbi( dk, dn, 1.0-y );
 	else
-		p = 1.0 - md_incbi( dn, dk, y );
+		p = 1.0 - cfs_incbi( dn, dk, y );
 	}
 return( p );
 }

@@ -17,14 +17,14 @@
  *
  *                          x
  *                          -
- *                         |  md_cos t - 1
+ *                         |  cfs_cos t - 1
  *   Ci(x) = eul + ln x +  |  --------- dt,
  *                         |      t
  *                        -
  *                         0
  *             x
  *             -
- *            |  md_sin t
+ *            |  cfs_sin t
  *   Si(x) =  |  ----- dt
  *            |    t
  *           -
@@ -35,8 +35,8 @@
  * For x > 8 auxiliary functions f(x) and g(x) are employed
  * such that
  *
- * Ci(x) = f(x) md_sin(x) - g(x) md_cos(x)
- * Si(x) = pi/2 - f(x) md_cos(x) - g(x) md_sin(x)
+ * Ci(x) = f(x) cfs_sin(x) - g(x) cfs_cos(x)
+ * Si(x) = pi/2 - f(x) cfs_cos(x) - g(x) cfs_sin(x)
  *
  *
  * ACCURACY:
@@ -576,13 +576,13 @@ static unsigned short GD8[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_log ( double );
-extern double md_sin ( double );
-extern double md_cos ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
+extern double cfs_log ( double );
+extern double cfs_sin ( double );
+extern double cfs_cos ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
 #else
-double md_log(), md_sin(), md_cos(), md_polevl(), md_p1evl();
+double cfs_log(), cfs_sin(), cfs_cos(), cfs_polevl(), cfs_p1evl();
 #endif
 #define EUL 0.57721566490153286061
 extern double MAXNUM, PIO2, MACHEP;
@@ -614,8 +614,8 @@ if( x == 0.0 )
 
 if( x > 1.0e9 )
 	{
-	*si = PIO2 - md_cos(x)/x;
-	*ci = md_sin(x)/x;
+	*si = PIO2 - cfs_cos(x)/x;
+	*ci = cfs_sin(x)/x;
 	return( 0 );
 	}
 
@@ -625,13 +625,13 @@ if( x > 4.0 )
 	goto asympt;
 
 z = x * x;
-s = x * md_polevl( z, SN, 5 ) / md_polevl( z, SD, 5 );
-c = z * md_polevl( z, CN, 5 ) / md_polevl( z, CD, 5 );
+s = x * cfs_polevl( z, SN, 5 ) / cfs_polevl( z, SD, 5 );
+c = z * cfs_polevl( z, CN, 5 ) / cfs_polevl( z, CD, 5 );
 
 if( sign )
 	s = -s;
 *si = s;
-*ci = EUL + md_log(x) + c;	/* real part if x < 0 */
+*ci = EUL + cfs_log(x) + c;	/* real part if x < 0 */
 return(0);
 
 
@@ -640,8 +640,8 @@ return(0);
  *
  *
  * *si = *si - PIO2;
- * c = md_cos(x);
- * s = md_sin(x);
+ * c = cfs_cos(x);
+ * s = cfs_sin(x);
  *
  * t = *ci * s - *si * c;
  * a = *ci * c + *si * s;
@@ -653,18 +653,18 @@ return(0);
 
 asympt:
 
-s = md_sin(x);
-c = md_cos(x);
+s = cfs_sin(x);
+c = cfs_cos(x);
 z = 1.0/(x*x);
 if( x < 8.0 )
 	{
-	f = md_polevl( z, FN4, 6 ) / (x * md_p1evl( z, FD4, 7 ));
-	g = z * md_polevl( z, GN4, 7 ) / md_p1evl( z, GD4, 7 );
+	f = cfs_polevl( z, FN4, 6 ) / (x * cfs_p1evl( z, FD4, 7 ));
+	g = z * cfs_polevl( z, GN4, 7 ) / cfs_p1evl( z, GD4, 7 );
 	}
 else
 	{
-	f = md_polevl( z, FN8, 8 ) / (x * md_p1evl( z, FD8, 8 ));
-	g = z * md_polevl( z, GN8, 8 ) / md_p1evl( z, GD8, 9 );
+	f = cfs_polevl( z, FN8, 8 ) / (x * cfs_p1evl( z, FD8, 8 ));
+	g = z * cfs_polevl( z, GN8, 8 ) / cfs_p1evl( z, GD8, 9 );
 	}
 *si = PIO2 - f * c - g * s;
 if( sign )

@@ -1,4 +1,4 @@
-/*							md_j0.c
+/*							cfs_j0.c
  *
  *	Bessel function of order zero
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_j0();
+ * double x, y, cfs_j0();
  *
- * y = md_j0( x );
+ * y = cfs_j0( x );
  *
  *
  *
@@ -43,7 +43,7 @@
  *
  */
 
-/*							md_y0.c
+/*							cfs_y0.c
  *
  *	Bessel function of the second kind, order zero
  *
@@ -51,9 +51,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_y0();
+ * double x, y, cfs_y0();
  *
- * y = md_y0( x );
+ * y = cfs_y0( x );
  *
  *
  *
@@ -65,8 +65,8 @@
  * The domain is divided into the intervals [0, 5] and
  * (5, infinity). In the first interval a rational approximation
  * R(x) is employed to compute
- *   md_y0(x)  = R(x)  +   2 * md_log(x) * md_j0(x) / PI.
- * Thus a call to md_j0() is required.
+ *   cfs_y0(x)  = R(x)  +   2 * cfs_log(x) * cfs_j0(x) / PI.
+ * Thus a call to cfs_j0() is required.
  *
  * In the second interval, the Hankel asymptotic expansion
  * is employed with two rational functions of degree 6/6
@@ -76,7 +76,7 @@
  *
  * ACCURACY:
  *
- *  Absolute error, when md_y0(x) < 1; else relative error:
+ *  Absolute error, when cfs_y0(x) < 1; else relative error:
  *
  * arithmetic   domain     # trials      peak         rms
  *    DEC       0, 30        9400       7.0e-17     7.9e-18
@@ -460,20 +460,20 @@ static unsigned short RQ[32] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_log ( double );
-extern double md_sin ( double );
-extern double md_cos ( double );
-extern double md_sqrt ( double );
-double md_j0 ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_log ( double );
+extern double cfs_sin ( double );
+extern double cfs_cos ( double );
+extern double cfs_sqrt ( double );
+double cfs_j0 ( double );
 #else
-double md_polevl(), md_p1evl(), md_log(), md_sin(), md_cos(), md_sqrt();
-double md_j0();
+double cfs_polevl(), cfs_p1evl(), cfs_log(), cfs_sin(), cfs_cos(), cfs_sqrt();
+double cfs_j0();
 #endif
 extern double TWOOPI, SQ2OPI, PIO4;
 
-double md_j0(x)
+double cfs_j0(x)
 double x;
 {
     double w, z, p, q, xn;
@@ -488,25 +488,25 @@ double x;
             return( 1.0 - z/4.0 );
 
         p = (z - DR1) * (z - DR2);
-        p = p * md_polevl( z, RP, 3)/md_p1evl( z, RQ, 8 );
+        p = p * cfs_polevl( z, RP, 3)/cfs_p1evl( z, RQ, 8 );
         return( p );
     }
 
     w = 5.0/x;
     q = 25.0/(x*x);
-    p = md_polevl( q, PP, 6)/md_polevl( q, PQ, 6 );
-    q = md_polevl( q, QP, 7)/md_p1evl( q, QQ, 7 );
+    p = cfs_polevl( q, PP, 6)/cfs_polevl( q, PQ, 6 );
+    q = cfs_polevl( q, QP, 7)/cfs_p1evl( q, QQ, 7 );
     xn = x - PIO4;
-    p = p * md_cos(xn) - w * q * md_sin(xn);
-    return( p * SQ2OPI / md_sqrt(x) );
+    p = p * cfs_cos(xn) - w * q * cfs_sin(xn);
+    return( p * SQ2OPI / cfs_sqrt(x) );
 }
 
-/*							md_y0() 2	*/
+/*							cfs_y0() 2	*/
 /* Bessel function of second kind, order zero	*/
 
 /* Rational approximation coefficients YP[], YQ[] are used here.
- * The function computed is  md_y0(x)  -  2 * md_log(x) * md_j0(x) / PI,
- * whose value at x = 0 is  2 * ( md_log(0.5) + EUL ) / PI
+ * The function computed is  cfs_y0(x)  -  2 * cfs_log(x) * cfs_j0(x) / PI,
+ * whose value at x = 0 is  2 * ( cfs_log(0.5) + EUL ) / PI
  * = 0.073804295108687225.
  */
 
@@ -516,7 +516,7 @@ double x;
 */
 extern double MAXNUM;
 
-double md_y0(x)
+double cfs_y0(x)
 double x;
 {
 double w, z, p, q, xn;
@@ -525,20 +525,20 @@ if( x <= 5.0 )
 	{
 	if( x <= 0.0 )
 		{
-		mtherr( "md_y0", DOMAIN );
+		mtherr( "cfs_y0", DOMAIN );
 		return( -MAXNUM );
 		}
 	z = x * x;
-	w = md_polevl( z, YP, 7) / md_p1evl( z, YQ, 7 );
-	w += TWOOPI * md_log(x) * md_j0(x);
+	w = cfs_polevl( z, YP, 7) / cfs_p1evl( z, YQ, 7 );
+	w += TWOOPI * cfs_log(x) * cfs_j0(x);
 	return( w );
 	}
 
 w = 5.0/x;
 z = 25.0 / (x * x);
-p = md_polevl( z, PP, 6)/md_polevl( z, PQ, 6 );
-q = md_polevl( z, QP, 7)/md_p1evl( z, QQ, 7 );
+p = cfs_polevl( z, PP, 6)/cfs_polevl( z, PQ, 6 );
+q = cfs_polevl( z, QP, 7)/cfs_p1evl( z, QQ, 7 );
 xn = x - PIO4;
-p = p * md_sin(xn) + w * q * md_cos(xn);
-return( p * SQ2OPI / md_sqrt(x) );
+p = p * cfs_sin(xn) + w * q * cfs_cos(xn);
+return( p * SQ2OPI / cfs_sqrt(x) );
 }

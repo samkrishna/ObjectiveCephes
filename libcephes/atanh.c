@@ -1,4 +1,4 @@
-/*							md_atanh.c
+/*							cfs_atanh.c
  *
  *	Inverse hyperbolic tangent
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_atanh();
+ * double x, y, cfs_atanh();
  *
- * y = md_atanh( x );
+ * y = cfs_atanh( x );
  *
  *
  *
@@ -19,7 +19,7 @@
  *
  * If |x| < 0.5, the rational form x + x**3 P(x)/Q(x) is
  * employed.  Otherwise,
- *        md_atanh(x) = 0.5 * md_log( (1+x)/(1-x) ).
+ *        cfs_atanh(x) = 0.5 * cfs_log( (1+x)/(1-x) ).
  *
  *
  *
@@ -32,7 +32,7 @@
  *
  */
 
-/*						md_atanh.c	*/
+/*						cfs_atanh.c	*/
 
 
 /*
@@ -113,16 +113,16 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_log ( double x );
-extern double md_polevl ( double x, void *P, int N );
-extern double md_p1evl ( double x, void *P, int N );
+extern double cfs_fabs ( double );
+extern double cfs_log ( double x );
+extern double cfs_polevl ( double x, void *P, int N );
+extern double cfs_p1evl ( double x, void *P, int N );
 #else
-double md_fabs(), md_log(), md_polevl(), md_p1evl();
+double cfs_fabs(), cfs_log(), cfs_polevl(), cfs_p1evl();
 #endif
 extern double INFINITY, NAN;
 
-double md_atanh(x)
+double cfs_atanh(x)
 double x;
 {
 double s, z;
@@ -131,14 +131,14 @@ double s, z;
 if( x == 0.0 )
 	return(x);
 #endif
-z = md_fabs(x);
+z = cfs_fabs(x);
 if( z >= 1.0 )
 	{
 	if( x == 1.0 )
 		return( INFINITY );
 	if( x == -1.0 )
 		return( -INFINITY );
-	mtherr( "md_atanh", DOMAIN );
+	mtherr( "cfs_atanh", DOMAIN );
 	return( NAN );
 	}
 
@@ -148,9 +148,9 @@ if( z < 1.0e-7 )
 if( z < 0.5 )
 	{
 	z = x * x;
-	s = x   +  x * z * (md_polevl(z, P, 4) / md_p1evl(z, Q, 5));
+	s = x   +  x * z * (cfs_polevl(z, P, 4) / cfs_p1evl(z, Q, 5));
 	return(s);
 	}
 
-return( 0.5 * md_log((1.0+x)/(1.0-x)) );
+return( 0.5 * cfs_log((1.0+x)/(1.0-x)) );
 }

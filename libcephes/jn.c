@@ -1,4 +1,4 @@
-/*							md_jn.c
+/*							cfs_jn.c
  *
  *	Bessel function of integer order
  *
@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * int n;
- * double x, y, md_jn();
+ * double x, y, cfs_jn();
  *
- * y = md_jn( n, x );
+ * y = cfs_jn( n, x );
  *
  *
  *
@@ -18,13 +18,13 @@
  * Returns Bessel function of order n, where n is a
  * (possibly negative) integer.
  *
- * The ratio of md_jn(x) to md_j0(x) is computed by backward
- * recurrence.  First the ratio md_jn/md_jn-1 is found by a
+ * The ratio of cfs_jn(x) to cfs_j0(x) is computed by backward
+ * recurrence.  First the ratio cfs_jn/cfs_jn-1 is found by a
  * continued fraction expansion.  Then the recurrence
- * relating successive orders is applied until md_j0 or md_j1 is
+ * relating successive orders is applied until cfs_j0 or cfs_j1 is
  * reached.
  *
- * If n = 0 or 1 the routine for md_j0 or md_j1 is called
+ * If n = 0 or 1 the routine for cfs_j0 or cfs_j1 is called
  * directly.
  *
  *
@@ -41,21 +41,21 @@
  *
  */
 
-/*							md_jn.c
+/*							cfs_jn.c
 Cephes Math Library Release 2.8:  June, 2000
 Copyright 1984, 1987, 2000 by Stephen L. Moshier
 */
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_j0 ( double );
-extern double md_j1 ( double );
+extern double cfs_fabs ( double );
+extern double cfs_j0 ( double );
+extern double cfs_j1 ( double );
 #else
-double md_fabs(), md_j0(), md_j1();
+double cfs_fabs(), cfs_j0(), cfs_j1();
 #endif
 extern double MACHEP;
 
-double md_jn( n, x )
+double cfs_jn( n, x )
 int n;
 double x;
 {
@@ -81,11 +81,11 @@ if( x < 0.0 )
 	}
 
 if( n == 0 )
-	return( sign * md_j0(x) );
+	return( sign * cfs_j0(x) );
 if( n == 1 )
-	return( sign * md_j1(x) );
+	return( sign * cfs_j1(x) );
 if( n == 2 )
-	return( sign * (2.0 * md_j1(x) / x  -  md_j0(x)) );
+	return( sign * (2.0 * cfs_j1(x) / x  -  cfs_j0(x)) );
 
 if( x < MACHEP )
 	return( 0.0 );
@@ -125,9 +125,9 @@ do
 	}
 while( --k > 0 );
 
-if( md_fabs(pk) > md_fabs(pkm1) )
-	ans = md_j1(x)/pk;
+if( cfs_fabs(pk) > cfs_fabs(pkm1) )
+	ans = cfs_j1(x)/pk;
 else
-	ans = md_j0(x)/pkm1;
+	ans = cfs_j0(x)/pkm1;
 return( sign * ans );
 }

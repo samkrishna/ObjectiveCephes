@@ -56,7 +56,7 @@
  * Returns exponentially scaled modified Bessel function
  * of the third kind of order one of the argument:
  *
- *      k1e(x) = md_exp(x) * k1(x).
+ *      k1e(x) = cfs_exp(x) * k1(x).
  *
  *
  *
@@ -76,10 +76,10 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-/* Chebyshev coefficients for x(K1(x) - md_log(x/2) I1(x))
+/* Chebyshev coefficients for x(K1(x) - cfs_log(x/2) I1(x))
  * in the interval [0,2].
  * 
- * lim(x->0){ x(K1(x) - md_log(x/2) I1(x)) } = 1.
+ * lim(x->0){ x(K1(x) - cfs_log(x/2) I1(x)) } = 1.
  */
 
 #ifdef UNK
@@ -149,10 +149,10 @@ static unsigned short A[] = {
 
 
 
-/* Chebyshev coefficients for md_exp(x) md_sqrt(x) K1(x)
+/* Chebyshev coefficients for cfs_exp(x) cfs_sqrt(x) K1(x)
  * in the interval [2,infinity].
  *
- * lim(x->inf){ md_exp(x) md_sqrt(x) K1(x) } = md_sqrt(pi/2).
+ * lim(x->inf){ cfs_exp(x) cfs_sqrt(x) K1(x) } = cfs_sqrt(pi/2).
  */
 
 #ifdef UNK
@@ -277,18 +277,18 @@ static unsigned short B[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_chbevl ( double, void *, int );
-extern double md_exp ( double );
-extern double md_i1 ( double );
-extern double md_log ( double );
-extern double md_sqrt ( double );
+extern double cfs_chbevl ( double, void *, int );
+extern double cfs_exp ( double );
+extern double cfs_i1 ( double );
+extern double cfs_log ( double );
+extern double cfs_sqrt ( double );
 #else
-double md_chbevl(), md_exp(), md_i1(), md_log(), md_sqrt();
+double cfs_chbevl(), cfs_exp(), cfs_i1(), cfs_log(), cfs_sqrt();
 #endif
 extern double PI;
 extern double MINLOG, MAXNUM;
 
-double md_k1(x)
+double cfs_k1(x)
 double x;
 {
 double y, z;
@@ -303,17 +303,17 @@ if( z <= 0.0 )
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y =  md_log(z) * md_i1(x)  +  md_chbevl( y, A, 11 ) / x;
+	y =  cfs_log(z) * cfs_i1(x)  +  cfs_chbevl( y, A, 11 ) / x;
 	return( y );
 	}
 
-return(  md_exp(-x) * md_chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x) );
+return(  cfs_exp(-x) * cfs_chbevl( 8.0/x - 2.0, B, 25 ) / cfs_sqrt(x) );
 }
 
 
 
 
-double md_k1e( x )
+double cfs_k1e( x )
 double x;
 {
 double y;
@@ -327,9 +327,9 @@ if( x <= 0.0 )
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y =  md_log( 0.5 * x ) * md_i1(x)  +  md_chbevl( y, A, 11 ) / x;
-	return( y * md_exp(x) );
+	y =  cfs_log( 0.5 * x ) * cfs_i1(x)  +  cfs_chbevl( y, A, 11 ) / x;
+	return( y * cfs_exp(x) );
 	}
 
-return(  md_chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x) );
+return(  cfs_chbevl( 8.0/x - 2.0, B, 25 ) / cfs_sqrt(x) );
 }

@@ -1,4 +1,4 @@
-/*							md_tanh.c
+/*							cfs_tanh.c
  *
  *	Hyperbolic tangent
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_tanh();
+ * double x, y, cfs_tanh();
  *
- * y = md_tanh( x );
+ * y = cfs_tanh( x );
  *
  *
  *
@@ -20,7 +20,7 @@
  * A rational function is used for |x| < 0.625.  The form
  * x + x**3 P(x)/Q(x) of Cody _& Waite is employed.
  * Otherwise,
- *    md_tanh(x) = md_sinh(x)/md_cosh(x) = 1  -  2/(md_exp(2x) + 1).
+ *    cfs_tanh(x) = cfs_sinh(x)/cfs_cosh(x) = 1  -  2/(cfs_exp(2x) + 1).
  *
  *
  *
@@ -95,16 +95,16 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_exp ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
+extern double cfs_fabs ( double );
+extern double cfs_exp ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
 #else
-double md_fabs(), md_exp(), md_polevl(), md_p1evl();
+double cfs_fabs(), cfs_exp(), cfs_polevl(), cfs_p1evl();
 #endif
 extern double MAXLOG;
 
-double md_tanh(x)
+double cfs_tanh(x)
 double x;
 {
 double s, z;
@@ -113,7 +113,7 @@ double s, z;
 if( x == 0.0 )
 	return(x);
 #endif
-z = md_fabs(x);
+z = cfs_fabs(x);
 if( z > 0.5 * MAXLOG )
 	{
 	if( x > 0 )
@@ -123,7 +123,7 @@ if( z > 0.5 * MAXLOG )
 	}
 if( z >= 0.625 )
 	{
-	s = md_exp(2.0*z);
+	s = cfs_exp(2.0*z);
 	z =  1.0  - 2.0/(s + 1.0);
 	if( x < 0 )
 		z = -z;
@@ -133,7 +133,7 @@ else
 	if( x == 0.0 )
 	  return(x);
 	s = x * x;
-	z = md_polevl( s, P, 2 )/md_p1evl(s, Q, 3);
+	z = cfs_polevl( s, P, 2 )/cfs_p1evl(s, Q, 3);
 	z = x * s * z;
 	z = x + z;
 	}

@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double v, x, y, md_struve();
+ * double v, x, y, cfs_struve();
  *
- * y = md_struve( v, x );
+ * y = cfs_struve( v, x );
  *
  *
  *
@@ -41,27 +41,27 @@ Copyright 1984, 1987, 1989, 2000 by Stephen L. Moshier
 #define DEBUG 0
 
 #ifdef ANSIPROT
-extern double md_gamma ( double );
-extern double md_pow ( double, double );
-extern double md_sqrt ( double );
-extern double md_yn ( int, double );
-extern double md_jv ( double, double );
-extern double md_fabs ( double );
-extern double md_floor ( double );
-extern double md_sin ( double );
-extern double md_cos ( double );
-double md_yv ( double, double );
-double md_onef2 (double, double, double, double, double * );
-double md_threef0 (double, double, double, double, double * );
+extern double cfs_gamma ( double );
+extern double cfs_pow ( double, double );
+extern double cfs_sqrt ( double );
+extern double cfs_yn ( int, double );
+extern double cfs_jv ( double, double );
+extern double cfs_fabs ( double );
+extern double cfs_floor ( double );
+extern double cfs_sin ( double );
+extern double cfs_cos ( double );
+double cfs_yv ( double, double );
+double cfs_onef2 (double, double, double, double, double * );
+double cfs_threef0 (double, double, double, double, double * );
 #else
-double md_gamma(), md_pow(), md_sqrt(), md_yn(), md_yv(), md_jv(), md_fabs(), md_floor();
-double md_sin(), md_cos();
-double md_onef2(), md_threef0();
+double cfs_gamma(), cfs_pow(), cfs_sqrt(), cfs_yn(), cfs_yv(), cfs_jv(), cfs_fabs(), cfs_floor();
+double cfs_sin(), cfs_cos();
+double cfs_onef2(), cfs_threef0();
 #endif
 static double stop = 1.37e-17;
 extern double MACHEP;
 
-double md_onef2( a, b, c, x, err )
+double cfs_onef2( a, b, c, x, err )
 double a, b, c, x;
 double *err;
 {
@@ -93,11 +93,11 @@ do
 	bn += 1.0;
 	cn += 1.0;
 	n += 1.0;
-	z = md_fabs( a0 );
+	z = cfs_fabs( a0 );
 	if( z > max )
 		max = z;
 	if( sum != 0 )
-		t = md_fabs( a0 / sum );
+		t = cfs_fabs( a0 / sum );
 	else
 		t = z;
 	}
@@ -105,7 +105,7 @@ while( t > stop );
 
 done:
 
-*err = md_fabs( MACHEP*max /sum );
+*err = cfs_fabs( MACHEP*max /sum );
 
 #if DEBUG
 	printf(" onef2 cancellation error %.5E\n", *err );
@@ -130,7 +130,7 @@ return(sum);
 
 
 
-double md_threef0( a, b, c, x, err )
+double cfs_threef0( a, b, c, x, err )
 double a, b, c, x;
 double *err;
 {
@@ -163,7 +163,7 @@ do
 	bn += 1.0;
 	cn += 1.0;
 	n += 1.0;
-	z = md_fabs( a0 );
+	z = cfs_fabs( a0 );
 	if( z > max )
 		max = z;
 	if( z >= conv )
@@ -175,7 +175,7 @@ do
 	conv = z;
 	sum += a0;
 	if( sum != 0 )
-		t = md_fabs( a0 / sum );
+		t = cfs_fabs( a0 / sum );
 	else
 		t = z;
 	}
@@ -183,12 +183,12 @@ while( t > stop );
 
 done:
 
-t = md_fabs( MACHEP*max/sum );
+t = cfs_fabs( MACHEP*max/sum );
 #if DEBUG
 	printf(" threef0 cancellation error %.5E\n", t );
 #endif
 
-max = md_fabs( conv/sum );
+max = cfs_fabs( conv/sum );
 if( max > t )
 	t = max;
 #if DEBUG
@@ -224,19 +224,19 @@ double v, x;
 double y, ya, f, g, h, t;
 double onef2err, threef0err;
 
-f = md_floor(v);
+f = cfs_floor(v);
 if( (v < 0) && ( v-f == 0.5 ) )
 	{
-	y = md_jv( -v, x );
+	y = cfs_jv( -v, x );
 	f = 1.0 - f;
-	g =  2.0 * md_floor(f/2.0);
+	g =  2.0 * cfs_floor(f/2.0);
 	if( g != f )
 		y = -y;
 	return(y);
 	}
 t = 0.25*x*x;
-f = md_fabs(x);
-g = 1.5 * md_fabs(v);
+f = cfs_fabs(x);
+g = 1.5 * cfs_fabs(v);
 if( (f > 30.0) && (f > g) )
 	{
 	onef2err = 1.0e38;
@@ -244,7 +244,7 @@ if( (f > 30.0) && (f > g) )
 	}
 else
 	{
-	y = md_onef2( 1.0, 1.5, 1.5+v, -t, &onef2err );
+	y = cfs_onef2( 1.0, 1.5, 1.5+v, -t, &onef2err );
 	}
 
 if( (f < 18.0) || (x < 0.0) )
@@ -254,23 +254,23 @@ if( (f < 18.0) || (x < 0.0) )
 	}
 else
 	{
-	ya = md_threef0( 1.0, 0.5, 0.5-v, -1.0/t, &threef0err );
+	ya = cfs_threef0( 1.0, 0.5, 0.5-v, -1.0/t, &threef0err );
 	}
 
-f = md_sqrt( PI );
-h = md_pow( 0.5*x, v-1.0 );
+f = cfs_sqrt( PI );
+h = cfs_pow( 0.5*x, v-1.0 );
 
 if( onef2err <= threef0err )
 	{
-	g = md_gamma( v + 1.5 );
+	g = cfs_gamma( v + 1.5 );
 	y = y * h * t / ( 0.5 * f * g );
 	return(y);
 	}
 else
 	{
-	g = md_gamma( v + 0.5 );
+	g = cfs_gamma( v + 0.5 );
 	ya = ya * h / ( f * g );
-	ya = ya + md_yv( v, x );
+	ya = ya + cfs_yv( v, x );
 	return(ya);
 	}
 }
@@ -281,21 +281,21 @@ else
 /* Bessel function of noninteger order
  */
 
-double md_yv( v, x )
+double cfs_yv( v, x )
 double v, x;
 {
 double y, t;
 int n;
 
-y = md_floor( v );
+y = cfs_floor( v );
 if( y == v )
 	{
 	n = v;
-	y = md_yn( n, x );
+	y = cfs_yn( n, x );
 	return( y );
 	}
 t = PI * v;
-y = (md_cos(t) * md_jv( v, x ) - md_jv( -v, x ))/md_sin(t);
+y = (cfs_cos(t) * cfs_jv( v, x ) - cfs_jv( -v, x ))/cfs_sin(t);
 return( y );
 }
 

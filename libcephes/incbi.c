@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double a, b, x, y, md_incbi();
+ * double a, b, x, y, cfs_incbi();
  *
- * x = md_incbi( a, b, y );
+ * x = cfs_incbi( a, b, y );
  *
  *
  *
@@ -16,7 +16,7 @@
  *
  * Given y, the function finds x such that
  *
- *  md_incbet( a, b, x ) = y .
+ *  cfs_incbet( a, b, x ) = y .
  *
  * The routine performs interval halving or Newton iterations to find the
  * root of incbet(a,b,x) - y = 0.
@@ -48,21 +48,21 @@ Copyright 1984, 1996, 2000 by Stephen L. Moshier
 
 extern double MACHEP, MAXNUM, MAXLOG, MINLOG;
 #ifdef ANSIPROT
-extern double md_ndtri ( double );
-extern double md_exp ( double );
-extern double md_fabs ( double );
-extern double md_log ( double );
-extern double md_sqrt ( double );
-extern double md_lgam ( double );
-extern double md_incbet ( double, double, double );
+extern double cfs_ndtri ( double );
+extern double cfs_exp ( double );
+extern double cfs_fabs ( double );
+extern double cfs_log ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_lgam ( double );
+extern double cfs_incbet ( double, double, double );
 #else
-double md_ndtri(), md_exp(), md_fabs(), md_log(), md_sqrt(), md_lgam(), md_incbet();
+double cfs_ndtri(), cfs_exp(), cfs_fabs(), cfs_log(), cfs_sqrt(), cfs_lgam(), cfs_incbet();
 #endif
 
-double md_incbi( aa, bb, yy0 )
+double cfs_incbi( aa, bb, yy0 )
 double aa, bb, yy0;
 {
-double a, b, md_y0, d, y, x, x0, x1, lgm, yp, di, dithresh, yl, yh, xt;
+double a, b, cfs_y0, d, y, x, x0, x1, lgm, yp, di, dithresh, yl, yh, xt;
 int i, rflg, dir, nflg;
 
 
@@ -83,9 +83,9 @@ if( aa <= 1.0 || bb <= 1.0 )
 	rflg = 0;
 	a = aa;
 	b = bb;
-	md_y0 = yy0;
+	cfs_y0 = yy0;
 	x = a/(a+b);
-	y = md_incbet( a, b, x );
+	y = cfs_incbet( a, b, x );
 	goto ihalve;
 	}
 else
@@ -94,14 +94,14 @@ else
 	}
 /* approximation to inverse function */
 
-yp = -md_ndtri(yy0);
+yp = -cfs_ndtri(yy0);
 
 if( yy0 > 0.5 )
 	{
 	rflg = 1;
 	a = bb;
 	b = aa;
-	md_y0 = 1.0 - yy0;
+	cfs_y0 = 1.0 - yy0;
 	yp = -yp;
 	}
 else
@@ -109,12 +109,12 @@ else
 	rflg = 0;
 	a = aa;
 	b = bb;
-	md_y0 = yy0;
+	cfs_y0 = yy0;
 	}
 
 lgm = (yp * yp - 3.0)/6.0;
 x = 2.0/( 1.0/(2.0*a-1.0)  +  1.0/(2.0*b-1.0) );
-d = yp * md_sqrt( x + lgm ) / x
+d = yp * cfs_sqrt( x + lgm ) / x
 	- ( 1.0/(2.0*b-1.0) - 1.0/(2.0*a-1.0) )
 	* (lgm + 5.0/6.0 - 2.0/(3.0*x));
 d = 2.0 * d;
@@ -123,10 +123,10 @@ if( d < MINLOG )
 	x = 1.0;
 	goto under;
 	}
-x = a/( a + b * md_exp(d) );
-y = md_incbet( a, b, x );
-yp = (y - md_y0)/md_y0;
-if( md_fabs(yp) < 0.2 )
+x = a/( a + b * cfs_exp(d) );
+y = cfs_incbet( a, b, x );
+yp = (y - cfs_y0)/cfs_y0;
+if( cfs_fabs(yp) < 0.2 )
 	goto newt;
 
 /* Resort to interval halving if not close enough. */
@@ -148,15 +148,15 @@ for( i=0; i<100; i++ )
 			if( x == 0.0 )
 				goto under;
 			}
-		y = md_incbet( a, b, x );
+		y = cfs_incbet( a, b, x );
 		yp = (x1 - x0)/(x1 + x0);
-		if( md_fabs(yp) < dithresh )
+		if( cfs_fabs(yp) < dithresh )
 			goto newt;
-		yp = (y-md_y0)/md_y0;
-		if( md_fabs(yp) < dithresh )
+		yp = (y-cfs_y0)/cfs_y0;
+		if( cfs_fabs(yp) < dithresh )
 			goto newt;
 		}
-	if( y < md_y0 )
+	if( y < cfs_y0 )
 		{
 		x0 = x;
 		yl = y;
@@ -170,7 +170,7 @@ for( i=0; i<100; i++ )
 		else if( dir > 1 )
 			di = 0.5 * di + 0.5; 
 		else
-			di = (md_y0 - y)/(yh - yl);
+			di = (cfs_y0 - y)/(yh - yl);
 		dir += 1;
 		if( x0 > 0.75 )
 			{
@@ -179,17 +179,17 @@ for( i=0; i<100; i++ )
 				rflg = 0;
 				a = aa;
 				b = bb;
-				md_y0 = yy0;
+				cfs_y0 = yy0;
 				}
 			else
 				{
 				rflg = 1;
 				a = bb;
 				b = aa;
-				md_y0 = 1.0 - yy0;
+				cfs_y0 = 1.0 - yy0;
 				}
 			x = 1.0 - x;
-			y = md_incbet( a, b, x );
+			y = cfs_incbet( a, b, x );
 			x0 = 0.0;
 			yl = 0.0;
 			x1 = 1.0;
@@ -216,7 +216,7 @@ for( i=0; i<100; i++ )
 		else if( dir < -1 )
 			di = 0.5 * di;
 		else
-			di = (y - md_y0)/(yh - yl);
+			di = (y - cfs_y0)/(yh - yl);
 		dir -= 1;
 		}
 	}
@@ -239,13 +239,13 @@ newt:
 if( nflg )
 	goto done;
 nflg = 1;
-lgm = md_lgam(a+b) - md_lgam(a) - md_lgam(b);
+lgm = cfs_lgam(a+b) - cfs_lgam(a) - cfs_lgam(b);
 
 for( i=0; i<8; i++ )
 	{
 	/* Compute the function at this point. */
 	if( i != 0 )
-		y = md_incbet(a,b,x);
+		y = cfs_incbet(a,b,x);
 	if( y < yl )
 		{
 		x = x0;
@@ -256,7 +256,7 @@ for( i=0; i<8; i++ )
 		x = x1;
 		y = yh;
 		}
-	else if( y < md_y0 )
+	else if( y < cfs_y0 )
 		{
 		x0 = x;
 		yl = y;
@@ -269,14 +269,14 @@ for( i=0; i<8; i++ )
 	if( x == 1.0 || x == 0.0 )
 		break;
 	/* Compute the derivative of the function at this point. */
-	d = (a - 1.0) * md_log(x) + (b - 1.0) * md_log(1.0-x) + lgm;
+	d = (a - 1.0) * cfs_log(x) + (b - 1.0) * cfs_log(1.0-x) + lgm;
 	if( d < MINLOG )
 		goto done;
 	if( d > MAXLOG )
 		break;
-	d = md_exp(d);
+	d = cfs_exp(d);
 	/* Compute the step to the next approximation of x. */
-	d = (y - md_y0)/d;
+	d = (y - cfs_y0)/d;
 	xt = x - d;
 	if( xt <= x0 )
 		{
@@ -293,7 +293,7 @@ for( i=0; i<8; i++ )
 			break;
 		}
 	x = xt;
-	if( md_fabs(d/x) < 128.0 * MACHEP )
+	if( cfs_fabs(d/x) < 128.0 * MACHEP )
 		goto done;
 	}
 /* Did not converge.  */

@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_i0();
+ * double x, y, cfs_i0();
  *
- * y = md_i0( x );
+ * y = cfs_i0( x );
  *
  *
  *
@@ -17,7 +17,7 @@
  * Returns modified Bessel function of order zero of the
  * argument.
  *
- * The function is defined as md_i0(x) = md_j0( ix ).
+ * The function is defined as cfs_i0(x) = cfs_j0( ix ).
  *
  * The range is partitioned into the two intervals [0,8] and
  * (8, infinity).  Chebyshev polynomial expansions are employed
@@ -42,9 +42,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_i0e();
+ * double x, y, cfs_i0e();
  *
- * y = md_i0e( x );
+ * y = cfs_i0e( x );
  *
  *
  *
@@ -53,7 +53,7 @@
  * Returns exponentially scaled modified Bessel function
  * of order zero of the argument.
  *
- * The function is defined as md_i0e(x) = md_exp(-|x|) md_j0( ix ).
+ * The function is defined as cfs_i0e(x) = cfs_exp(-|x|) cfs_j0( ix ).
  *
  *
  *
@@ -62,7 +62,7 @@
  *                      Relative error:
  * arithmetic   domain     # trials      peak         rms
  *    IEEE      0,30        30000       5.4e-16     1.2e-16
- * See md_i0().
+ * See cfs_i0().
  *
  */
 
@@ -76,10 +76,10 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-/* Chebyshev coefficients for md_exp(-x) md_i0(x)
+/* Chebyshev coefficients for cfs_exp(-x) cfs_i0(x)
  * in the interval [0,8].
  *
- * lim(x->0){ md_exp(-x) md_i0(x) } = 1.
+ * lim(x->0){ cfs_exp(-x) cfs_i0(x) } = 1.
  */
 
 #ifdef UNK
@@ -224,10 +224,10 @@ static unsigned short A[] = {
 #endif
 
 
-/* Chebyshev coefficients for md_exp(-x) md_sqrt(x) md_i0(x)
+/* Chebyshev coefficients for cfs_exp(-x) cfs_sqrt(x) cfs_i0(x)
  * in the inverted interval [8,infinity].
  *
- * lim(x->inf){ md_exp(-x) md_sqrt(x) md_i0(x) } = 1/md_sqrt(2pi).
+ * lim(x->inf){ cfs_exp(-x) cfs_sqrt(x) cfs_i0(x) } = 1/cfs_sqrt(2pi).
  */
 
 #ifdef UNK
@@ -352,14 +352,14 @@ static unsigned short B[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_chbevl ( double, void *, int );
-extern double md_exp ( double );
-extern double md_sqrt ( double );
+extern double cfs_chbevl ( double, void *, int );
+extern double cfs_exp ( double );
+extern double cfs_sqrt ( double );
 #else
-double md_chbevl(), md_exp(), md_sqrt();
+double cfs_chbevl(), cfs_exp(), cfs_sqrt();
 #endif
 
-double md_i0(x)
+double cfs_i0(x)
 double x;
 {
 double y;
@@ -369,17 +369,17 @@ if( x < 0 )
 if( x <= 8.0 )
 	{
 	y = (x/2.0) - 2.0;
-	return( md_exp(x) * md_chbevl( y, A, 30 ) );
+	return( cfs_exp(x) * cfs_chbevl( y, A, 30 ) );
 	}
 
-return(  md_exp(x) * md_chbevl( 32.0/x - 2.0, B, 25 ) / md_sqrt(x) );
+return(  cfs_exp(x) * cfs_chbevl( 32.0/x - 2.0, B, 25 ) / cfs_sqrt(x) );
 
 }
 
 
 
 
-double md_i0e( x )
+double cfs_i0e( x )
 double x;
 {
 double y;
@@ -389,9 +389,9 @@ if( x < 0 )
 if( x <= 8.0 )
 	{
 	y = (x/2.0) - 2.0;
-	return( md_chbevl( y, A, 30 ) );
+	return( cfs_chbevl( y, A, 30 ) );
 	}
 
-return(  md_chbevl( 32.0/x - 2.0, B, 25 ) / md_sqrt(x) );
+return(  cfs_chbevl( 32.0/x - 2.0, B, 25 ) / cfs_sqrt(x) );
 
 }

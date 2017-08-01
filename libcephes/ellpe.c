@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double m1, y, md_ellpe();
+ * double m1, y, cfs_ellpe();
  *
- * y = md_ellpe( m1 );
+ * y = cfs_ellpe( m1 );
  *
  *
  *
@@ -20,17 +20,17 @@
  *            pi/2
  *             -
  *            | |                 2
- * E(m)  =    |    md_sqrt( 1 - m md_sin t ) dt
+ * E(m)  =    |    cfs_sqrt( 1 - m cfs_sin t ) dt
  *          | |    
  *           -
  *            0
  *
  * Where m = 1 - m1, using the approximation
  *
- *      P(x)  -  x md_log x Q(x).
+ *      P(x)  -  x cfs_log x Q(x).
  *
  * Though there are no singularities, the argument m1 is used
- * rather than m for compatibility with md_ellpk().
+ * rather than m for compatibility with cfs_ellpk().
  *
  * E(1) = 1; E(0) = pi/2.
  *
@@ -46,7 +46,7 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_ellpe domain      x<0, x>1            0.0
+ * cfs_ellpe domain      x<0, x>1            0.0
  *
  */
 
@@ -174,13 +174,13 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_log ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_log ( double );
 #else
-double md_polevl(), md_log();
+double cfs_polevl(), cfs_log();
 #endif
 
-double md_ellpe(x)
+double cfs_ellpe(x)
 double x;
 {
 
@@ -191,5 +191,5 @@ if( (x <= 0.0) || (x > 1.0) )
 	mtherr( "ellpe", DOMAIN );
 	return( 0.0 );
 	}
-return( md_polevl(x,P,10) - md_log(x) * (x * md_polevl(x,Q,9)) );
+return( cfs_polevl(x,P,10) - cfs_log(x) * (x * cfs_polevl(x,Q,9)) );
 }

@@ -1,21 +1,21 @@
 /*							igami()
  *
- *      Inverse of complemented imcomplete md_gamma integral
+ *      Inverse of complemented imcomplete cfs_gamma integral
  *
  *
  *
  * SYNOPSIS:
  *
- * double a, x, p, md_igami();
+ * double a, x, p, cfs_igami();
  *
- * x = md_igami( a, p );
+ * x = cfs_igami( a, p );
  *
  * DESCRIPTION:
  *
  * Given p, the function finds x such that
  *
  * It is valid in the right-hand-tail of the distribution, p < 0.5.
- *  md_igamc( a, x ) = p.
+ *  cfs_igamc( a, x ) = p.
  *
  * Starting with the approximate value
  *
@@ -24,14 +24,14 @@
  *
  *  where
  *
- *  t = 1 - d - md_ndtri(p) md_sqrt(d)
+ *  t = 1 - d - cfs_ndtri(p) cfs_sqrt(d)
  * 
  * and
  *
  *  d = 1/9a,
  *
  * the routine performs up to 10 Newton iterations to find the
- * root of md_igamc(a,x) - p = 0.
+ * root of cfs_igamc(a,x) - p = 0.
  *
  * ACCURACY:
  *
@@ -53,24 +53,24 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 extern double MACHEP, MAXNUM, MAXLOG, MINLOG;
 #ifdef ANSIPROT
-extern double md_igamc ( double, double );
-extern double md_ndtri ( double );
-extern double md_exp ( double );
-extern double md_fabs ( double );
-extern double md_log ( double );
-extern double md_sqrt ( double );
-extern double md_lgam ( double );
+extern double cfs_igamc ( double, double );
+extern double cfs_ndtri ( double );
+extern double cfs_exp ( double );
+extern double cfs_fabs ( double );
+extern double cfs_log ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_lgam ( double );
 #else
-double md_igamc(), md_ndtri(), md_exp(), md_fabs(), md_log(), md_sqrt(), md_lgam();
+double cfs_igamc(), cfs_ndtri(), cfs_exp(), cfs_fabs(), cfs_log(), cfs_sqrt(), cfs_lgam();
 #endif
 
-double md_igami( a, md_y0 )
-double a, md_y0;
+double cfs_igami( a, cfs_y0 )
+double a, cfs_y0;
 {
 double x0, x1, x, yl, yh, y, d, lgm, dithresh;
 int i, dir;
 
-if( md_y0 > 0.5)
+if( cfs_y0 > 0.5)
     mtherr( "igami", PLOSS);
 
 /* bound the solution */
@@ -82,19 +82,19 @@ dithresh = 5.0 * MACHEP;
 
 /* approximation to inverse function */
 d = 1.0/(9.0*a);
-y = ( 1.0 - d - md_ndtri(md_y0) * md_sqrt(d) );
+y = ( 1.0 - d - cfs_ndtri(cfs_y0) * cfs_sqrt(d) );
 x = a * y * y * y;
 
-lgm = md_lgam(a);
+lgm = cfs_lgam(a);
 
 for( i=0; i<10; i++ )
 	{
 	if( x > x0 || x < x1 )
 		goto ihalve;
-	y = md_igamc(a,x);
+	y = cfs_igamc(a,x);
 	if( y < yl || y > yh )
 		goto ihalve;
-	if( y < md_y0 )
+	if( y < cfs_y0 )
 		{
 		x0 = x;
 		yl = y;
@@ -105,13 +105,13 @@ for( i=0; i<10; i++ )
 		yh = y;
 		}
 /* compute the derivative of the function at this point */
-	d = (a - 1.0) * md_log(x) - x - lgm;
+	d = (a - 1.0) * cfs_log(x) - x - lgm;
 	if( d < -MAXLOG )
 		goto ihalve;
-	d = -md_exp(d);
+	d = -cfs_exp(d);
 /* compute the step to the next approximation of x */
-	d = (y - md_y0)/d;
-	if( md_fabs(d/x) < MACHEP )
+	d = (y - cfs_y0)/d;
+	if( cfs_fabs(d/x) < MACHEP )
 		goto done;
 	x = x - d;
 	}
@@ -127,8 +127,8 @@ if( x0 == MAXNUM )
 	while( x0 == MAXNUM )
 		{
 		x = (1.0 + d) * x;
-		y = md_igamc( a, x );
-		if( y < md_y0 )
+		y = cfs_igamc( a, x );
+		if( y < cfs_y0 )
 			{
 			x0 = x;
 			yl = y;
@@ -143,16 +143,16 @@ dir = 0;
 for( i=0; i<400; i++ )
 	{
 	x = x1  +  d * (x0 - x1);
-	y = md_igamc( a, x );
+	y = cfs_igamc( a, x );
 	lgm = (x0 - x1)/(x1 + x0);
-	if( md_fabs(lgm) < dithresh )
+	if( cfs_fabs(lgm) < dithresh )
 		break;
-	lgm = (y - md_y0)/md_y0;
-	if( md_fabs(lgm) < dithresh )
+	lgm = (y - cfs_y0)/cfs_y0;
+	if( cfs_fabs(lgm) < dithresh )
 		break;
 	if( x <= 0.0 )
 		break;
-	if( y >= md_y0 )
+	if( y >= cfs_y0 )
 		{
 		x1 = x;
 		yh = y;
@@ -164,7 +164,7 @@ for( i=0; i<400; i++ )
 		else if( dir > 1 )
 			d = 0.5 * d + 0.5; 
 		else
-			d = (md_y0 - yl)/(yh - yl);
+			d = (cfs_y0 - yl)/(yh - yl);
 		dir += 1;
 		}
 	else
@@ -179,7 +179,7 @@ for( i=0; i<400; i++ )
 		else if( dir < -1 )
 			d = 0.5 * d;
 		else
-			d = (md_y0 - yl)/(yh - yl);
+			d = (cfs_y0 - yl)/(yh - yl);
 		dir -= 1;
 		}
 	}

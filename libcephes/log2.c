@@ -1,4 +1,4 @@
-/*							md_log2.c
+/*							cfs_log2.c
  *
  *	Base 2 logarithm
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_log2();
+ * double x, y, cfs_log2();
  *
- * y = md_log2( x );
+ * y = cfs_log2( x );
  *
  *
  *
@@ -20,11 +20,11 @@
  * parts.  If the exponent is between -1 and +1, the base e
  * logarithm of the fraction is approximated by
  *
- *     md_log(1+x) = x - 0.5 x**2 + x**3 P(x)/Q(x).
+ *     cfs_log(1+x) = x - 0.5 x**2 + x**3 P(x)/Q(x).
  *
  * Otherwise, setting  z = 2(x-1)/x+1),
  * 
- *     md_log(x) = z + z**3 P(z)/Q(z).
+ *     cfs_log(x) = z + z**3 P(z)/Q(z).
  *
  *
  *
@@ -33,15 +33,15 @@
  *                      Relative error:
  * arithmetic   domain     # trials      peak         rms
  *    IEEE      0.5, 2.0    30000       2.0e-16     5.5e-17
- *    IEEE      md_exp(+-700)  40000       1.3e-16     4.6e-17
+ *    IEEE      cfs_exp(+-700)  40000       1.3e-16     4.6e-17
  *
- * In the tests over the interval [md_exp(+-700)], the logarithms
+ * In the tests over the interval [cfs_exp(+-700)], the logarithms
  * of the random arguments were uniformly distributed.
  *
  * ERROR MESSAGES:
  *
- * md_log2 singularity:  x = 0; returns -INFINITY
- * md_log2 domain:       x < 0; returns NAN
+ * cfs_log2 singularity:  x = 0; returns -INFINITY
+ * cfs_log2 domain:       x < 0; returns NAN
  */
 
 /*
@@ -50,10 +50,10 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 */
 
 #include "mconf.h"
-static char fname[] = {"md_log2"};
+static char fname[] = {"cfs_log2"};
 
-/* Coefficients for md_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
- * 1/md_sqrt(2) <= x < md_sqrt(2)
+/* Coefficients for cfs_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
+ * 1/cfs_sqrt(2) <= x < cfs_sqrt(2)
  */
 #ifdef UNK
 static double P[] = {
@@ -139,9 +139,9 @@ static unsigned short L[5] = {0x3fdc,0x551d,0x94ae,0x0bf8};
 #define LOG2EA (*(double *)(&L[0]))
 #endif
 
-/* Coefficients for md_log(x) = z + z**3 P(z)/Q(z),
+/* Coefficients for cfs_log(x) = z + z**3 P(z)/Q(z),
  * where z = 2(x-1)/(x+1)
- * 1/md_sqrt(2) <= x < md_sqrt(2)
+ * 1/cfs_sqrt(2) <= x < cfs_sqrt(2)
  */
 
 #ifdef UNK
@@ -156,7 +156,7 @@ static double S[3] = {
  3.12093766372244180303E2,
 -7.69691943550460008604E2,
 };
-/* md_log2(e) - 1 */
+/* cfs_log2(e) - 1 */
 #define LOG2EA 0.44269504088896340735992
 #endif
 #ifdef DEC
@@ -171,7 +171,7 @@ static unsigned short S[12] = {
 0042234,0006000,0104527,0020155,
 0142500,0066110,0146631,0174731,
 };
-/* md_log2(e) - 1 */
+/* cfs_log2(e) - 1 */
 #define LOG2EA 0.44269504088896340735992L
 #endif
 #ifdef IBMPC
@@ -202,20 +202,20 @@ static unsigned short S[12] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_frexp ( double, int * );
-extern double md_ldexp ( double, int );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
+extern double cfs_frexp ( double, int * );
+extern double cfs_ldexp ( double, int );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
 #else
-double md_frexp(), md_ldexp(), md_polevl(), md_p1evl();
-int md_isnan(), md_isfinite();
+double cfs_frexp(), cfs_ldexp(), cfs_polevl(), cfs_p1evl();
+int cfs_isnan(), cfs_isfinite();
 #endif
 #define SQRTH 0.70710678118654752440
 extern double LOGE2, INFINITY, NAN;
 
-double md_log2(x)
+double cfs_log2(x)
 double x;
 {
 int e;
@@ -226,7 +226,7 @@ short *q;
 #endif
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 #ifdef INFINITIES
@@ -258,11 +258,11 @@ e = ((e >> 7) & 0377) - 0200;	/* the exponent */
 *q |= 040000;	/* x now between 0.5 and 1 */
 #endif
 
-/* Note, md_frexp is used so that denormal numbers
+/* Note, cfs_frexp is used so that denormal numbers
  * will be handled properly.
  */
 #ifdef IBMPC
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 /*
 q = (short *)&x;
 q += 3;
@@ -275,15 +275,15 @@ e = ((e >> 4) & 0x0fff) - 0x3fe;
 
 /* Equivalent C language standard library function: */
 #ifdef UNK
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 #endif
 
 #ifdef MIEEE
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 #endif
 
 
-/* logarithm using md_log(x) = z + z**3 P(z)/Q(z),
+/* logarithm using cfs_log(x) = z + z**3 P(z)/Q(z),
  * where z = 2(x-1)/x+1)
  */
 
@@ -304,18 +304,18 @@ else
 
 x = z / y;
 z = x*x;
-y = x * ( z * md_polevl( z, R, 2 ) / md_p1evl( z, S, 3 ) );
+y = x * ( z * cfs_polevl( z, R, 2 ) / cfs_p1evl( z, S, 3 ) );
 goto ldone;
 }
 
 
 
-/* logarithm using md_log(1+x) = x - .5x**2 + x**3 P(x)/Q(x) */
+/* logarithm using cfs_log(1+x) = x - .5x**2 + x**3 P(x)/Q(x) */
 
 if( x < SQRTH )
 	{
 	e -= 1;
-	x = md_ldexp( x, 1 ) - 1.0; /*  2x - 1  */
+	x = cfs_ldexp( x, 1 ) - 1.0; /*  2x - 1  */
 	}	
 else
 	{
@@ -324,14 +324,14 @@ else
 
 z = x*x;
 #if DEC
-y = x * ( z * md_polevl( x, P, 5 ) / md_p1evl( x, Q, 6 ) ) - md_ldexp( z, -1 );
+y = x * ( z * cfs_polevl( x, P, 5 ) / cfs_p1evl( x, Q, 6 ) ) - cfs_ldexp( z, -1 );
 #else
-y = x * ( z * md_polevl( x, P, 5 ) / md_p1evl( x, Q, 5 ) ) - md_ldexp( z, -1 );
+y = x * ( z * cfs_polevl( x, P, 5 ) / cfs_p1evl( x, Q, 5 ) ) - cfs_ldexp( z, -1 );
 #endif
 
 ldone:
 
-/* Multiply md_log of fraction by md_log2(e)
+/* Multiply cfs_log of fraction by cfs_log2(e)
  * and base 2 exponent by 1
  *
  * ***CAUTION***

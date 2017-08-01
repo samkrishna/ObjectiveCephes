@@ -1,4 +1,4 @@
-/*							md_cbrt.c
+/*							cfs_cbrt.c
  *
  *	Cube root
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_cbrt();
+ * double x, y, cfs_cbrt();
  *
- * y = md_cbrt( x );
+ * y = cfs_cbrt( x );
  *
  *
  *
@@ -33,7 +33,7 @@
  *    IEEE       0,1e308     30000      1.5e-16     5.0e-17
  *
  */
-/*							md_cbrt.c  */
+/*							cfs_cbrt.c  */
 
 /*
 Cephes Math Library Release 2.8:  June, 2000
@@ -49,27 +49,27 @@ static double CBRT2I = 0.79370052598409973737585;
 static double CBRT4I = 0.62996052494743658238361;
 
 #ifdef ANSIPROT
-extern double md_frexp ( double, int * );
-extern double md_ldexp ( double, int );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
+extern double cfs_frexp ( double, int * );
+extern double cfs_ldexp ( double, int );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
 #else
-double md_frexp(), md_ldexp();
-int md_isnan(), md_isfinite();
+double cfs_frexp(), cfs_ldexp();
+int cfs_isnan(), cfs_isfinite();
 #endif
 
-double md_cbrt(x)
+double cfs_cbrt(x)
 double x;
 {
 int e, rem, sign;
 double z;
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
   return x;
 #endif
 #ifdef INFINITIES
-if( !md_isfinite(x) )
+if( !cfs_isfinite(x) )
   return x;
 #endif
 if( x == 0 )
@@ -86,7 +86,7 @@ z = x;
 /* extract power of 2, leaving
  * mantissa between 0.5 and 1
  */
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 
 /* Approximate cube root of number between .5 and 1,
  * peak relative error = 9.2e-6
@@ -126,7 +126,7 @@ else
 	}
 
 /* multiply by power of 2 */
-x = md_ldexp( x, e );
+x = cfs_ldexp( x, e );
 
 /* Newton iteration */
 x -= ( x - (z/(x*x)) )*0.33333333333333333333;

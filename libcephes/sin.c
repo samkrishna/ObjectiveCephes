@@ -1,4 +1,4 @@
-/*							md_sin.c
+/*							cfs_sin.c
  *
  *	Circular sine
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_sin();
+ * double x, y, cfs_sin();
  *
- * y = md_sin( x );
+ * y = cfs_sin( x );
  *
  *
  *
@@ -35,7 +35,7 @@
  * ERROR MESSAGES:
  *
  *   message           condition        value returned
- * md_sin total loss   x > 1.073741824e9      0.0
+ * cfs_sin total loss   x > 1.073741824e9      0.0
  *
  * Partial loss of accuracy begins to occur at x = 2**30
  * = 1.074e9.  The loss is not gradual, but jumps suddenly to
@@ -43,7 +43,7 @@
  * x > 2**49 = 5.6e14.  The routine as implemented flags a
  * TLOSS error for x > 2**30 and returns 0.0.
  */
-/*							md_cos.c
+/*							cfs_cos.c
  *
  *	Circular cosine
  *
@@ -51,9 +51,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_cos();
+ * double x, y, cfs_cos();
  *
- * y = md_cos( x );
+ * y = cfs_cos( x );
  *
  *
  *
@@ -78,7 +78,7 @@
  *    DEC        0,+1.07e9   17000       3.0e-17     7.2e-18
  */
 
-/*							md_sin.c	*/
+/*							cfs_sin.c	*/
 
 /*
 Cephes Math Library Release 2.8:  June, 2000
@@ -194,15 +194,15 @@ static unsigned short P3[] = {0x3ce8,0x4698,0x98cc,0x5170};
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_floor ( double );
-extern double md_ldexp ( double, int );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_floor ( double );
+extern double cfs_ldexp ( double, int );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
 #else
-double md_polevl(), md_floor(), md_ldexp();
-int md_isnan(), md_isfinite();
+double cfs_polevl(), cfs_floor(), cfs_ldexp();
+int cfs_isnan(), cfs_isfinite();
 #endif
 extern double PIO4;
 static double lossth = 1.073741824e9;
@@ -214,7 +214,7 @@ extern double INFINITY;
 #endif
 
 
-double md_sin(x)
+double cfs_sin(x)
 double x;
 {
 double y, z, zz;
@@ -225,11 +225,11 @@ if( x == 0.0 )
 	return(x);
 #endif
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
-if( !md_isfinite(x) )
+if( !cfs_isfinite(x) )
 	{
-	mtherr( "md_sin", DOMAIN );
+	mtherr( "cfs_sin", DOMAIN );
 	return(NAN);
 	}
 #endif
@@ -243,16 +243,16 @@ if( x < 0 )
 
 if( x > lossth )
 	{
-	mtherr( "md_sin", TLOSS );
+	mtherr( "cfs_sin", TLOSS );
 	return(0.0);
 	}
 
-y = md_floor( x/PIO4 ); /* integer part of x/PIO4 */
+y = cfs_floor( x/PIO4 ); /* integer part of x/PIO4 */
 
 /* strip high bits of integer part to prevent integer overflow */
-z = md_ldexp( y, -4 );
-z = md_floor(z);           /* integer part of y/8 */
-z = y - md_ldexp( z, 4 );  /* y - 16 * (y/16) */
+z = cfs_ldexp( y, -4 );
+z = cfs_floor(z);           /* integer part of y/8 */
+z = y - cfs_ldexp( z, 4 );  /* y - 16 * (y/16) */
 
 j = z; /* convert to integer for tests on the phase angle */
 /* map zeros to origin */
@@ -276,12 +276,12 @@ zz = z * z;
 
 if( (j==1) || (j==2) )
 	{
-	y = 1.0 - md_ldexp(zz,-1) + zz * zz * md_polevl( zz, coscof, 5 );
+	y = 1.0 - cfs_ldexp(zz,-1) + zz * zz * cfs_polevl( zz, coscof, 5 );
 	}
 else
 	{
-/*	y = z  +  z * (zz * md_polevl( zz, sincof, 5 ));*/
-	y = z  +  z * z * z * md_polevl( zz, sincof, 5 );
+/*	y = z  +  z * (zz * cfs_polevl( zz, sincof, 5 ));*/
+	y = z  +  z * z * z * cfs_polevl( zz, sincof, 5 );
 	}
 
 if(sign < 0)
@@ -294,7 +294,7 @@ return(y);
 
 
 
-double md_cos(x)
+double cfs_cos(x)
 double x;
 {
 double y, z, zz;
@@ -302,11 +302,11 @@ long i;
 int j, sign;
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
-if( !md_isfinite(x) )
+if( !cfs_isfinite(x) )
 	{
-	mtherr( "md_cos", DOMAIN );
+	mtherr( "cfs_cos", DOMAIN );
 	return(NAN);
 	}
 #endif
@@ -318,14 +318,14 @@ if( x < 0 )
 
 if( x > lossth )
 	{
-	mtherr( "md_cos", TLOSS );
+	mtherr( "cfs_cos", TLOSS );
 	return(0.0);
 	}
 
-y = md_floor( x/PIO4 );
-z = md_ldexp( y, -4 );
-z = md_floor(z);		/* integer part of y/8 */
-z = y - md_ldexp( z, 4 );  /* y - 16 * (y/16) */
+y = cfs_floor( x/PIO4 );
+z = cfs_ldexp( y, -4 );
+z = cfs_floor(z);		/* integer part of y/8 */
+z = y - cfs_ldexp( z, 4 );  /* y - 16 * (y/16) */
 
 /* integer and fractional part modulo one octant */
 i = z;
@@ -351,12 +351,12 @@ zz = z * z;
 
 if( (j==1) || (j==2) )
 	{
-/*	y = z  +  z * (zz * md_polevl( zz, sincof, 5 ));*/
-	y = z  +  z * z * z * md_polevl( zz, sincof, 5 );
+/*	y = z  +  z * (zz * cfs_polevl( zz, sincof, 5 ));*/
+	y = z  +  z * z * z * cfs_polevl( zz, sincof, 5 );
 	}
 else
 	{
-	y = 1.0 - md_ldexp(zz,-1) + zz * zz * md_polevl( zz, coscof, 5 );
+	y = 1.0 - cfs_ldexp(zz,-1) + zz * zz * cfs_polevl( zz, coscof, 5 );
 	}
 
 if(sign < 0)
@@ -379,7 +379,7 @@ static unsigned short P648[] = {034513,054170,0176773,0116043,};
 static double P64800 = 4.8481368110953599358991410e-6;
 #endif
 
-double md_radian(d,m,s)
+double cfs_radian(d,m,s)
 double d,m,s;
 {
 

@@ -6,11 +6,11 @@
 #include <stdio.h>
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_atan2 ( double, double );
-extern double md_sqrt ( double );
-extern double md_fabs ( double );
-extern double md_sin ( double );
-extern double md_cos ( double );
+extern double cfs_atan2 ( double, double );
+extern double cfs_sqrt ( double );
+extern double cfs_fabs ( double );
+extern double cfs_sin ( double );
+extern double cfs_cos ( double );
 extern void polclr ( double *a, int n );
 extern void polmov ( double *a, int na, double *b );
 extern void polmul ( double a[], int na, double b[], int nb, double c[] );
@@ -22,7 +22,7 @@ extern void polsbt ( double a[], int na, double b[], int nb, double c[] );
 extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
 #else
-double md_atan2(), md_sqrt(), md_fabs(), md_sin(), md_cos();
+double cfs_atan2(), cfs_sqrt(), cfs_fabs(), cfs_sin(), cfs_cos();
 void polclr(), polmov(), polsbt(), poladd(), polsub(), polmul();
 int poldiv();
 void * malloc();
@@ -89,7 +89,7 @@ polatn( num, den, ans, nn )
       t = num[1];
       a = den[1];
     }
-  t = md_atan2( t, a );  /* arctan(num/den), the ANSI argument order */
+  t = cfs_atan2( t, a );  /* arctan(num/den), the ANSI argument order */
   polq = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   polu = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   polt = (double * )malloc( (MAXPOL+1) * sizeof (double) );
@@ -159,7 +159,7 @@ nzero:
     {
       if (n & 1)
         {
-	  printf("error, md_sqrt of odd polynomial\n");
+	  printf("error, cfs_sqrt of odd polynomial\n");
 	  return;
 	}
       /* Divide by x^n.  */
@@ -171,10 +171,10 @@ nzero:
   for( i=1; i<=nn; i++ )
     x[i] /= t;
   x[0] = 0.0;
-  /* series development md_sqrt(1+x) = 1  +  x / 2  -  x**2 / 8  +  x**3 / 16
+  /* series development cfs_sqrt(1+x) = 1  +  x / 2  -  x**2 / 8  +  x**3 / 16
      hopes that first (constant) term is greater than what follows   */
   polsbt( x, nn, psqrt, nn, y);
-  t = md_sqrt( t );
+  t = cfs_sqrt( t );
   for( i=0; i<=nn; i++ )
     y[i] *= t;
 
@@ -196,7 +196,7 @@ for( n=0; n<10; n++ )
 		y[i] *= 0.5;
 	for( i=0; i<=nn; i++ )
 		{
-		u = md_fabs( y[i] - z[i] );
+		u = cfs_fabs( y[i] - z[i] );
 		if( u > 1.0e-15 )
 			goto more;
 		}
@@ -216,10 +216,10 @@ free( x );
 
 /* Sine of a polynomial.
  * The computation uses
- *     md_sin(a+b) = md_sin(a) md_cos(b) + md_cos(a) md_sin(b)
+ *     cfs_sin(a+b) = cfs_sin(a) cfs_cos(b) + cfs_cos(a) cfs_sin(b)
  * where a is the constant term of the polynomial and
  * b is the sum of the rest of the terms.
- * Since md_sin(b) and md_cos(b) are computed by series expansions,
+ * Since cfs_sin(b) and cfs_cos(b) are computed by series expansions,
  * the value of b should be small.
  */
 void
@@ -243,17 +243,17 @@ polsin( x, y, nn )
   polclr( y, nn );
   /* a, in the description, is x[0].  b is the polynomial x - x[0].  */
   a = w[0];
-  /* c = md_cos (b) */
+  /* c = cfs_cos (b) */
   w[0] = 0.0;
   polsbt( w, nn, pcos, nn, c );
-  sc = md_sin(a);
-  /* md_sin(a) md_cos (b) */
+  sc = cfs_sin(a);
+  /* cfs_sin(a) cfs_cos (b) */
   for( i=0; i<=nn; i++ )
     c[i] *= sc;
-  /* y = md_sin (b)  */
+  /* y = cfs_sin (b)  */
   polsbt( w, nn, psin, nn, y );
-  sc = md_cos(a);
-  /* md_cos(a) md_sin(b) */
+  sc = cfs_cos(a);
+  /* cfs_cos(a) cfs_sin(b) */
   for( i=0; i<=nn; i++ )
     y[i] *= sc;
   poladd( c, nn, y, nn, y );
@@ -264,10 +264,10 @@ polsin( x, y, nn )
 
 /* Cosine of a polynomial.
  * The computation uses
- *     md_cos(a+b) = md_cos(a) md_cos(b) - md_sin(a) md_sin(b)
+ *     cfs_cos(a+b) = cfs_cos(a) cfs_cos(b) - cfs_sin(a) cfs_sin(b)
  * where a is the constant term of the polynomial and
  * b is the sum of the rest of the terms.
- * Since md_sin(b) and md_cos(b) are computed by series expansions,
+ * Since cfs_sin(b) and cfs_cos(b) are computed by series expansions,
  * the value of b should be small.
  */
 void
@@ -278,7 +278,7 @@ polcos( x, y, nn )
   double a, sc;
   double *w, *c;
   int i;
-  double md_sin(), md_cos();
+  double cfs_sin(), cfs_cos();
   if (nn > N)
     {
       mtherr ("polatn", OVERFLOW);
@@ -291,16 +291,16 @@ polcos( x, y, nn )
   polclr( y, nn );
   a = w[0];
   w[0] = 0.0;
-  /* c = md_cos(b)  */
+  /* c = cfs_cos(b)  */
   polsbt( w, nn, pcos, nn, c );
-  sc = md_cos(a);
-  /* md_cos(a) md_cos(b)  */
+  sc = cfs_cos(a);
+  /* cfs_cos(a) cfs_cos(b)  */
   for( i=0; i<=nn; i++ )
     c[i] *= sc;
-  /* y = md_sin(b) */
+  /* y = cfs_sin(b) */
   polsbt( w, nn, psin, nn, y );
-  sc = md_sin(a);
-  /* md_sin(a) md_sin(b) */
+  sc = cfs_sin(a);
+  /* cfs_sin(a) cfs_sin(b) */
   for( i=0; i<=nn; i++ )
     y[i] *= sc;
   polsub( y, nn, c, nn, y );

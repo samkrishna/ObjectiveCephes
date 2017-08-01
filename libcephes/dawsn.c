@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_dawsn();
+ * double x, y, cfs_dawsn();
  *
- * y = md_dawsn( x );
+ * y = cfs_dawsn( x );
  *
  *
  *
@@ -19,7 +19,7 @@
  *                              x
  *                              -
  *                              2     | |        2
- *  md_dawsn(x)  =     md_exp( -x  )   |    md_exp( t  ) dt
+ *  cfs_dawsn(x)  =     cfs_exp( -x  )   |    cfs_exp( t  ) dt
  *                                    | |
  *                                     -
  *                                     0
@@ -342,17 +342,17 @@ static unsigned short CD[20] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_chbevl ( double, void *, int );
-extern double md_sqrt ( double );
-extern double md_fabs ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
+extern double cfs_chbevl ( double, void *, int );
+extern double cfs_sqrt ( double );
+extern double cfs_fabs ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
 #else
-double md_chbevl(), md_sqrt(), md_fabs(), md_polevl(), md_p1evl();
+double cfs_chbevl(), cfs_sqrt(), cfs_fabs(), cfs_polevl(), cfs_p1evl();
 #endif
 extern double PI, MACHEP;
 
-double md_dawsn( xx )
+double cfs_dawsn( xx )
 double xx;
 {
 double x, y;
@@ -369,7 +369,7 @@ if( xx < 0.0 )
 if( xx < 3.25 )
 {
 x = xx*xx;
-y = xx * md_polevl( x, AN, 9 )/md_polevl( x, AD, 10 );
+y = xx * cfs_polevl( x, AN, 9 )/cfs_polevl( x, AD, 10 );
 return( sign * y );
 }
 
@@ -378,7 +378,7 @@ x = 1.0/(xx*xx);
 
 if( xx < 6.25 )
 	{
-	y = 1.0/xx + x * md_polevl( x, BN, 10) / (md_p1evl( x, BD, 10) * xx);
+	y = 1.0/xx + x * cfs_polevl( x, BN, 10) / (cfs_p1evl( x, BD, 10) * xx);
 	return( sign * 0.5 * y );
 	}
 
@@ -387,6 +387,6 @@ if( xx > 1.0e9 )
 	return( (sign * 0.5)/xx );
 
 /* 6.25 to infinity */
-y = 1.0/xx + x * md_polevl( x, CN, 4) / (md_p1evl( x, CD, 5) * xx);
+y = 1.0/xx + x * cfs_polevl( x, CN, 4) / (cfs_p1evl( x, CD, 5) * xx);
 return( sign * 0.5 * y );
 }

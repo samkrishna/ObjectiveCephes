@@ -5,9 +5,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_ei();
+ * double x, y, cfs_ei();
  *
- * y = md_ei( x );
+ * y = cfs_ei( x );
  *
  *
  *
@@ -22,7 +22,7 @@
  *             -inf
  * 
  * Not defined for x <= 0.
- * See also md_expn.c.
+ * See also cfs_expn.c.
  *
  *
  *
@@ -41,12 +41,12 @@ Copyright 1999 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_log ( double );
-extern double md_exp ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
+extern double cfs_log ( double );
+extern double cfs_exp ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
 #else
-extern double md_log(), md_exp(), md_polevl(), md_p1evl();
+extern double cfs_log(), cfs_exp(), cfs_polevl(), cfs_p1evl();
 #endif
 
 #define EUL 5.772156649015328606065e-1
@@ -329,7 +329,7 @@ static short B[36] = {
 #endif /* 0 */
 
 /* 8 <= x <= 20
-   x md_exp(-x) Ei(x) - 1 = 1/x R(1/x)
+   x cfs_exp(-x) Ei(x) - 1 = 1/x R(1/x)
    Theoretical peak absolute error = 1.07e-17  */
 #if UNK
 static double A2[10] = {
@@ -437,7 +437,7 @@ static short B2[36] = {
 #endif
 
 /* x > 20
-   x md_exp(-x) Ei(x) - 1  =  1/x A3(1/x)/B3(1/x)
+   x cfs_exp(-x) Ei(x) - 1  =  1/x A3(1/x)/B3(1/x)
    Theoretical absolute error = 6.15e-17  */
 #if UNK
 static double A3[9] = {
@@ -541,7 +541,7 @@ static short B3[36] = {
 #endif
 
 /* 16 <= x <= 32
-   x md_exp(-x) Ei(x) - 1  =  1/x A4(1/x) / B4(1/x)
+   x cfs_exp(-x) Ei(x) - 1  =  1/x A4(1/x) / B4(1/x)
    Theoretical absolute error = 1.22e-17  */
 #if UNK
 static double A4[8] = {
@@ -639,7 +639,7 @@ static short B4[32] = {
 
 #if 0
 /* 20 <= x <= 40
-   x md_exp(-x) Ei(x) - 1  =  1/x A4(1/x) / B4(1/x)
+   x cfs_exp(-x) Ei(x) - 1  =  1/x A4(1/x) / B4(1/x)
    Theoretical absolute error = 1.78e-17  */
 #if UNK
 static double A4[8] = {
@@ -732,7 +732,7 @@ static short B4[28] = {
 #endif /* 0 */
 
 /* 4 <= x <= 8
-   x md_exp(-x) Ei(x) - 1  =  1/x A5(1/x) / B5(1/x)
+   x cfs_exp(-x) Ei(x) - 1  =  1/x A5(1/x) / B5(1/x)
    Theoretical absolute error = 2.20e-17  */
 #if UNK
 static double A5[8] = {
@@ -827,7 +827,7 @@ static short B5[32] = {
 };
 #endif
 /* 2 <= x <= 4
-   x md_exp(-x) Ei(x) - 1  =  1/x A6(1/x) / B6(1/x)
+   x cfs_exp(-x) Ei(x) - 1  =  1/x A6(1/x) / B6(1/x)
    Theoretical absolute error = 4.89e-17  */
 #if UNK
 static double A6[8] = {
@@ -918,7 +918,7 @@ static short B6[28] = {
 };
 #endif
 /* 32 <= x <= 64
-   x md_exp(-x) Ei(x) - 1  =  1/x A7(1/x) / B7(1/x)
+   x cfs_exp(-x) Ei(x) - 1  =  1/x A7(1/x) / B7(1/x)
    Theoretical absolute error = 7.71e-18  */
 #if UNK
 static double A7[6] = {
@@ -993,7 +993,7 @@ static short B7[20] = {
 };
 #endif
 
-double md_ei (x)
+double cfs_ei (x)
 double x;
 {
   double f, w;
@@ -1012,51 +1012,51 @@ double x;
                              -   n n!
                             n=1
   */
-      f = md_polevl(x,A,5) / md_p1evl(x,B,6);
-      /*      f = md_polevl(x,A,6) / md_p1evl(x,B,7); */
-      /*      f = md_polevl(x,A,8) / md_p1evl(x,B,9); */
-      return (EUL + md_log(x) + x * f);
+      f = cfs_polevl(x,A,5) / cfs_p1evl(x,B,6);
+      /*      f = cfs_polevl(x,A,6) / cfs_p1evl(x,B,7); */
+      /*      f = cfs_polevl(x,A,8) / cfs_p1evl(x,B,9); */
+      return (EUL + cfs_log(x) + x * f);
     }
   else if (x < 4.0)
     {
   /* Asymptotic expansion.
                             1       2       6
-    x md_exp(-x) Ei(x) =  1 + ---  +  ---  +  ---- + ...
+    x cfs_exp(-x) Ei(x) =  1 + ---  +  ---  +  ---- + ...
                             x        2       3
                                     x       x
   */
       w = 1.0/x;
-      f = md_polevl(w,A6,7) / md_p1evl(w,B6,7);
-      return (md_exp(x) * w * (1.0 + w * f));
+      f = cfs_polevl(w,A6,7) / cfs_p1evl(w,B6,7);
+      return (cfs_exp(x) * w * (1.0 + w * f));
     }
   else if (x < 8.0)
     {
       w = 1.0/x;
-      f = md_polevl(w,A5,7) / md_p1evl(w,B5,8);
-      return (md_exp(x) * w * (1.0 + w * f));
+      f = cfs_polevl(w,A5,7) / cfs_p1evl(w,B5,8);
+      return (cfs_exp(x) * w * (1.0 + w * f));
     }
   else if (x < 16.0)
     {
       w = 1.0/x;
-      f = md_polevl(w,A2,9) / md_p1evl(w,B2,9);
-      return (md_exp(x) * w * (1.0 + w * f));
+      f = cfs_polevl(w,A2,9) / cfs_p1evl(w,B2,9);
+      return (cfs_exp(x) * w * (1.0 + w * f));
     }
   else if (x < 32.0)
     {
       w = 1.0/x;
-      f = md_polevl(w,A4,7) / md_p1evl(w,B4,8);
-      return (md_exp(x) * w * (1.0 + w * f));
+      f = cfs_polevl(w,A4,7) / cfs_p1evl(w,B4,8);
+      return (cfs_exp(x) * w * (1.0 + w * f));
     }
   else if (x < 64.0)
     {
       w = 1.0/x;
-      f = md_polevl(w,A7,5) / md_p1evl(w,B7,5);
-      return (md_exp(x) * w * (1.0 + w * f));
+      f = cfs_polevl(w,A7,5) / cfs_p1evl(w,B7,5);
+      return (cfs_exp(x) * w * (1.0 + w * f));
     }
   else
     {
       w = 1.0/x;
-      f = md_polevl(w,A3,8) / md_p1evl(w,B3,9);
-      return (md_exp(x) * w * (1.0 + w * f));
+      f = cfs_polevl(w,A3,8) / cfs_p1evl(w,B3,9);
+      return (cfs_exp(x) * w * (1.0 + w * f));
     }
 }

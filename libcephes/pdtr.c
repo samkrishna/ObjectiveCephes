@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * int k;
- * double m, y, md_pdtr();
+ * double m, y, cfs_pdtr();
  *
- * y = md_pdtr( k, m );
+ * y = cfs_pdtr( k, m );
  *
  *
  *
@@ -25,9 +25,9 @@
  *  j=0
  *
  * The terms are not summed directly; instead the incomplete
- * md_gamma integral is employed, according to the relation
+ * cfs_gamma integral is employed, according to the relation
  *
- * y = md_pdtr( k, m ) = md_igamc( k+1, m ).
+ * y = cfs_pdtr( k, m ) = cfs_igamc( k+1, m ).
  *
  * The arguments must both be positive.
  *
@@ -35,11 +35,11 @@
  *
  * ACCURACY:
  *
- * See md_igamc().
+ * See cfs_igamc().
  *
  */
 
-/*							md_pdtrc()
+/*							cfs_pdtrc()
  *
  *	Complemented poisson distribution
  *
@@ -48,9 +48,9 @@
  * SYNOPSIS:
  *
  * int k;
- * double m, y, md_pdtrc();
+ * double m, y, cfs_pdtrc();
  *
- * y = md_pdtrc( k, m );
+ * y = cfs_pdtrc( k, m );
  *
  *
  *
@@ -66,9 +66,9 @@
  *  j=k+1
  *
  * The terms are not summed directly; instead the incomplete
- * md_gamma integral is employed, according to the formula
+ * cfs_gamma integral is employed, according to the formula
  *
- * y = md_pdtrc( k, m ) = md_igam( k+1, m ).
+ * y = cfs_pdtrc( k, m ) = cfs_igam( k+1, m ).
  *
  * The arguments must both be positive.
  *
@@ -80,7 +80,7 @@
  *
  */
 
-/*							md_pdtri()
+/*							cfs_pdtri()
  *
  *	Inverse Poisson distribution
  *
@@ -89,9 +89,9 @@
  * SYNOPSIS:
  *
  * int k;
- * double m, y, md_pdtri();
+ * double m, y, cfs_pdtri();
  *
- * m = md_pdtri( k, y );
+ * m = cfs_pdtri( k, y );
  *
  *
  *
@@ -102,10 +102,10 @@
  * from 0 to x of the Poisson density is equal to the
  * given probability y.
  *
- * This is accomplished using the inverse md_gamma integral
+ * This is accomplished using the inverse cfs_gamma integral
  * function and the relation
  *
- *    m = md_igami( k+1, y ).
+ *    m = cfs_igami( k+1, y ).
  *
  *
  *
@@ -129,14 +129,14 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_igam ( double, double );
-extern double md_igamc ( double, double );
-extern double md_igami ( double, double );
+extern double cfs_igam ( double, double );
+extern double cfs_igamc ( double, double );
+extern double cfs_igami ( double, double );
 #else
-double md_igam(), md_igamc(), md_igami();
+double cfs_igam(), cfs_igamc(), cfs_igami();
 #endif
 
-double md_pdtrc( k, m )
+double cfs_pdtrc( k, m )
 int k;
 double m;
 {
@@ -148,12 +148,12 @@ if( (k < 0) || (m <= 0.0) )
 	return( 0.0 );
 	}
 v = k+1;
-return( md_igam( v, m ) );
+return( cfs_igam( v, m ) );
 }
 
 
 
-double md_pdtr( k, m )
+double cfs_pdtr( k, m )
 int k;
 double m;
 {
@@ -165,11 +165,11 @@ if( (k < 0) || (m <= 0.0) )
 	return( 0.0 );
 	}
 v = k+1;
-return( md_igamc( v, m ) );
+return( cfs_igamc( v, m ) );
 }
 
 
-double md_pdtri( k, y )
+double cfs_pdtri( k, y )
 int k;
 double y;
 {
@@ -181,6 +181,6 @@ if( (k < 0) || (y < 0.0) || (y >= 1.0) )
 	return( 0.0 );
 	}
 v = k+1;
-v = md_igami( v, y );
+v = cfs_igami( v, y );
 return( v );
 }

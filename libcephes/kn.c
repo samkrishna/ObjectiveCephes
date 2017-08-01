@@ -67,7 +67,7 @@ where  p(m) is the psi function: p(1) = -EUL and
 For large x,
                                          2        2     2
                                       u-1     (u-1 )(u-3 )
-K (z)  =  md_sqrt(pi/2z) md_exp(-z) { 1 + ------- + ------------ + ...}
+K (z)  =  cfs_sqrt(pi/2z) cfs_exp(-z) { 1 + ------- + ------------ + ...}
  v                                        1            2
                                     1! (8z)     2! (8z)
 asymptotically, where
@@ -82,16 +82,16 @@ asymptotically, where
 #define EUL 5.772156649015328606065e-1
 #define MAXFAC 31
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_exp ( double );
-extern double md_log ( double );
-extern double md_sqrt ( double );
+extern double cfs_fabs ( double );
+extern double cfs_exp ( double );
+extern double cfs_log ( double );
+extern double cfs_sqrt ( double );
 #else
-double md_fabs(), md_exp(), md_log(), md_sqrt();
+double cfs_fabs(), cfs_exp(), cfs_log(), cfs_sqrt();
 #endif
 extern double MACHEP, MAXNUM, MAXLOG, PI;
 
-double md_kn( nn, x )
+double cfs_kn( nn, x )
 int nn;
 double x;
 {
@@ -163,14 +163,14 @@ if( n > 0 )
 			zn *= z;
 			t = nk1f * zn / kf;
 			s += t;   
-			if( (MAXNUM - md_fabs(t)) < md_fabs(s) )
+			if( (MAXNUM - cfs_fabs(t)) < cfs_fabs(s) )
 				goto overf;
 			if( (tox > 1.0) && ((MAXNUM/tox) < zmn) )
 				goto overf;
 			zmn *= tox;
 			}
 		s *= 0.5;
-		t = md_fabs(s);
+		t = cfs_fabs(s);
 		if( (zmn > 1.0) && ((MAXNUM/zmn) < t) )
 			goto overf;
 		if( (t > 1.0) && ((MAXNUM/t) < zmn) )
@@ -180,7 +180,7 @@ if( n > 0 )
 	}
 
 
-tlg = 2.0 * md_log( 0.5 * x );
+tlg = 2.0 * cfs_log( 0.5 * x );
 pk = -EUL;
 if( n == 0 )
 	{
@@ -202,7 +202,7 @@ do
 	s += (pk+pn-tlg)*t;
 	k += 1.0;
 	}
-while( md_fabs(t/s) > MACHEP );
+while( cfs_fabs(t/s) > MACHEP );
 
 s = 0.5 * s / zmn;
 if( n & 1 )
@@ -236,7 +236,7 @@ do
 	{
 	z = pn - pk * pk;
 	t = t * z /(fn * z0);
-	nk1f = md_fabs(t);
+	nk1f = cfs_fabs(t);
 	if( (i >= n) && (nk1f > nkf) )
 		{
 		goto adone;
@@ -247,9 +247,9 @@ do
 	pk += 2.0;
 	i += 1;
 	}
-while( md_fabs(t/s) > MACHEP );
+while( cfs_fabs(t/s) > MACHEP );
 
 adone:
-ans = md_exp(-x) * md_sqrt( PI/(2.0*x) ) * s;
+ans = cfs_exp(-x) * cfs_sqrt( PI/(2.0*x) ) * s;
 return(ans);
 }

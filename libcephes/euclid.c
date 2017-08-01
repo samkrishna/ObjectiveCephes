@@ -13,11 +13,11 @@
  *      double d;  denominator
  *      }fract;
  *
- * md_radd( a, b, c )      c = b + a
- * md_rsub( a, b, c )      c = b - a
- * md_rmul( a, b, c )      c = b * a
- * md_rdiv( a, b, c )      c = b / a
- * md_euclid( &n, &d )     Reduce n/d to lowest terms,
+ * cfs_radd( a, b, c )      c = b + a
+ * cfs_rsub( a, b, c )      c = b - a
+ * cfs_rmul( a, b, c )      c = b * a
+ * cfs_rdiv( a, b, c )      c = b / a
+ * cfs_euclid( &n, &d )     Reduce n/d to lowest terms,
  *                      return greatest common divisor.
  *
  * Arguments of the routines are pointers to the structures.
@@ -28,11 +28,11 @@
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_floor ( double );
-double md_euclid( double *, double * );
+extern double cfs_fabs ( double );
+extern double cfs_floor ( double );
+double cfs_euclid( double *, double * );
 #else
-double md_fabs(), md_floor(), md_euclid();
+double cfs_fabs(), cfs_floor(), cfs_euclid();
 #endif
 
 extern double MACHEP;
@@ -46,7 +46,7 @@ typedef struct
 
 /* Add fractions. */
 
-void md_radd( f1, f2, f3 )
+void cfs_radd( f1, f2, f3 )
 fract *f1, *f2, *f3;
 {
 double gcd, d1, d2, gcn, n1, n2;
@@ -68,20 +68,20 @@ if( n2 == 0.0 )
 	return;
 	}
 
-gcd = md_euclid( &d1, &d2 ); /* common divisors of denominators */
-gcn = md_euclid( &n1, &n2 ); /* common divisors of numerators */
+gcd = cfs_euclid( &d1, &d2 ); /* common divisors of denominators */
+gcn = cfs_euclid( &n1, &n2 ); /* common divisors of numerators */
 /* Note, factoring the numerators
  * makes overflow slightly less likely.
  */
 f3->n = ( n1 * d2 + n2 * d1) * gcn;
 f3->d = d1 * d2 * gcd;
-md_euclid( &f3->n, &f3->d );
+cfs_euclid( &f3->n, &f3->d );
 }
 
 
 /* Subtract fractions. */
 
-void md_rsub( f1, f2, f3 )
+void cfs_rsub( f1, f2, f3 )
 fract *f1, *f2, *f3;
 {
 double gcd, d1, d2, gcn, n1, n2;
@@ -103,11 +103,11 @@ if( n2 == 0.0 )
 	return;
 	}
 
-gcd = md_euclid( &d1, &d2 );
-gcn = md_euclid( &n1, &n2 );
+gcd = cfs_euclid( &d1, &d2 );
+gcn = cfs_euclid( &n1, &n2 );
 f3->n = (n2 * d1 - n1 * d2) * gcn;
 f3->d = d1 * d2 * gcd;
-md_euclid( &f3->n, &f3->d );
+cfs_euclid( &f3->n, &f3->d );
 }
 
 
@@ -115,7 +115,7 @@ md_euclid( &f3->n, &f3->d );
 
 /* Multiply fractions. */
 
-void md_rmul( ff1, ff2, ff3 )
+void cfs_rmul( ff1, ff2, ff3 )
 fract *ff1, *ff2, *ff3;
 {
 double d1, d2, n1, n2;
@@ -131,24 +131,24 @@ if( (n1 == 0.0) || (n2 == 0.0) )
 	ff3->d = 1.0;
 	return;
 	}
-md_euclid( &n1, &d2 ); /* cross cancel common divisors */
-md_euclid( &n2, &d1 );
+cfs_euclid( &n1, &d2 ); /* cross cancel common divisors */
+cfs_euclid( &n2, &d1 );
 ff3->n = n1 * n2;
 ff3->d = d1 * d2;
 /* Report overflow. */
-if( (md_fabs(ff3->n) >= BIG) || (md_fabs(ff3->d) >= BIG) )
+if( (cfs_fabs(ff3->n) >= BIG) || (cfs_fabs(ff3->d) >= BIG) )
 	{
 	mtherr( "rmul", OVERFLOW );
 	return;
 	}
-/* md_euclid( &ff3->n, &ff3->d );*/
+/* cfs_euclid( &ff3->n, &ff3->d );*/
 }
 
 
 
 /* Divide fractions. */
 
-void md_rdiv( ff1, ff2, ff3 )
+void cfs_rdiv( ff1, ff2, ff3 )
 fract *ff1, *ff2, *ff3;
 {
 double d1, d2, n1, n2;
@@ -169,17 +169,17 @@ if( (n1 == 0.0) || (n2 == 0.0) )
 	return;
 	}
 
-md_euclid( &n1, &d2 ); /* cross cancel any common divisors */
-md_euclid( &n2, &d1 );
+cfs_euclid( &n1, &d2 ); /* cross cancel any common divisors */
+cfs_euclid( &n2, &d1 );
 ff3->n = n1 * n2;
 ff3->d = d1 * d2;
 /* Report overflow. */
-if( (md_fabs(ff3->n) >= BIG) || (md_fabs(ff3->d) >= BIG) )
+if( (cfs_fabs(ff3->n) >= BIG) || (cfs_fabs(ff3->d) >= BIG) )
 	{
 	mtherr( "rdiv", OVERFLOW );
 	return;
 	}
-/* md_euclid( &ff3->n, &ff3->d );*/
+/* cfs_euclid( &ff3->n, &ff3->d );*/
 }
 
 
@@ -192,7 +192,7 @@ if( (md_fabs(ff3->n) >= BIG) || (md_fabs(ff3->d) >= BIG) )
  */
 
 
-double md_euclid( num, den )
+double cfs_euclid( num, den )
 double *num, *den;
 {
 double n, d, q, r;
@@ -233,7 +233,7 @@ if(n == 0.0)
 while( d > 0.5 )
 	{
 /* Find integer part of n divided by d. */
-	q = md_floor( n/d );
+	q = cfs_floor( n/d );
 /* Find remainder after dividing n by d. */
 	r = n - d * q;
 /* The next fraction is d/r. */
@@ -242,7 +242,7 @@ while( d > 0.5 )
 	}
 
 if( n < 0.0 )
-	mtherr( "md_euclid", UNDERFLOW );
+	mtherr( "cfs_euclid", UNDERFLOW );
 
 *num /= n;
 *den /= n;

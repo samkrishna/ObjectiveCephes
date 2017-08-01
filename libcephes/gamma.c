@@ -1,4 +1,4 @@
-/*							md_gamma.c
+/*							cfs_gamma.c
  *
  *	Gamma function
  *
@@ -6,20 +6,20 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_gamma();
+ * double x, y, cfs_gamma();
  * extern int sgngam;
  *
- * y = md_gamma( x );
+ * y = cfs_gamma( x );
  *
  *
  *
  * DESCRIPTION:
  *
- * Returns md_gamma function of the argument.  The result is
+ * Returns cfs_gamma function of the argument.  The result is
  * correctly signed, and the sign (+1 or -1) is also
  * returned in a global (extern) variable named sgngam.
- * This variable is also filled in by the logarithmic md_gamma
- * function md_lgam().
+ * This variable is also filled in by the logarithmic cfs_gamma
+ * function cfs_lgam().
  *
  * Arguments |x| <= 34 are reduced by recurrence and the function
  * approximated by a rational function of degree 6/7 in the
@@ -43,27 +43,27 @@
  */
 /*							lgam()
  *
- *	Natural logarithm of md_gamma function
+ *	Natural logarithm of cfs_gamma function
  *
  *
  *
  * SYNOPSIS:
  *
- * double x, y, md_lgam();
+ * double x, y, cfs_lgam();
  * extern int sgngam;
  *
- * y = md_lgam( x );
+ * y = cfs_lgam( x );
  *
  *
  *
  * DESCRIPTION:
  *
  * Returns the base e (2.718...) logarithm of the absolute
- * value of the md_gamma function of the argument.
- * The sign (+1 or -1) of the md_gamma function is returned in a
+ * value of the cfs_gamma function of the argument.
+ * The sign (+1 or -1) of the cfs_gamma function is returned in a
  * global (extern) variable named sgngam.
  *
- * For arguments greater than 13, the logarithm of the md_gamma
+ * For arguments greater than 13, the logarithm of the cfs_gamma
  * function is approximated by the logarithmic version of
  * Stirling's formula using a polynomial approximation of
  * degree 4. Arguments between -33 and +33 are reduced by
@@ -95,8 +95,8 @@
  *
  */
 
-/*							md_gamma.c	*/
-/*	md_gamma function	*/
+/*							cfs_gamma.c	*/
+/*	cfs_gamma function	*/
 
 /*
 Cephes Math Library Release 2.8:  June, 2000
@@ -211,7 +211,7 @@ static unsigned short LPI[4] = {
 #define LOGPI *(double *)LPI
 #endif 
 
-/* Stirling's formula for the md_gamma function */
+/* Stirling's formula for the cfs_gamma function */
 #if UNK
 static double STIR[5] = {
  7.87311395793093628397E-4,
@@ -270,23 +270,23 @@ int sgngam = 0;
 extern int sgngam;
 extern double MAXLOG, MAXNUM, PI;
 #ifdef ANSIPROT
-extern double md_pow ( double, double );
-extern double md_log ( double );
-extern double md_exp ( double );
-extern double md_sin ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_floor ( double );
-extern double md_fabs ( double );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
-static double md_stirf ( double );
-double md_lgam ( double );
+extern double cfs_pow ( double, double );
+extern double cfs_log ( double );
+extern double cfs_exp ( double );
+extern double cfs_sin ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_floor ( double );
+extern double cfs_fabs ( double );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
+static double cfs_stirf ( double );
+double cfs_lgam ( double );
 #else
-double md_pow(), md_log(), md_exp(), md_sin(), md_polevl(), md_p1evl(), md_floor(), md_fabs();
-int md_isnan(), md_isfinite();
-static double md_stirf();
-double md_lgam();
+double cfs_pow(), cfs_log(), cfs_exp(), cfs_sin(), cfs_polevl(), cfs_p1evl(), cfs_floor(), cfs_fabs();
+int cfs_isnan(), cfs_isfinite();
+static double cfs_stirf();
+double cfs_lgam();
 #endif
 #ifdef INFINITIES
 extern double INFINITY;
@@ -298,22 +298,22 @@ extern double NAN;
 /* Gamma function computed by Stirling's formula.
  * The polynomial STIR is valid for 33 <= x <= 172.
  */
-static double md_stirf(x)
+static double cfs_stirf(x)
 double x;
 {
 double y, w, v;
 
 w = 1.0/x;
-w = 1.0 + w * md_polevl( w, STIR, 4 );
-y = md_exp(x);
+w = 1.0 + w * cfs_polevl( w, STIR, 4 );
+y = cfs_exp(x);
 if( x > MAXSTIR )
-	{ /* Avoid overflow in md_pow() */
-	v = md_pow( x, 0.5 * x - 0.25 );
+	{ /* Avoid overflow in cfs_pow() */
+	v = cfs_pow( x, 0.5 * x - 0.25 );
 	y = v * (v / y);
 	}
 else
 	{
-	y = md_pow( x, x - 0.5 ) / y;
+	y = cfs_pow( x, x - 0.5 ) / y;
 	}
 y = SQTPI * y * w;
 return( y );
@@ -321,7 +321,7 @@ return( y );
 
 
 
-double md_gamma(x)
+double cfs_gamma(x)
 double x;
 {
 double p, q, z;
@@ -329,7 +329,7 @@ int i;
 
 sgngam = 1;
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 #ifdef INFINITIES
@@ -339,22 +339,22 @@ if( x == INFINITY )
 if( x == -INFINITY )
 	return(NAN);
 #else
-if( !md_isfinite(x) )
+if( !cfs_isfinite(x) )
 	return(x);
 #endif
 #endif
-q = md_fabs(x);
+q = cfs_fabs(x);
 
 if( q > 33.0 )
 	{
 	if( x < 0.0 )
 		{
-		p = md_floor(q);
+		p = cfs_floor(q);
 		if( p == q )
 			{
 #ifdef NANS
 gamnan:
-			mtherr( "md_gamma", DOMAIN );
+			mtherr( "cfs_gamma", DOMAIN );
 			return (NAN);
 #else
 			goto goverf;
@@ -369,23 +369,23 @@ gamnan:
 			p += 1.0;
 			z = q - p;
 			}
-		z = q * md_sin( PI * z );
+		z = q * cfs_sin( PI * z );
 		if( z == 0.0 )
 			{
 #ifdef INFINITIES
 			return( sgngam * INFINITY);
 #else
 goverf:
-			mtherr( "md_gamma", OVERFLOW );
+			mtherr( "cfs_gamma", OVERFLOW );
 			return( sgngam * MAXNUM);
 #endif
 			}
-		z = md_fabs(z);
-		z = PI/(z * md_stirf(q) );
+		z = cfs_fabs(z);
+		z = PI/(z * cfs_stirf(q) );
 		}
 	else
 		{
-		z = md_stirf(x);
+		z = cfs_stirf(x);
 		}
 	return( sgngam * z );
 	}
@@ -417,8 +417,8 @@ if( x == 2.0 )
 	return(z);
 
 x -= 2.0;
-p = md_polevl( x, P, 6 );
-q = md_polevl( x, Q, 7 );
+p = cfs_polevl( x, P, 6 );
+q = cfs_polevl( x, Q, 7 );
 return( z * p / q );
 
 small:
@@ -431,7 +431,7 @@ if( x == 0.0 )
 	  return( INFINITY );
 #endif
 #else
-	mtherr( "md_gamma", SING );
+	mtherr( "cfs_gamma", SING );
 	return( MAXNUM );
 #endif
 	}
@@ -441,8 +441,8 @@ else
 
 
 
-/* A[]: Stirling's formula expansion of md_log md_gamma
- * B[], C[]: md_log md_gamma function between 2 and 3
+/* A[]: Stirling's formula expansion of cfs_log cfs_gamma
+ * B[], C[]: cfs_log cfs_gamma function between 2 and 3
  */
 #ifdef UNK
 static double A[] = {
@@ -469,7 +469,7 @@ static double C[] = {
 -2.53252307177582951285E6,
 -2.01889141433532773231E6
 };
-/* md_log( md_sqrt( 2*pi ) ) */
+/* cfs_log( cfs_sqrt( 2*pi ) ) */
 static double LS2PI  =  0.91893853320467274178;
 #define MAXLGM 2.556348e305
 #endif
@@ -499,7 +499,7 @@ static unsigned short C[] = {
 0145432,0111254,0044577,0115142,
 0145366,0071133,0050217,0005122
 };
-/* md_log( md_sqrt( 2*pi ) ) */
+/* cfs_log( cfs_sqrt( 2*pi ) ) */
 static unsigned short LS2P[] = {040153,037616,041445,0172645,};
 #define LS2PI *(double *)LS2P
 #define MAXLGM 2.035093e36
@@ -530,7 +530,7 @@ static unsigned short C[] = {
 0xf34c,0x892f,0x5255,0xc143,
 0xe14a,0x6a11,0xce4b,0xc13e
 };
-/* md_log( md_sqrt( 2*pi ) ) */
+/* cfs_log( cfs_sqrt( 2*pi ) ) */
 static unsigned short LS2P[] = {
 0xbeb5,0xc864,0x67f1,0x3fed
 };
@@ -562,7 +562,7 @@ static unsigned short C[] = {
 0xc143,0x5255,0x892f,0xf34c,
 0xc13e,0xce4b,0x6a11,0xe14a
 };
-/* md_log( md_sqrt( 2*pi ) ) */
+/* cfs_log( cfs_sqrt( 2*pi ) ) */
 static unsigned short LS2P[] = {
 0x3fed,0x67f1,0xc864,0xbeb5
 };
@@ -571,10 +571,10 @@ static unsigned short LS2P[] = {
 #endif
 
 
-/* Logarithm of md_gamma function */
+/* Logarithm of cfs_gamma function */
 
 
-double md_lgam(x)
+double cfs_lgam(x)
 double x;
 {
 double p, q, u, w, z;
@@ -582,20 +582,20 @@ int i;
 
 sgngam = 1;
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 
 #ifdef INFINITIES
-if( !md_isfinite(x) )
+if( !cfs_isfinite(x) )
 	return(INFINITY);
 #endif
 
 if( x < -34.0 )
 	{
 	q = -x;
-	w = md_lgam(q); /* note this modifies sgngam! */
-	p = md_floor(q);
+	w = cfs_lgam(q); /* note this modifies sgngam! */
+	p = cfs_floor(q);
 	if( p == q )
 		{
 lgsing:
@@ -617,11 +617,11 @@ lgsing:
 		p += 1.0;
 		z = p - q;
 		}
-	z = q * md_sin( PI * z );
+	z = q * cfs_sin( PI * z );
 	if( z == 0.0 )
 		goto lgsing;
-/*	z = md_log(PI) - md_log( z ) - w;*/
-	z = LOGPI - md_log( z ) - w;
+/*	z = cfs_log(PI) - cfs_log( z ) - w;*/
+	z = LOGPI - cfs_log( z ) - w;
 	return( z );
 	}
 
@@ -652,11 +652,11 @@ if( x < 13.0 )
 	else
 		sgngam = 1;
 	if( u == 2.0 )
-		return( md_log(z) );
+		return( cfs_log(z) );
 	p -= 2.0;
 	x = x + p;
-	p = x * md_polevl( x, B, 5 ) / md_p1evl( x, C, 6);
-	return( md_log(z) + p );
+	p = x * cfs_polevl( x, B, 5 ) / cfs_p1evl( x, C, 6);
+	return( cfs_log(z) + p );
 	}
 
 if( x > MAXLGM )
@@ -670,7 +670,7 @@ loverf:
 #endif
 	}
 
-q = ( x - 0.5 ) * md_log(x) - x + LS2PI;
+q = ( x - 0.5 ) * cfs_log(x) - x + LS2PI;
 if( x > 1.0e8 )
 	return( q );
 
@@ -680,6 +680,6 @@ if( x >= 1000.0 )
 		- 2.7777777777777777777778e-3) *p
 		+ 0.0833333333333333333333) / x;
 else
-	q += md_polevl( p, A, 4 ) / x;
+	q += cfs_polevl( p, A, 4 ) / x;
 return( q );
 }

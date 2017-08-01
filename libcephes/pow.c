@@ -1,4 +1,4 @@
-/*							md_pow.c
+/*							cfs_pow.c
  *
  *	Power function
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, z, md_pow();
+ * double x, y, z, cfs_pow();
  *
- * z = md_pow( x, y );
+ * z = cfs_pow( x, y );
  *
  *
  *
@@ -16,7 +16,7 @@
  *
  * Computes x raised to the yth power.  Analytically,
  *
- *      x**y  =  md_exp( y md_log(x) ).
+ *      x**y  =  cfs_exp( y cfs_log(x) ).
  *
  * Following Cody and Waite, this program uses a lookup table
  * of 2**-i/16 and pseudo extended precision arithmetic to
@@ -31,7 +31,7 @@
  * arithmetic   domain     # trials      peak         rms
  *    IEEE     -26,26       30000      4.2e-16      7.7e-17
  *    DEC      -26,26       60000      4.8e-17      9.1e-18
- * 1/26 < x < 26, with md_log(x) uniformly distributed.
+ * 1/26 < x < 26, with cfs_log(x) uniformly distributed.
  * -26 < y < 26, y uniformly distributed.
  *    IEEE     0,8700       30000      1.5e-14      2.1e-15
  * 0.99 < x < 1.01, 0 < y < 8700, uniformly distributed.
@@ -40,9 +40,9 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_pow overflow     x**y > MAXNUM      INFINITY
- * md_pow underflow   x**y < 1/MAXNUM       0.0
- * md_pow domain      x<0 and y noninteger  0.0
+ * cfs_pow overflow     x**y > MAXNUM      INFINITY
+ * cfs_pow underflow   x**y < 1/MAXNUM       0.0
+ * cfs_pow domain      x<0 and y noninteger  0.0
  *
  */
 
@@ -53,7 +53,7 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 
 
 #include "mconf.h"
-static char fname[] = {"md_pow"};
+static char fname[] = {"cfs_pow"};
 
 #define SQRTH 0.70710678118654752440
 
@@ -321,7 +321,7 @@ static unsigned short R[] = {
 #endif
 #endif
 
-/* md_log2(e) - 1 */
+/* cfs_log2(e) - 1 */
 #define LOG2EA 0.44269504088896340736
 
 #define F W
@@ -335,21 +335,21 @@ static unsigned short R[] = {
 #define Hb Wb
 
 #ifdef ANSIPROT
-extern double md_floor ( double );
-extern double md_fabs ( double );
-extern double md_frexp ( double, int * );
-extern double md_ldexp ( double, int );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_powi ( double, int );
-extern int md_signbit ( double );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
+extern double cfs_floor ( double );
+extern double cfs_fabs ( double );
+extern double cfs_frexp ( double, int * );
+extern double cfs_ldexp ( double, int );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_powi ( double, int );
+extern int cfs_signbit ( double );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
 static double reduc ( double );
 #else
-double md_floor(), md_fabs(), md_frexp(), md_ldexp();
-double md_polevl(), md_p1evl(), md_powi();
-int signbit(), md_isnan(), md_isfinite();
+double cfs_floor(), cfs_fabs(), cfs_frexp(), cfs_ldexp();
+double cfs_polevl(), cfs_p1evl(), cfs_powi();
+int signbit(), cfs_isnan(), cfs_isfinite();
 static double reduc();
 #endif
 extern double MAXNUM;
@@ -363,7 +363,7 @@ extern double NAN;
 extern double NEGZERO;
 #endif
 
-double md_pow( x, y )
+double cfs_pow( x, y )
 double x, y;
 {
 double w, z, W, Wa, Wb, ya, yb, u;
@@ -374,9 +374,9 @@ int e, i, nflg, iyflg, yoddint;
 if( y == 0.0 )
 	return( 1.0 );
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return( x );
-if( md_isnan(y) )
+if( cfs_isnan(y) )
 	return( y );
 #endif
 if( y == 1.0 )
@@ -384,9 +384,9 @@ if( y == 1.0 )
 
 
 #ifdef INFINITIES
-if( !md_isfinite(y) && (x == 1.0 || x == -1.0) )
+if( !cfs_isfinite(y) && (x == 1.0 || x == -1.0) )
 	{
-	mtherr( "md_pow", DOMAIN );
+	mtherr( "cfs_pow", DOMAIN );
 #ifdef NANS
 	return( NAN );
 #else
@@ -454,7 +454,7 @@ if( x >= MAXNUM )
 	}
 /* Set iyflg to 1 if y is an integer.  */
 iyflg = 0;
-w = md_floor(y);
+w = cfs_floor(y);
 if( w == y )
 	iyflg = 1;
 
@@ -462,9 +462,9 @@ if( w == y )
 yoddint = 0;
 if( iyflg )
 	{
-	ya = md_fabs(y);
-	ya = md_floor(0.5 * ya);
-	yb = 0.5 * md_fabs(w);
+	ya = cfs_fabs(y);
+	ya = cfs_floor(0.5 * ya);
+	yb = 0.5 * cfs_fabs(w);
 	if( ya != yb )
 		yoddint = 1;
 	}
@@ -501,7 +501,7 @@ if( x <= 0.0 )
 		if( y < 0.0 )
 			{
 #ifdef MINUSZERO
-			if( md_signbit(x) && yoddint )
+			if( cfs_signbit(x) && yoddint )
 				return( -INFINITY );
 #endif
 #ifdef INFINITIES
@@ -513,7 +513,7 @@ if( x <= 0.0 )
 		if( y > 0.0 )
 			{
 #ifdef MINUSZERO
-			if( md_signbit(x) && yoddint )
+			if( cfs_signbit(x) && yoddint )
 				return( NEGZERO );
 #endif
 			return( 0.0 );
@@ -540,23 +540,23 @@ if( x <= 0.0 )
 if( iyflg )
 	{
 	i = w;
-	w = md_floor(x);
-	if( (w == x) && (md_fabs(y) < 32768.0) )
+	w = cfs_floor(x);
+	if( (w == x) && (cfs_fabs(y) < 32768.0) )
 		{
-		w = md_powi( x, (int) y );
+		w = cfs_powi( x, (int) y );
 		return( w );
 		}
 	}
 
 if( nflg )
-	x = md_fabs(x);
+	x = cfs_fabs(x);
 
 /* For results close to 1, use a series expansion.  */
 w = x - 1.0;
-aw = md_fabs(w);
-ay = md_fabs(y);
+aw = cfs_fabs(w);
+ay = cfs_fabs(y);
 wy = w * y;
-ya = md_fabs(wy);
+ya = cfs_fabs(wy);
 if((aw <= 1.0e-3 && ay <= 1.0)
    || (ya <= 1.0e-3 && ay >= 1.0))
 	{
@@ -566,8 +566,8 @@ if((aw <= 1.0e-3 && ay <= 1.0)
 	}
 /* These are probably too much trouble.  */
 #if 0
-w = y * md_log(x);
-if (aw > 1.0e-3 && md_fabs(w) < 1.0e-3)
+w = y * cfs_log(x);
+if (aw > 1.0e-3 && cfs_fabs(w) < 1.0e-3)
   {
     z = ((((((
     w/7. + 1.)*w/6. + 1.)*w/5. + 1.)*w/4. + 1.)*w/3. + 1.)*w/2. + 1.)*w + 1.;
@@ -589,7 +589,7 @@ if(ya <= 1.0e-3 && aw <= 1.0e-4)
 #endif
 
 /* separate significand from exponent */
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 
 #if 0
 /* For debugging, check for gross overflow. */
@@ -611,44 +611,44 @@ i += 1;
 
 
 /* Find (x - A[i])/A[i]
- * in order to compute md_log(x/A[i]):
+ * in order to compute cfs_log(x/A[i]):
  *
- * md_log(x) = md_log( a x/a ) = md_log(a) + md_log(x/a)
+ * cfs_log(x) = cfs_log( a x/a ) = cfs_log(a) + cfs_log(x/a)
  *
- * md_log(x/a) = md_log(1+v),  v = x/a - 1 = (x-a)/a
+ * cfs_log(x/a) = cfs_log(1+v),  v = x/a - 1 = (x-a)/a
  */
 x -= douba(i);
 x -= doubb(i/2);
 x /= douba(i);
 
 
-/* rational approximation for md_log(1+v):
+/* rational approximation for cfs_log(1+v):
  *
- * md_log(1+v)  =  v  -  v**2/2  +  v**3 P(v) / Q(v)
+ * cfs_log(1+v)  =  v  -  v**2/2  +  v**3 P(v) / Q(v)
  */
 z = x*x;
-w = x * ( z * md_polevl( x, P, 3 ) / md_p1evl( x, Q, 4 ) );
-w = w - md_ldexp( z, -1 );   /*  w - 0.5 * z  */
+w = x * ( z * cfs_polevl( x, P, 3 ) / cfs_p1evl( x, Q, 4 ) );
+w = w - cfs_ldexp( z, -1 );   /*  w - 0.5 * z  */
 
 /* Convert to base 2 logarithm:
- * multiply by md_log2(e)
+ * multiply by cfs_log2(e)
  */
 w = w + LOG2EA * w;
 /* Note x was not yet added in
  * to above rational approximation,
  * so do it now, while multiplying
- * by md_log2(e).
+ * by cfs_log2(e).
  */
 z = w + LOG2EA * x;
 z = z + x;
 
 /* Compute exponent term of the base 2 logarithm. */
 w = -i;
-w = md_ldexp( w, -4 );	/* divide by 16 */
+w = cfs_ldexp( w, -4 );	/* divide by 16 */
 w += e;
-/* Now base 2 md_log of x is w + z. */
+/* Now base 2 cfs_log of x is w + z. */
 
-/* Multiply base 2 md_log by y, in extended precision. */
+/* Multiply base 2 cfs_log by y, in extended precision. */
 
 /* separate y into large part ya
  * and small part yb less than 1/16
@@ -667,7 +667,7 @@ Gb = G - Ga;
 
 H = Fb + Gb;
 Ha = reduc(H);
-w = md_ldexp( Ga+Ha, 4 );
+w = cfs_ldexp( Ga+Ha, 4 );
 
 /* Test the power of 2 for overflow */
 if( w > MEXP )
@@ -707,12 +707,12 @@ if( Hb > 0.0 )
 	Hb -= 0.0625;
 	}
 
-/* Now the product y * md_log2(x)  =  Hb + e/16.0.
+/* Now the product y * cfs_log2(x)  =  Hb + e/16.0.
  *
  * Compute base 2 exponential of Hb,
  * where -0.0625 <= Hb <= 0.
  */
-z = Hb * md_polevl( Hb, R, 6 );  /*    z  =  2**Hb - 1    */
+z = Hb * cfs_polevl( Hb, R, 6 );  /*    z  =  2**Hb - 1    */
 
 /* Express e/16 as an integer plus a negative number of 16ths.
  * Find lookup table entry for the fractional power of 2.
@@ -725,7 +725,7 @@ i = e/16 + i;
 e = 16*i - e;
 w = douba( e );
 z = w + w * z;      /*    2**-e * ( 1 + (2**Hb-1) )    */
-z = md_ldexp( z, i );  /* multiply by integer power of 2 */
+z = cfs_ldexp( z, i );  /* multiply by integer power of 2 */
 
 done:
 
@@ -749,8 +749,8 @@ double x;
 {
 double t;
 
-t = md_ldexp( x, 4 );
-t = md_floor( t );
-t = md_ldexp( t, -4 );
+t = cfs_ldexp( x, 4 );
+t = cfs_floor( t );
+t = cfs_ldexp( t, -4 );
 return(t);
 }

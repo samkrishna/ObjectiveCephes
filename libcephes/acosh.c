@@ -1,4 +1,4 @@
-/*							md_acosh.c
+/*							cfs_acosh.c
  *
  *	Inverse hyperbolic cosine
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_acosh();
+ * double x, y, cfs_acosh();
  *
- * y = md_acosh( x );
+ * y = cfs_acosh( x );
  *
  *
  *
@@ -18,11 +18,11 @@
  *
  * If 1 <= x < 1.5, a rational approximation
  *
- *	md_sqrt(z) * P(z)/Q(z)
+ *	cfs_sqrt(z) * P(z)/Q(z)
  *
  * where z = x-1, is used.  Otherwise,
  *
- * md_acosh(x)  =  md_log( x + md_sqrt( (x-1)(x+1) ).
+ * cfs_acosh(x)  =  cfs_log( x + cfs_sqrt( (x-1)(x+1) ).
  *
  *
  *
@@ -37,11 +37,11 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_acosh domain       |x| < 1            NAN
+ * cfs_acosh domain       |x| < 1            NAN
  *
  */
 
-/*							md_acosh.c	*/
+/*							cfs_acosh.c	*/
 
 /*
 Cephes Math Library Release 2.8:  June, 2000
@@ -49,7 +49,7 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 */
 
 
-/* md_acosh(z) = md_sqrt(x) * R(x), z = x + 1, interval 0 < x < 0.5 */
+/* cfs_acosh(z) = cfs_sqrt(x) * R(x), z = x + 1, interval 0 < x < 0.5 */
 
 #include "mconf.h"
 
@@ -125,23 +125,23 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_log ( double );
-extern double md_sqrt ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_log ( double );
+extern double cfs_sqrt ( double );
 #else
-double md_log(), md_sqrt(), md_polevl(), md_p1evl();
+double cfs_log(), cfs_sqrt(), cfs_polevl(), cfs_p1evl();
 #endif
 extern double LOGE2, INFINITY, NAN;
 
-double md_acosh(x)
+double cfs_acosh(x)
 double x;
 {
 double a, z;
 
 if( x < 1.0 )
 	{
-	mtherr( "md_acosh", DOMAIN );
+	mtherr( "cfs_acosh", DOMAIN );
 	return(NAN);
 	}
 
@@ -151,17 +151,17 @@ if( x > 1.0e8 )
 	if( x == INFINITY )
 		return( INFINITY );
 #endif
-	return( md_log(x) + LOGE2 );
+	return( cfs_log(x) + LOGE2 );
 	}
 
 z = x - 1.0;
 
 if( z < 0.5 )
 	{
-	a = md_sqrt(z) * (md_polevl(z, P, 4) / md_p1evl(z, Q, 5) );
+	a = cfs_sqrt(z) * (cfs_polevl(z, P, 4) / cfs_p1evl(z, Q, 5) );
 	return( a );
 	}
 
-a = md_sqrt( z*(x+1.0) );
-return( md_log(x + a) );
+a = cfs_sqrt( z*(x+1.0) );
+return( cfs_log(x + a) );
 }

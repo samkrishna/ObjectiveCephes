@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * double u, m, sn, cn, dn, phi;
- * int md_ellpj();
+ * int cfs_ellpj();
  *
- * md_ellpj( u, m, _&sn, _&cn, _&dn, _&phi );
+ * cfs_ellpj( u, m, _&sn, _&cn, _&dn, _&phi );
  *
  *
  *
@@ -22,11 +22,11 @@
  *
  * These functions are periodic, with quarter-period on the
  * real axis equal to the complete elliptic integral
- * md_ellpk(1.0-m).
+ * cfs_ellpk(1.0-m).
  *
  * Relation to incomplete elliptic integral:
- * If u = md_ellik(phi,m), then sn(u|m) = md_sin(phi),
- * and cn(u|m) = md_cos(phi).  Phi is called the amplitude of u.
+ * If u = cfs_ellik(phi,m), then sn(u|m) = cfs_sin(phi),
+ * and cn(u|m) = cfs_cos(phi).  Phi is called the amplitude of u.
  *
  * Computation is by means of the arithmetic-geometric mean
  * algorithm, except when m is within 1e-9 of 0 or 1.  In the
@@ -63,23 +63,23 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_sqrt ( double );
-extern double md_fabs ( double );
-extern double md_sin ( double );
-extern double md_cos ( double );
-extern double md_asin ( double );
-extern double md_tanh ( double );
-extern double md_sinh ( double );
-extern double md_cosh ( double );
-extern double md_atan ( double );
-extern double md_exp ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_fabs ( double );
+extern double cfs_sin ( double );
+extern double cfs_cos ( double );
+extern double cfs_asin ( double );
+extern double cfs_tanh ( double );
+extern double cfs_sinh ( double );
+extern double cfs_cosh ( double );
+extern double cfs_atan ( double );
+extern double cfs_exp ( double );
 #else
-double md_sqrt(), md_fabs(), md_sin(), md_cos(), md_asin(), md_tanh();
-double md_sinh(), md_cosh(), md_atan(), md_exp();
+double cfs_sqrt(), cfs_fabs(), cfs_sin(), cfs_cos(), cfs_asin(), cfs_tanh();
+double cfs_sinh(), cfs_cosh(), cfs_atan(), cfs_exp();
 #endif
 extern double PIO2, MACHEP;
 
-int md_ellpj( u, m, sn, cn, dn, ph )
+int cfs_ellpj( u, m, sn, cn, dn, ph )
 double u, m;
 double *sn, *cn, *dn, *ph;
 {
@@ -101,8 +101,8 @@ if( m < 0.0 || m > 1.0 )
 	}
 if( m < 1.0e-9 )
 	{
-	t = md_sin(u);
-	b = md_cos(u);
+	t = cfs_sin(u);
+	b = cfs_cos(u);
 	ai = 0.25 * m * (u - t*b);
 	*sn = t - ai*b;
 	*cn = b + ai*t;
@@ -114,12 +114,12 @@ if( m < 1.0e-9 )
 if( m >= 0.9999999999 )
 	{
 	ai = 0.25 * (1.0-m);
-	b = md_cosh(u);
-	t = md_tanh(u);
+	b = cfs_cosh(u);
+	t = cfs_tanh(u);
 	phi = 1.0/b;
-	twon = b * md_sinh(u);
+	twon = b * cfs_sinh(u);
 	*sn = t + ai * (twon - u)/(b*b);
-	*ph = 2.0*md_atan(md_exp(u)) - PIO2 + ai*(twon - u)/b;
+	*ph = 2.0*cfs_atan(cfs_exp(u)) - PIO2 + ai*(twon - u)/b;
 	ai *= t * phi;
 	*cn = phi - ai * (twon - u);
 	*dn = phi + ai * (twon + u);
@@ -129,12 +129,12 @@ if( m >= 0.9999999999 )
 
 /*	A. G. M. scale		*/
 a[0] = 1.0;
-b = md_sqrt(1.0 - m);
-c[0] = md_sqrt(m);
+b = cfs_sqrt(1.0 - m);
+c[0] = cfs_sqrt(m);
 twon = 1.0;
 i = 0;
 
-while( md_fabs(c[i]/a[i]) > MACHEP )
+while( cfs_fabs(c[i]/a[i]) > MACHEP )
 	{
 	if( i > 7 )
 		{
@@ -144,7 +144,7 @@ while( md_fabs(c[i]/a[i]) > MACHEP )
 	ai = a[i];
 	++i;
 	c[i] = ( ai - b )/2.0;
-	t = md_sqrt( ai * b );
+	t = cfs_sqrt( ai * b );
 	a[i] = ( ai + b )/2.0;
 	b = t;
 	twon *= 2.0;
@@ -156,16 +156,16 @@ done:
 phi = twon * a[i] * u;
 do
 	{
-	t = c[i] * md_sin(phi) / a[i];
+	t = c[i] * cfs_sin(phi) / a[i];
 	b = phi;
-	phi = (md_asin(t) + phi)/2.0;
+	phi = (cfs_asin(t) + phi)/2.0;
 	}
 while( --i );
 
-*sn = md_sin(phi);
-t = md_cos(phi);
+*sn = cfs_sin(phi);
+t = cfs_cos(phi);
 *cn = t;
-*dn = t/md_cos(phi-b);
+*dn = t/cfs_cos(phi-b);
 *ph = phi;
 return(0);
 }

@@ -22,7 +22,7 @@
  * function, according to the formula
  *
  *              v  -x
- * Iv(x) = (x/2)  e   hyperg( v+0.5, 2v+1, 2x ) / md_gamma(v+1)
+ * Iv(x) = (x/2)  e   hyperg( v+0.5, 2v+1, 2x ) / cfs_gamma(v+1)
  *
  * If v is a negative integer, then v is replaced by -v.
  *
@@ -54,25 +54,25 @@ Copyright 1984, 1987, 1988, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_hyperg ( double, double, double );
-extern double md_exp ( double );
-extern double md_gamma ( double );
-extern double md_log ( double );
-extern double md_fabs ( double );
-extern double md_floor ( double );
+extern double cfs_hyperg ( double, double, double );
+extern double cfs_exp ( double );
+extern double cfs_gamma ( double );
+extern double cfs_log ( double );
+extern double cfs_fabs ( double );
+extern double cfs_floor ( double );
 #else
-double md_hyperg(), md_exp(), md_gamma(), md_log(), md_fabs(), md_floor();
+double cfs_hyperg(), cfs_exp(), cfs_gamma(), cfs_log(), cfs_fabs(), cfs_floor();
 #endif
 extern double MACHEP, MAXNUM;
 
-double md_iv( v, x )
+double cfs_iv( v, x )
 double v, x;
 {
 int sign;
 double t, ax;
 
 /* If v is a negative integer, invoke symmetry */
-t = md_floor(v);
+t = cfs_floor(v);
 if( v < 0.0 )
 	{
 	if( t == v )
@@ -90,7 +90,7 @@ if( x < 0.0 )
 		mtherr( "iv", DOMAIN );
 		return( 0.0 );
 		}
-	if( v != 2.0 * md_floor(v/2.0) )
+	if( v != 2.0 * cfs_floor(v/2.0) )
 		sign = -1;
 	}
 
@@ -108,9 +108,9 @@ if( x == 0.0 )
 		return( 0.0 );
 	}
 
-ax = md_fabs(x);
-t = v * md_log( 0.5 * ax )  -  x;
-t = sign * md_exp(t) / md_gamma( v + 1.0 );
+ax = cfs_fabs(x);
+t = v * cfs_log( 0.5 * ax )  -  x;
+t = sign * cfs_exp(t) / cfs_gamma( v + 1.0 );
 ax = v + 0.5;
-return( t * md_hyperg( ax,  2.0 * ax,  2.0 * x ) );
+return( t * cfs_hyperg( ax,  2.0 * ax,  2.0 * x ) );
 }

@@ -1,4 +1,4 @@
-/*							md_exp10.c
+/*							cfs_exp10.c
  *
  *	Base 10 exponential function
  *      (Common antilogarithm)
@@ -7,9 +7,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_exp10();
+ * double x, y, cfs_exp10();
  *
- * y = md_exp10( x );
+ * y = cfs_exp10( x );
  *
  *
  *
@@ -18,7 +18,7 @@
  * Returns 10 raised to the x power.
  *
  * Range reduction is accomplished by expressing the argument
- * as 10**x = 2**n 10**f, with |f| < 0.5 md_log10(2).
+ * as 10**x = 2**n 10**f, with |f| < 0.5 cfs_log10(2).
  * The Pade' form
  *
  *    1 + 2x P(x**2)/( Q(x**2) - P(x**2) )
@@ -38,8 +38,8 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_exp10 underflow    x < -MAXL10        0.0
- * md_exp10 overflow     x > MAXL10       MAXNUM
+ * cfs_exp10 underflow    x < -MAXL10        0.0
+ * cfs_exp10 overflow     x > MAXL10       MAXNUM
  *
  * DEC arithmetic: MAXL10 = 38.230809449325611792.
  * IEEE arithmetic: MAXL10 = 308.2547155599167.
@@ -155,29 +155,29 @@ static double MAXL10 = 308.2547155599167;
 #endif
 
 #ifdef ANSIPROT
-extern double md_floor ( double );
-extern double md_ldexp ( double, int );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern int md_isnan ( double );
+extern double cfs_floor ( double );
+extern double cfs_ldexp ( double, int );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern int cfs_isnan ( double );
 extern int isfinite ( double );
 #else
-double md_floor(), md_ldexp(), md_polevl(), md_p1evl();
-int md_isnan(), md_isfinite();
+double cfs_floor(), cfs_ldexp(), cfs_polevl(), cfs_p1evl();
+int cfs_isnan(), cfs_isfinite();
 #endif
 extern double MAXNUM;
 #ifdef INFINITIES
 extern double INFINITY;
 #endif
 
-double md_exp10(x)
+double cfs_exp10(x)
 double x;
 {
 double px, xx;
 short n;
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 if( x > MAXL10 )
@@ -185,7 +185,7 @@ if( x > MAXL10 )
 #ifdef INFINITIES
 	return( INFINITY );
 #else
-	mtherr( "md_exp10", OVERFLOW );
+	mtherr( "cfs_exp10", OVERFLOW );
 	return( MAXNUM );
 #endif
 	}
@@ -193,16 +193,16 @@ if( x > MAXL10 )
 if( x < -MAXL10 )	/* Would like to use MINLOG but can't */
 	{
 #ifndef INFINITIES
-	mtherr( "md_exp10", UNDERFLOW );
+	mtherr( "cfs_exp10", UNDERFLOW );
 #endif
 	return(0.0);
 	}
 
 /* Express 10**x = 10**g 2**n
- *   = 10**g 10**( n md_log10(2) )
- *   = 10**( g + n md_log10(2) )
+ *   = 10**g 10**( n cfs_log10(2) )
+ *   = 10**( g + n cfs_log10(2) )
  */
-px = md_floor( LOG210 * x + 0.5 );
+px = cfs_floor( LOG210 * x + 0.5 );
 n = px;
 x -= px * LG102A;
 x -= px * LG102B;
@@ -212,12 +212,12 @@ x -= px * LG102B;
  * 10**x = 1 + 2x P(x**2)/( Q(x**2) - P(x**2) )
  */
 xx = x * x;
-px = x * md_polevl( xx, P, 3 );
-x =  px/( md_p1evl( xx, Q, 3 ) - px );
-x = 1.0 + md_ldexp( x, 1 );
+px = x * cfs_polevl( xx, P, 3 );
+x =  px/( cfs_p1evl( xx, Q, 3 ) - px );
+x = 1.0 + cfs_ldexp( x, 1 );
 
 /* multiply by power of 2 */
-x = md_ldexp( x, n );
+x = cfs_ldexp( x, n );
 
 return(x);
 }

@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, Chi, Shi, md_shichi();
+ * double x, Chi, Shi, cfs_shichi();
  *
- * md_shichi( x, &Chi, &Shi );
+ * cfs_shichi( x, &Chi, &Shi );
  *
  *
  * DESCRIPTION:
@@ -17,7 +17,7 @@
  *
  *                            x
  *                            -
- *                           | |   md_cosh t - 1
+ *                           | |   cfs_cosh t - 1
  *   Chi(x) = eul + ln x +   |    -----------  dt,
  *                         | |          t
  *                          -
@@ -25,7 +25,7 @@
  *
  *               x
  *               -
- *              | |  md_sinh t
+ *              | |  cfs_sinh t
  *   Shi(x) =   |    ------  dt
  *            | |       t
  *             -
@@ -34,7 +34,7 @@
  * where eul = 0.57721566490153286061 is Euler's constant.
  * The integrals are evaluated by power series for x < 8
  * and by Chebyshev expansions for x between 8 and 88.
- * For large x, both functions approach md_exp(x)/2x.
+ * For large x, both functions approach cfs_exp(x)/2x.
  * Arguments greater than 88 in magnitude return MAXNUM.
  *
  *
@@ -59,7 +59,7 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 #include "mconf.h"
 
 #ifdef UNK
-/* x md_exp(-x) shi(x), inverted interval 8 to 18 */
+/* x cfs_exp(-x) shi(x), inverted interval 8 to 18 */
 static double S1[] = {
  1.83889230173399459482E-17,
 -9.55485532279655569575E-17,
@@ -85,7 +85,7 @@ static double S1[] = {
  1.11847751047257036625E0
 };
 
-/* x md_exp(-x) shi(x), inverted interval 18 to 88 */
+/* x cfs_exp(-x) shi(x), inverted interval 18 to 88 */
 static double S2[] = {
 -1.05311574154850938805E-17,
  2.62446095596355225821E-17,
@@ -274,7 +274,7 @@ static unsigned short S2[] = {
 
 
 #ifdef UNK
-/* x md_exp(-x) chin(x), inverted interval 8 to 18 */
+/* x cfs_exp(-x) chin(x), inverted interval 8 to 18 */
 static double C1[] = {
 -8.12435385225864036372E-18,
  2.17586413290339214377E-17,
@@ -301,7 +301,7 @@ static double C1[] = {
  1.11446150876699213025E0
 };
 
-/* x md_exp(-x) chin(x), inverted interval 18 to 88 */
+/* x cfs_exp(-x) chin(x), inverted interval 18 to 88 */
 static double C2[] = {
  8.06913408255155572081E-18,
 -2.08074168180148170312E-17,
@@ -500,17 +500,17 @@ static unsigned short C2[] = {
 /* Sine and cosine integrals */
 
 #ifdef ANSIPROT
-extern double md_log ( double );
-extern double md_exp ( double );
-extern double md_fabs ( double );
-extern double md_chbevl ( double, void *, int );
+extern double cfs_log ( double );
+extern double cfs_exp ( double );
+extern double cfs_fabs ( double );
+extern double cfs_chbevl ( double, void *, int );
 #else
-double md_log(), md_exp(), md_fabs(), md_chbevl();
+double cfs_log(), cfs_exp(), cfs_fabs(), cfs_chbevl();
 #endif
 #define EUL 0.57721566490153286061
 extern double MACHEP, MAXNUM, PIO2;
 
-int md_shichi( x, si, ci )
+int cfs_shichi( x, si, ci )
 double x;
 double *si, *ci;
 {
@@ -554,7 +554,7 @@ do
 	s += a/k;
 	k += 1.0;
 	}
-while( md_fabs(a/s) > MACHEP );
+while( cfs_fabs(a/s) > MACHEP );
 
 s *= x;
 goto done;
@@ -565,18 +565,18 @@ chb:
 if( x < 18.0 )
 	{
 	a = (576.0/x - 52.0)/10.0;
-	k = md_exp(x) / x;
-	s = k * md_chbevl( a, S1, 22 );
-	c = k * md_chbevl( a, C1, 23 );
+	k = cfs_exp(x) / x;
+	s = k * cfs_chbevl( a, S1, 22 );
+	c = k * cfs_chbevl( a, C1, 23 );
 	goto done;
 	}
 
 if( x <= 88.0 )
 	{
 	a = (6336.0/x - 212.0)/70.0;
-	k = md_exp(x) / x;
-	s = k * md_chbevl( a, S2, 23 );
-	c = k * md_chbevl( a, C2, 24 );
+	k = cfs_exp(x) / x;
+	s = k * cfs_chbevl( a, S2, 23 );
+	c = k * cfs_chbevl( a, C2, 24 );
 	goto done;
 	}
 else
@@ -594,6 +594,6 @@ if( sign )
 
 *si = s;
 
-*ci = EUL + md_log(x) + c;
+*ci = EUL + cfs_log(x) + c;
 return(0);
 }

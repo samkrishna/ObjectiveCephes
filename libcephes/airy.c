@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * double x, ai, aip, bi, bip;
- * int md_airy();
+ * int cfs_airy();
  *
- * md_airy( x, _&ai, _&aip, _&bi, _&bip );
+ * cfs_airy( x, _&ai, _&aip, _&bi, _&bip );
  *
  *
  *
@@ -823,19 +823,19 @@ static unsigned short APGD[40] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_exp ( double );
-extern double md_sqrt ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_sin ( double );
-extern double md_cos ( double );
+extern double cfs_fabs ( double );
+extern double cfs_exp ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_sin ( double );
+extern double cfs_cos ( double );
 #else
-double md_fabs(), md_exp(), md_sqrt();
-double md_polevl(), md_p1evl(), md_sin(), md_cos();
+double cfs_fabs(), cfs_exp(), cfs_sqrt();
+double cfs_polevl(), cfs_p1evl(), cfs_sin(), cfs_cos();
 #endif
 
-int md_airy( x, ai, aip, bi, bip )
+int cfs_airy( x, ai, aip, bi, bip )
 double x, *ai, *aip, *bi, *bip;
 {
 double z, zz, t, f, g, uf, ug, k, zeta, theta;
@@ -854,48 +854,48 @@ if( x > MAXAIRY )
 if( x < -2.09 )
 	{
 	domflg = 15;
-	t = md_sqrt(-x);
+	t = cfs_sqrt(-x);
 	zeta = -2.0 * x * t / 3.0;
-	t = md_sqrt(t);
+	t = cfs_sqrt(t);
 	k = sqpii / t;
 	z = 1.0/zeta;
 	zz = z * z;
-	uf = 1.0 + zz * md_polevl( zz, AFN, 8 ) / md_p1evl( zz, AFD, 9 );
-	ug = z * md_polevl( zz, AGN, 10 ) / md_p1evl( zz, AGD, 10 );
+	uf = 1.0 + zz * cfs_polevl( zz, AFN, 8 ) / cfs_p1evl( zz, AFD, 9 );
+	ug = z * cfs_polevl( zz, AGN, 10 ) / cfs_p1evl( zz, AGD, 10 );
 	theta = zeta + 0.25 * PI;
-	f = md_sin( theta );
-	g = md_cos( theta );
+	f = cfs_sin( theta );
+	g = cfs_cos( theta );
 	*ai = k * (f * uf - g * ug);
 	*bi = k * (g * uf + f * ug);
-	uf = 1.0 + zz * md_polevl( zz, APFN, 8 ) / md_p1evl( zz, APFD, 9 );
-	ug = z * md_polevl( zz, APGN, 10 ) / md_p1evl( zz, APGD, 10 );
+	uf = 1.0 + zz * cfs_polevl( zz, APFN, 8 ) / cfs_p1evl( zz, APFD, 9 );
+	ug = z * cfs_polevl( zz, APGN, 10 ) / cfs_p1evl( zz, APGD, 10 );
 	k = sqpii * t;
 	*aip = -k * (g * uf + f * ug);
 	*bip = k * (f * uf - g * ug);
 	return(0);
 	}
 
-if( x >= 2.09 )	/* md_cbrt(9) */
+if( x >= 2.09 )	/* cfs_cbrt(9) */
 	{
 	domflg = 5;
-	t = md_sqrt(x);
+	t = cfs_sqrt(x);
 	zeta = 2.0 * x * t / 3.0;
-	g = md_exp( zeta );
-	t = md_sqrt(t);
+	g = cfs_exp( zeta );
+	t = cfs_sqrt(t);
 	k = 2.0 * t * g;
 	z = 1.0/zeta;
-	f = md_polevl( z, AN, 7 ) / md_polevl( z, AD, 7 );
+	f = cfs_polevl( z, AN, 7 ) / cfs_polevl( z, AD, 7 );
 	*ai = sqpii * f / k;
 	k = -0.5 * sqpii * t / g;
-	f = md_polevl( z, APN, 7 ) / md_polevl( z, APD, 7 );
+	f = cfs_polevl( z, APN, 7 ) / cfs_polevl( z, APD, 7 );
 	*aip = f * k;
 
 	if( x > 8.3203353 )	/* zeta > 16 */
 		{
-		f = z * md_polevl( z, BN16, 4 ) / md_p1evl( z, BD16, 5 );
+		f = z * cfs_polevl( z, BN16, 4 ) / cfs_p1evl( z, BD16, 5 );
 		k = sqpii * g;
 		*bi = k * (1.0 + f) / t;
-		f = z * md_polevl( z, BPPN, 4 ) / md_p1evl( z, BPPD, 5 );
+		f = z * cfs_polevl( z, BPPN, 4 ) / cfs_p1evl( z, BPPD, 5 );
 		*bip = k * t * (1.0 + f);
 		return(0);
 		}
@@ -921,7 +921,7 @@ while( t > MACHEP )
 	k += 1.0;
 	ug /=k;
 	g += ug;
-	t = md_fabs(uf/f);
+	t = cfs_fabs(uf/f);
 	}
 uf = c1 * f;
 ug = c2 * g;
@@ -952,7 +952,7 @@ while( t > MACHEP )
 	uf /=k;
 	g += ug;
 	k += 1.0;
-	t = md_fabs(ug/g);
+	t = cfs_fabs(ug/g);
 	}
 
 uf = c1 * f;

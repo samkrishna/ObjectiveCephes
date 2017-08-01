@@ -1,4 +1,4 @@
-/*							md_j1.c
+/*							cfs_j1.c
  *
  *	Bessel function of order one
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_j1();
+ * double x, y, cfs_j1();
  *
- * y = md_j1( x );
+ * y = cfs_j1( x );
  *
  *
  *
@@ -34,7 +34,7 @@
  *
  */
 
-/*							md_y1.c
+/*							cfs_y1.c
  *
  *	Bessel function of second kind of order one
  *
@@ -42,9 +42,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_y1();
+ * double x, y, cfs_y1();
  *
- * y = md_y1( x );
+ * y = cfs_y1( x );
  *
  *
  *
@@ -55,7 +55,7 @@
  *
  * The domain is divided into the intervals [0, 8] and
  * (8, infinity). In the first interval a 25 term Chebyshev
- * expansion is used, and a call to md_j1() is required.
+ * expansion is used, and a call to cfs_j1() is required.
  * In the second, the asymptotic trigonometric representation
  * is employed using two rational functions of degree 5/5.
  *
@@ -68,7 +68,7 @@
  *    DEC       0, 30       10000       8.6e-17     1.3e-17
  *    IEEE      0, 30       30000       1.0e-15     1.3e-16
  *
- * (error criterion relative when |md_y1| > 1).
+ * (error criterion relative when |cfs_y1| > 1).
  *
  */
 
@@ -446,20 +446,20 @@ static unsigned short DZ2[] = {0x4048,0x9bf6,0x6072,0xa432};
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_log ( double );
-extern double md_sin ( double );
-extern double md_cos ( double );
-extern double md_sqrt ( double );
-double md_j1 ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_log ( double );
+extern double cfs_sin ( double );
+extern double cfs_cos ( double );
+extern double cfs_sqrt ( double );
+double cfs_j1 ( double );
 #else
-double md_polevl(), md_p1evl(), md_log(), md_sin(), md_cos(), md_sqrt();
-double md_j1();
+double cfs_polevl(), cfs_p1evl(), cfs_log(), cfs_sin(), cfs_cos(), cfs_sqrt();
+double cfs_j1();
 #endif
 extern double TWOOPI, THPIO4, SQ2OPI;
 
-double md_j1(x)
+double cfs_j1(x)
 double x;
 {
 double w, z, p, q, xn;
@@ -471,24 +471,24 @@ if( x < 0 )
 if( w <= 5.0 )
 	{
 	z = x * x;	
-	w = md_polevl( z, RP, 3 ) / md_p1evl( z, RQ, 8 );
+	w = cfs_polevl( z, RP, 3 ) / cfs_p1evl( z, RQ, 8 );
 	w = w * x * (z - Z1) * (z - Z2);
 	return( w );
 	}
 
 w = 5.0/x;
 z = w * w;
-p = md_polevl( z, PP, 6)/md_polevl( z, PQ, 6 );
-q = md_polevl( z, QP, 7)/md_p1evl( z, QQ, 7 );
+p = cfs_polevl( z, PP, 6)/cfs_polevl( z, PQ, 6 );
+q = cfs_polevl( z, QP, 7)/cfs_p1evl( z, QQ, 7 );
 xn = x - THPIO4;
-p = p * md_cos(xn) - w * q * md_sin(xn);
-return( p * SQ2OPI / md_sqrt(x) );
+p = p * cfs_cos(xn) - w * q * cfs_sin(xn);
+return( p * SQ2OPI / cfs_sqrt(x) );
 }
 
 
 extern double MAXNUM;
 
-double md_y1(x)
+double cfs_y1(x)
 double x;
 {
 double w, z, p, q, xn;
@@ -497,20 +497,20 @@ if( x <= 5.0 )
 	{
 	if( x <= 0.0 )
 		{
-		mtherr( "md_y1", DOMAIN );
+		mtherr( "cfs_y1", DOMAIN );
 		return( -MAXNUM );
 		}
 	z = x * x;
-	w = x * (md_polevl( z, YP, 5 ) / md_p1evl( z, YQ, 8 ));
-	w += TWOOPI * ( md_j1(x) * md_log(x)  -  1.0/x );
+	w = x * (cfs_polevl( z, YP, 5 ) / cfs_p1evl( z, YQ, 8 ));
+	w += TWOOPI * ( cfs_j1(x) * cfs_log(x)  -  1.0/x );
 	return( w );
 	}
 
 w = 5.0/x;
 z = w * w;
-p = md_polevl( z, PP, 6)/md_polevl( z, PQ, 6 );
-q = md_polevl( z, QP, 7)/md_p1evl( z, QQ, 7 );
+p = cfs_polevl( z, PP, 6)/cfs_polevl( z, PQ, 6 );
+q = cfs_polevl( z, QP, 7)/cfs_p1evl( z, QQ, 7 );
 xn = x - THPIO4;
-p = p * md_sin(xn) + w * q * md_cos(xn);
-return( p * SQ2OPI / md_sqrt(x) );
+p = p * cfs_sin(xn) + w * q * cfs_cos(xn);
+return( p * SQ2OPI / cfs_sqrt(x) );
 }

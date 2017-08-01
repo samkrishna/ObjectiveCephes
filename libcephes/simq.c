@@ -10,9 +10,9 @@
  * double A[n*n], B[n], X[n];
  * int n, flag;
  * int IPS[];
- * int md_simq();
+ * int cfs_simq();
  *
- * ercode = md_simq( A, B, X, n, flag, IPS );
+ * ercode = cfs_simq( A, B, X, n, flag, IPS );
  *
  *
  *
@@ -48,9 +48,9 @@
 /*							simq	2 */
 
 #include <stdio.h>
-#define md_fabs(x) ((x) < 0 ? -(x) : (x))
+#define cfs_fabs(x) ((x) < 0 ? -(x) : (x))
 
-int md_simq( A, B, X, n, flag, IPS )
+int cfs_simq( A, B, X, n, flag, IPS )
 double A[], B[], X[];
 int n, flag;
 int IPS[];
@@ -74,7 +74,7 @@ for( i=0; i<n; i++ )
 	rownrm = 0.0;
 	for( j=0; j<n; j++ )
 		{
-		q = md_fabs( A[ij] );
+		q = cfs_fabs( A[ij] );
 		if( rownrm < q )
 			rownrm = q;
 		++ij;
@@ -98,7 +98,7 @@ for( k=0; k<nm1; k++ )
 		{
 		ip = IPS[i];
 		ipk = n*ip + k;
-		size = md_fabs( A[ipk] ) * X[ip];
+		size = cfs_fabs( A[ipk] ) * X[ip];
 		if( size > big )
 			{
 			big = size;

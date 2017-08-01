@@ -1,4 +1,4 @@
-/*							md_tan.c
+/*							cfs_tan.c
  *
  *	Circular tangent
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_tan();
+ * double x, y, cfs_tan();
  *
- * y = md_tan( x );
+ * y = cfs_tan( x );
  *
  *
  *
@@ -32,7 +32,7 @@
  * ERROR MESSAGES:
  *
  *   message         condition          value returned
- * md_tan total loss   x > 1.073741824e9     0.0
+ * cfs_tan total loss   x > 1.073741824e9     0.0
  *
  */
 
@@ -44,9 +44,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_cot();
+ * double x, y, cfs_cot();
  *
- * y = md_cot( x );
+ * y = cfs_cot( x );
  *
  *
  *
@@ -181,23 +181,23 @@ static double lossth = 1.073741824e9;
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_floor ( double );
-extern double md_ldexp ( double, int );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
-static double md_tancot(double, int);
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_floor ( double );
+extern double cfs_ldexp ( double, int );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
+static double cfs_tancot(double, int);
 #else
-double md_polevl(), md_p1evl(), md_floor(), md_ldexp();
-static double md_tancot();
-int md_isnan(), md_isfinite();
+double cfs_polevl(), cfs_p1evl(), cfs_floor(), cfs_ldexp();
+static double cfs_tancot();
+int cfs_isnan(), cfs_isfinite();
 #endif
 extern double PIO4;
 extern double INFINITY;
 extern double NAN;
 
-double md_tan(x)
+double cfs_tan(x)
 double x;
 {
 #ifdef MINUSZERO
@@ -205,19 +205,19 @@ if( x == 0.0 )
 	return(x);
 #endif
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
-if( !md_isfinite(x) )
+if( !cfs_isfinite(x) )
 	{
-	mtherr( "md_tan", DOMAIN );
+	mtherr( "cfs_tan", DOMAIN );
 	return(NAN);
 	}
 #endif
-return( md_tancot(x,0) );
+return( cfs_tancot(x,0) );
 }
 
 
-double md_cot(x)
+double cfs_cot(x)
 double x;
 {
 
@@ -226,11 +226,11 @@ if( x == 0.0 )
 	mtherr( "cot", SING );
 	return( INFINITY );
 	}
-return( md_tancot(x,1) );
+return( cfs_tancot(x,1) );
 }
 
 
-static double md_tancot( xx, cotflg )
+static double cfs_tancot( xx, cotflg )
 double xx;
 int cotflg;
 {
@@ -254,17 +254,17 @@ if( x > lossth )
 	if( cotflg )
 		mtherr( "cot", TLOSS );
 	else
-		mtherr( "md_tan", TLOSS );
+		mtherr( "cfs_tan", TLOSS );
 	return(0.0);
 	}
 
 /* compute x mod PIO4 */
-y = md_floor( x/PIO4 );
+y = cfs_floor( x/PIO4 );
 
 /* strip high bits of integer part */
-z = md_ldexp( y, -3 );
-z = md_floor(z);		/* integer part of y/8 */
-z = y - md_ldexp( z, 3 );  /* y - 16 * (y/16) */
+z = cfs_ldexp( y, -3 );
+z = cfs_floor(z);		/* integer part of y/8 */
+z = y - cfs_ldexp( z, 3 );  /* y - 16 * (y/16) */
 
 /* integer and fractional part modulo one octant */
 j = z;
@@ -281,7 +281,7 @@ z = ((x - y * DP1) - y * DP2) - y * DP3;
 zz = z * z;
 
 if( zz > 1.0e-14 )
-	y = z  +  z * (zz * md_polevl( zz, P, 2 )/md_p1evl(zz, Q, 4));
+	y = z  +  z * (zz * cfs_polevl( zz, P, 2 )/cfs_p1evl(zz, Q, 4));
 else
 	y = z;
 	

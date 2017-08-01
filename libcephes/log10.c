@@ -1,4 +1,4 @@
-/*							md_log10.c
+/*							cfs_log10.c
  *
  *	Common logarithm
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_log10();
+ * double x, y, cfs_log10();
  *
- * y = md_log10( x );
+ * y = cfs_log10( x );
  *
  *
  *
@@ -19,7 +19,7 @@
  * The argument is separated into its exponent and fractional
  * parts.  The logarithm of the fraction is approximated by
  *
- *     md_log(1+x) = x - 0.5 x**2 + x**3 P(x)/Q(x).
+ *     cfs_log(1+x) = x - 0.5 x**2 + x**3 P(x)/Q(x).
  *
  *
  *
@@ -37,8 +37,8 @@
  *
  * ERROR MESSAGES:
  *
- * md_log10 singularity:  x = 0; returns -INFINITY
- * md_log10 domain:       x < 0; returns NAN
+ * cfs_log10 singularity:  x = 0; returns -INFINITY
+ * cfs_log10 domain:       x < 0; returns NAN
  */
 
 /*
@@ -47,10 +47,10 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 */
 
 #include "mconf.h"
-static char fname[] = {"md_log10"};
+static char fname[] = {"cfs_log10"};
 
-/* Coefficients for md_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
- * 1/md_sqrt(2) <= x < md_sqrt(2)
+/* Coefficients for cfs_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
+ * 1/cfs_sqrt(2) <= x < cfs_sqrt(2)
  */
 #ifdef UNK
 static double P[] = {
@@ -142,19 +142,19 @@ static unsigned short Q[] = {
 #define L10EB 7.00731903251827651129E-4
 
 #ifdef ANSIPROT
-extern double md_frexp ( double, int * );
-extern double md_ldexp ( double, int );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern int md_isnan ( double );
+extern double cfs_frexp ( double, int * );
+extern double cfs_ldexp ( double, int );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern int cfs_isnan ( double );
 extern int isfinite ( double );
 #else
-double md_frexp(), md_ldexp(), md_polevl(), md_p1evl();
-int md_isnan(), md_isfinite();
+double cfs_frexp(), cfs_ldexp(), cfs_polevl(), cfs_p1evl();
+int cfs_isnan(), cfs_isfinite();
 #endif
 extern double LOGE2, SQRT2, INFINITY, NAN;
 
-double md_log10(x)
+double cfs_log10(x)
 double x;
 {
 VOLATILE double z;
@@ -165,7 +165,7 @@ short *q;
 int e;
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 #ifdef INFINITIES
@@ -198,7 +198,7 @@ e = ((e >> 7) & 0377) - 0200;	/* the exponent */
 #endif
 
 #ifdef IBMPC
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 /*
 q = (short *)&x;
 q += 3;
@@ -211,19 +211,19 @@ e = ((e >> 4) & 0x0fff) - 0x3fe;
 
 /* Equivalent C language standard library function: */
 #ifdef UNK
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 #endif
 
 #ifdef MIEEE
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 #endif
 
-/* logarithm using md_log(1+x) = x - .5x**2 + x**3 P(x)/Q(x) */
+/* logarithm using cfs_log(1+x) = x - .5x**2 + x**3 P(x)/Q(x) */
 
 if( x < SQRTH )
 	{
 	e -= 1;
-	x = md_ldexp( x, 1 ) - 1.0; /*  2x - 1  */
+	x = cfs_ldexp( x, 1 ) - 1.0; /*  2x - 1  */
 	}	
 else
 	{
@@ -233,11 +233,11 @@ else
 
 /* rational form */
 z = x*x;
-y = x * ( z * md_polevl( x, P, 6 ) / md_p1evl( x, Q, 6 ) );
-y = y - md_ldexp( z, -1 );   /*  y - 0.5 * x**2  */
+y = x * ( z * cfs_polevl( x, P, 6 ) / cfs_p1evl( x, Q, 6 ) );
+y = y - cfs_ldexp( z, -1 );   /*  y - 0.5 * x**2  */
 
-/* multiply md_log of fraction by md_log10(e)
- * and base 2 exponent by md_log10(2)
+/* multiply cfs_log of fraction by cfs_log10(e)
+ * and base 2 exponent by cfs_log10(2)
  */
 z = (x + y) * L10EB;  /* accumulate terms in order of size */
 z += y * L10EA;

@@ -72,23 +72,23 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 #include "mconf.h"
 
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_cabs ( cmplx * );
-extern double md_sqrt ( double );
-extern double md_atan2 ( double, double );
-extern double md_cos ( double );
-extern double md_sin ( double );
-extern double md_sqrt ( double );
-extern double md_frexp ( double, int * );
-extern double md_ldexp ( double, int );
-int md_isnan ( double );
-void md_cdiv ( cmplx *, cmplx *, cmplx * );
-void md_cadd ( cmplx *, cmplx *, cmplx * );
+extern double cfs_fabs ( double );
+extern double cfs_cabs ( cmplx * );
+extern double cfs_sqrt ( double );
+extern double cfs_atan2 ( double, double );
+extern double cfs_cos ( double );
+extern double cfs_sin ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_frexp ( double, int * );
+extern double cfs_ldexp ( double, int );
+int cfs_isnan ( double );
+void cfs_cdiv ( cmplx *, cmplx *, cmplx * );
+void cfs_cadd ( cmplx *, cmplx *, cmplx * );
 #else
-double md_fabs(), md_cabs(), md_sqrt(), md_atan2(), md_cos(), md_sin();
-double md_sqrt(), md_frexp(), md_ldexp();
-int md_isnan();
-void md_cdiv(), md_cadd();
+double cfs_fabs(), cfs_cabs(), cfs_sqrt(), cfs_atan2(), cfs_cos(), cfs_sin();
+double cfs_sqrt(), cfs_frexp(), cfs_ldexp();
+int cfs_isnan();
+void cfs_cdiv(), cfs_cadd();
 #endif
 
 extern double MAXNUM, MACHEP, PI, PIO2, INFINITY, NAN;
@@ -106,7 +106,7 @@ extern cmplx cone;
 
 /*	c = b + a	*/
 
-void md_cadd( a, b, c )
+void cfs_cadd( a, b, c )
 register cmplx *a, *b;
 cmplx *c;
 {
@@ -118,7 +118,7 @@ c->i = b->i + a->i;
 
 /*	c = b - a	*/
 
-void md_csub( a, b, c )
+void cfs_csub( a, b, c )
 register cmplx *a, *b;
 cmplx *c;
 {
@@ -129,7 +129,7 @@ c->i = b->i - a->i;
 
 /*	c = b * a */
 
-void md_cmul( a, b, c )
+void cfs_cmul( a, b, c )
 register cmplx *a, *b;
 cmplx *c;
 {
@@ -144,7 +144,7 @@ c->r = y;
 
 /*	c = b / a */
 
-void md_cdiv( a, b, c )
+void cfs_cdiv( a, b, c )
 register cmplx *a, *b;
 cmplx *c;
 {
@@ -158,7 +158,7 @@ q = b->i * a->r  -  b->r * a->i;
 if( y < 1.0 )
 	{
 	w = MAXNUM * y;
-	if( (md_fabs(p) > w) || (md_fabs(q) > w) || (y == 0.0) )
+	if( (cfs_fabs(p) > w) || (cfs_fabs(q) > w) || (y == 0.0) )
 		{
 		c->r = MAXNUM;
 		c->i = MAXNUM;
@@ -174,7 +174,7 @@ c->i = q/y;
 /*	b = a
    Caution, a `short' is assumed to be 16 bits wide.  */
 
-void md_cmov( a, b )
+void cfs_cmov( a, b )
 void *a, *b;
 {
 register short *pa, *pb;
@@ -189,7 +189,7 @@ while( --i );
 }
 
 
-void md_cneg( a )
+void cfs_cneg( a )
 register cmplx *a;
 {
 
@@ -197,7 +197,7 @@ a->r = -a->r;
 a->i = -a->i;
 }
 
-/*							md_cabs()
+/*							cfs_cabs()
  *
  *	Complex absolute value
  *
@@ -205,11 +205,11 @@ a->i = -a->i;
  *
  * SYNOPSIS:
  *
- * double md_cabs();
+ * double cfs_cabs();
  * cmplx z;
  * double a;
  *
- * a = md_cabs( &z );
+ * a = cfs_cabs( &z );
  *
  *
  *
@@ -220,7 +220,7 @@ a->i = -a->i;
  *
  * then
  *
- *       a = md_sqrt( x**2 + y**2 ).
+ *       a = cfs_sqrt( x**2 + y**2 ).
  * 
  * Overflow and underflow are avoided by testing the magnitudes
  * of x and y before squaring.  If either is outside half of
@@ -273,28 +273,28 @@ typedef struct
 #endif
 
 
-double md_cabs( z )
+double cfs_cabs( z )
 register cmplx *z;
 {
 double x, y, b, re, im;
 int ex, ey, e;
 
 #ifdef INFINITIES
-/* Note, md_cabs(INFINITY,NAN) = INFINITY. */
+/* Note, cfs_cabs(INFINITY,NAN) = INFINITY. */
 if( z->r == INFINITY || z->i == INFINITY
    || z->r == -INFINITY || z->i == -INFINITY )
   return( INFINITY );
 #endif
 
 #ifdef NANS
-if( md_isnan(z->r) )
+if( cfs_isnan(z->r) )
   return(z->r);
-if( md_isnan(z->i) )
+if( cfs_isnan(z->i) )
   return(z->i);
 #endif
 
-re = md_fabs( z->r );
-im = md_fabs( z->i );
+re = cfs_fabs( z->r );
+im = cfs_fabs( z->i );
 
 if( re == 0.0 )
 	return( im );
@@ -302,8 +302,8 @@ if( im == 0.0 )
 	return( re );
 
 /* Get the exponents of the numbers */
-x = md_frexp( re, &ex );
-y = md_frexp( im, &ey );
+x = cfs_frexp( re, &ex );
+y = cfs_frexp( im, &ey );
 
 /* Check if one number is tiny compared to the other */
 e = ex - ey;
@@ -316,31 +316,31 @@ if( e < -PREC )
 e = (ex + ey) >> 1;
 
 /* Rescale so mean is about 1 */
-x = md_ldexp( re, -e );
-y = md_ldexp( im, -e );
+x = cfs_ldexp( re, -e );
+y = cfs_ldexp( im, -e );
 		
 /* Hypotenuse of the right triangle */
-b = md_sqrt( x * x  +  y * y );
+b = cfs_sqrt( x * x  +  y * y );
 
 /* Compute the exponent of the answer. */
-y = md_frexp( b, &ey );
+y = cfs_frexp( b, &ey );
 ey = e + ey;
 
 /* Check it for overflow and underflow. */
 if( ey > MAXEXP )
 	{
-	mtherr( "md_cabs", OVERFLOW );
+	mtherr( "cfs_cabs", OVERFLOW );
 	return( INFINITY );
 	}
 if( ey < MINEXP )
 	return(0.0);
 
 /* Undo the scaling */
-b = md_ldexp( b, e );
+b = cfs_ldexp( b, e );
 return( b );
 }
 
-/*							md_csqrt()
+/*							cfs_csqrt()
  *
  *	Complex square root
  *
@@ -348,10 +348,10 @@ return( b );
  *
  * SYNOPSIS:
  *
- * void md_csqrt();
+ * void cfs_csqrt();
  * cmplx z, w;
  *
- * md_csqrt( &z, &w );
+ * cfs_csqrt( &z, &w );
  *
  *
  *
@@ -383,12 +383,12 @@ return( b );
  *    IEEE      -10,+10    100000       3.2e-16     7.7e-17
  *
  *                        2
- * Also tested by md_csqrt( z ) = z, and tested by arguments
+ * Also tested by cfs_csqrt( z ) = z, and tested by arguments
  * close to the real axis.
  */
 
 
-void md_csqrt( z, w )
+void cfs_csqrt( z, w )
 cmplx *z, *w;
 {
 cmplx q, s;
@@ -402,12 +402,12 @@ if( y == 0.0 )
 	if( x < 0.0 )
 		{
 		w->r = 0.0;
-		w->i = md_sqrt(-x);
+		w->i = cfs_sqrt(-x);
 		return;
 		}
 	else
 		{
-		w->r = md_sqrt(x);
+		w->r = cfs_sqrt(x);
 		w->i = 0.0;
 		return;
 		}
@@ -416,8 +416,8 @@ if( y == 0.0 )
 
 if( x == 0.0 )
 	{
-	r = md_fabs(y);
-	r = md_sqrt(0.5*r);
+	r = cfs_fabs(y);
+	r = cfs_sqrt(0.5*r);
 	if( y > 0 )
 		w->r = r;
 	else
@@ -426,37 +426,37 @@ if( x == 0.0 )
 	return;
 	}
 
-/* Approximate  md_sqrt(x^2+y^2) - x  =  y^2/2x - y^4/24x^3 + ... .
+/* Approximate  cfs_sqrt(x^2+y^2) - x  =  y^2/2x - y^4/24x^3 + ... .
  * The relative error in the first term is approximately y^2/12x^2 .
  */
-if( (md_fabs(y) < 2.e-4 * md_fabs(x))
+if( (cfs_fabs(y) < 2.e-4 * cfs_fabs(x))
    && (x > 0) )
 	{
 	t = 0.25*y*(y/x);
 	}
 else
 	{
-	r = md_cabs(z);
+	r = cfs_cabs(z);
 	t = 0.5*(r - x);
 	}
 
-r = md_sqrt(t);
+r = cfs_sqrt(t);
 q.i = r;
 q.r = y/(2.0*r);
 /* Heron iteration in complex arithmetic */
-md_cdiv( &q, z, &s );
-md_cadd( &q, &s, w );
+cfs_cdiv( &q, z, &s );
+cfs_cadd( &q, &s, w );
 w->r *= 0.5;
 w->i *= 0.5;
 }
 
 
-double md_hypot( x, y )
+double cfs_hypot( x, y )
 double x, y;
 {
 cmplx z;
 
 z.r = x;
 z.i = y;
-return( md_cabs(&z) );
+return( cfs_cabs(&z) );
 }

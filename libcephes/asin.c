@@ -1,4 +1,4 @@
-/*							md_asin.c
+/*							cfs_asin.c
  *
  *	Inverse circular sine
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_asin();
+ * double x, y, cfs_asin();
  *
- * y = md_asin( x );
+ * y = cfs_asin( x );
  *
  *
  *
@@ -20,7 +20,7 @@
  * is used for |x| in the interval [0, 0.5].  If |x| > 0.5 it is
  * transformed by the identity
  *
- *    md_asin(x) = pi/2 - 2 md_asin( md_sqrt( (1-x)/2 ) ).
+ *    cfs_asin(x) = pi/2 - 2 cfs_asin( cfs_sqrt( (1-x)/2 ) ).
  *
  *
  * ACCURACY:
@@ -34,10 +34,10 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_asin domain        |x| > 1           NAN
+ * cfs_asin domain        |x| > 1           NAN
  *
  */
-/*							md_acos()
+/*							cfs_acos()
  *
  *	Inverse circular cosine
  *
@@ -45,9 +45,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_acos();
+ * double x, y, cfs_acos();
  *
- * y = md_acos( x );
+ * y = cfs_acos( x );
  *
  *
  *
@@ -56,15 +56,15 @@
  * Returns radian angle between 0 and pi whose cosine
  * is x.
  *
- * Analytically, md_acos(x) = pi/2 - md_asin(x).  However if |x| is
- * near 1, there is cancellation error in subtracting md_asin(x)
+ * Analytically, cfs_acos(x) = pi/2 - cfs_asin(x).  However if |x| is
+ * near 1, there is cancellation error in subtracting cfs_asin(x)
  * from pi/2.  Hence if x < -0.5,
  *
- *    md_acos(x) =	 pi - 2.0 * md_asin( md_sqrt((1+x)/2) );
+ *    cfs_acos(x) =	 pi - 2.0 * cfs_asin( cfs_sqrt((1+x)/2) );
  *
  * or if x > +0.5,
  *
- *    md_acos(x) =	 2.0 * md_asin(  md_sqrt((1-x)/2) ).
+ *    cfs_acos(x) =	 2.0 * cfs_asin(  cfs_sqrt((1-x)/2) ).
  *
  *
  * ACCURACY:
@@ -78,10 +78,10 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_asin domain        |x| > 1           NAN
+ * cfs_asin domain        |x| > 1           NAN
  */
 
-/*							md_asin.c	*/
+/*							cfs_asin.c	*/
 
 /*
 Cephes Math Library Release 2.8:  June, 2000
@@ -166,7 +166,7 @@ static short Q[20] = {
 };
 #endif
 
-/* arcsin(1-x) = pi/2 - md_sqrt(2x)(1+R(x))
+/* arcsin(1-x) = pi/2 - cfs_sqrt(2x)(1+R(x))
    0 <= x <= 0.5
    Peak relative error = 4.2e-18  */
 #if UNK
@@ -242,17 +242,17 @@ static short S[16] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_sqrt ( double );
-double md_asin ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_sqrt ( double );
+double cfs_asin ( double );
 #else
-double md_sqrt(), md_polevl(), md_p1evl();
-double md_asin();
+double cfs_sqrt(), cfs_polevl(), cfs_p1evl();
+double cfs_asin();
 #endif
 extern double PIO2, PIO4, NAN;
 
-double md_asin(x)
+double cfs_asin(x)
 double x;
 {
 double a, p, z, zz;
@@ -271,16 +271,16 @@ else
 
 if( a > 1.0 )
 	{
-	mtherr( "md_asin", DOMAIN );
+	mtherr( "cfs_asin", DOMAIN );
 	return( NAN );
 	}
 
 if( a > 0.625 )
 	{
-	/* arcsin(1-x) = pi/2 - md_sqrt(2x)(1+R(x))  */
+	/* arcsin(1-x) = pi/2 - cfs_sqrt(2x)(1+R(x))  */
 	zz = 1.0 - a;
-	p = zz * md_polevl( zz, R, 4)/md_p1evl( zz, S, 4);
-	zz = md_sqrt(zz+zz);
+	p = zz * cfs_polevl( zz, R, 4)/cfs_p1evl( zz, S, 4);
+	zz = cfs_sqrt(zz+zz);
 	z = PIO4 - zz;
 	zz = zz * p - MOREBITS;
 	z = z - zz;
@@ -293,7 +293,7 @@ else
 		return(x);
 		}
 	zz = a * a;
-	z = zz * md_polevl( zz, P, 5)/md_p1evl( zz, Q, 5);
+	z = zz * cfs_polevl( zz, P, 5)/cfs_p1evl( zz, Q, 5);
 	z = a * z + a;
 	}
 if( sign < 0 )
@@ -303,21 +303,21 @@ return(z);
 
 
 
-double md_acos(x)
+double cfs_acos(x)
 double x;
 {
 double z;
 
 if( (x < -1.0) || (x > 1.0) )
 	{
-	mtherr( "md_acos", DOMAIN );
+	mtherr( "cfs_acos", DOMAIN );
 	return( NAN );
 	}
 if( x > 0.5 )
 	{
-	return( 2.0 * md_asin(  md_sqrt(0.5 - 0.5*x) ) );
+	return( 2.0 * cfs_asin(  cfs_sqrt(0.5 - 0.5*x) ) );
 	}
-z = PIO4 - md_asin(x);
+z = PIO4 - cfs_asin(x);
 z = z + MOREBITS;
 z = z + PIO4;
 return( z );

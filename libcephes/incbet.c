@@ -5,9 +5,9 @@
  *
  * SYNOPSIS:
  *
- * double a, b, x, y, md_incbet();
+ * double a, b, x, y, cfs_incbet();
  *
- * y = md_incbet( a, b, x );
+ * y = cfs_incbet( a, b, x );
  *
  *
  * DESCRIPTION:
@@ -28,7 +28,7 @@
  * The integral from x to 1 may be obtained by the symmetry
  * relation
  *
- *    1 - md_incbet( a, b, x )  =  md_incbet( b, a, 1-x ).
+ *    1 - cfs_incbet( a, b, x )  =  cfs_incbet( b, a, 1-x ).
  *
  * The integral is evaluated by a continued fraction expansion
  * or, when b*x is small, by a power series.
@@ -69,25 +69,25 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 
 extern double MACHEP, MINLOG, MAXLOG;
 #ifdef ANSIPROT
-extern double md_gamma ( double );
-extern double md_lgam ( double );
-extern double md_exp ( double );
-extern double md_log ( double );
-extern double md_pow ( double, double );
-extern double md_fabs ( double );
-static double md_incbcf(double, double, double);
-static double md_incbd(double, double, double);
-static double md_pseries(double, double, double);
+extern double cfs_gamma ( double );
+extern double cfs_lgam ( double );
+extern double cfs_exp ( double );
+extern double cfs_log ( double );
+extern double cfs_pow ( double, double );
+extern double cfs_fabs ( double );
+static double cfs_incbcf(double, double, double);
+static double cfs_incbd(double, double, double);
+static double cfs_pseries(double, double, double);
 #else
-double md_gamma(), md_lgam(), md_exp(), md_log(), md_pow(), md_fabs();
-static double md_incbcf(), md_incbd(), md_pseries();
+double cfs_gamma(), cfs_lgam(), cfs_exp(), cfs_log(), cfs_pow(), cfs_fabs();
+static double cfs_incbcf(), cfs_incbd(), cfs_pseries();
 #endif
 
 static double big = 4.503599627370496e15;
 static double biginv =  2.22044604925031308085e-16;
 
 
-double md_incbet( aa, bb, xx )
+double cfs_incbet( aa, bb, xx )
 double aa, bb, xx;
 {
 double a, b, t, x, xc, w, y;
@@ -110,7 +110,7 @@ domerr:
 flag = 0;
 if( (bb * xx) <= 1.0 && xx <= 0.95)
 	{
-	t = md_pseries(aa, bb, xx);
+	t = cfs_pseries(aa, bb, xx);
 		goto done;
 	}
 
@@ -135,39 +135,39 @@ else
 
 if( flag == 1 && (b * x) <= 1.0 && x <= 0.95)
 	{
-	t = md_pseries(a, b, x);
+	t = cfs_pseries(a, b, x);
 	goto done;
 	}
 
 /* Choose expansion for better convergence. */
 y = x * (a+b-2.0) - (a-1.0);
 if( y < 0.0 )
-	w = md_incbcf( a, b, x );
+	w = cfs_incbcf( a, b, x );
 else
-	w = md_incbd( a, b, x ) / xc;
+	w = cfs_incbd( a, b, x ) / xc;
 
 /* Multiply w by the factor
      a      b   _             _     _
     x  (1-x)   | (a+b) / ( a | (a) | (b) ) .   */
 
-y = a * md_log(x);
-t = b * md_log(xc);
-if( (a+b) < MAXGAM && md_fabs(y) < MAXLOG && md_fabs(t) < MAXLOG )
+y = a * cfs_log(x);
+t = b * cfs_log(xc);
+if( (a+b) < MAXGAM && cfs_fabs(y) < MAXLOG && cfs_fabs(t) < MAXLOG )
 	{
-	t = md_pow(xc,b);
-	t *= md_pow(x,a);
+	t = cfs_pow(xc,b);
+	t *= cfs_pow(x,a);
 	t /= a;
 	t *= w;
-	t *= md_gamma(a+b) / (md_gamma(a) * md_gamma(b));
+	t *= cfs_gamma(a+b) / (cfs_gamma(a) * cfs_gamma(b));
 	goto done;
 	}
 /* Resort to logarithms.  */
-y += t + md_lgam(a+b) - md_lgam(a) - md_lgam(b);
-y += md_log(w/a);
+y += t + cfs_lgam(a+b) - cfs_lgam(a) - cfs_lgam(b);
+y += cfs_log(w/a);
 if( y < MINLOG )
 	t = 0.0;
 else
-	t = md_exp(y);
+	t = cfs_exp(y);
 
 done:
 
@@ -185,7 +185,7 @@ return( t );
  * for incomplete beta integral
  */
 
-static double md_incbcf( a, b, x )
+static double cfs_incbcf( a, b, x )
 double a, b, x;
 {
 double xk, pk, pkm1, pkm2, qk, qkm1, qkm2;
@@ -233,7 +233,7 @@ do
 		r = pk/qk;
 	if( r != 0 )
 		{
-		t = md_fabs( (ans - r)/r );
+		t = cfs_fabs( (ans - r)/r );
 		ans = r;
 		}
 	else
@@ -251,14 +251,14 @@ do
 	k7 += 2.0;
 	k8 += 2.0;
 
-	if( (md_fabs(qk) + md_fabs(pk)) > big )
+	if( (cfs_fabs(qk) + cfs_fabs(pk)) > big )
 		{
 		pkm2 *= biginv;
 		pkm1 *= biginv;
 		qkm2 *= biginv;
 		qkm1 *= biginv;
 		}
-	if( (md_fabs(qk) < biginv) || (md_fabs(pk) < biginv) )
+	if( (cfs_fabs(qk) < biginv) || (cfs_fabs(pk) < biginv) )
 		{
 		pkm2 *= big;
 		pkm1 *= big;
@@ -277,7 +277,7 @@ return(ans);
  * for incomplete beta integral
  */
 
-static double md_incbd( a, b, x )
+static double cfs_incbd( a, b, x )
 double a, b, x;
 {
 double xk, pk, pkm1, pkm2, qk, qkm1, qkm2;
@@ -326,7 +326,7 @@ do
 		r = pk/qk;
 	if( r != 0 )
 		{
-		t = md_fabs( (ans - r)/r );
+		t = cfs_fabs( (ans - r)/r );
 		ans = r;
 		}
 	else
@@ -344,14 +344,14 @@ do
 	k7 += 2.0;
 	k8 += 2.0;
 
-	if( (md_fabs(qk) + md_fabs(pk)) > big )
+	if( (cfs_fabs(qk) + cfs_fabs(pk)) > big )
 		{
 		pkm2 *= biginv;
 		pkm1 *= biginv;
 		qkm2 *= biginv;
 		qkm1 *= biginv;
 		}
-	if( (md_fabs(qk) < biginv) || (md_fabs(pk) < biginv) )
+	if( (cfs_fabs(qk) < biginv) || (cfs_fabs(pk) < biginv) )
 		{
 		pkm2 *= big;
 		pkm1 *= big;
@@ -367,7 +367,7 @@ return(ans);
 /* Power series for incomplete beta integral.
    Use when b*x is small and x not too close to 1.  */
 
-static double md_pseries( a, b, x )
+static double cfs_pseries( a, b, x )
 double a, b, x;
 {
 double s, t, u, v, n, t1, z, ai;
@@ -380,7 +380,7 @@ t = u;
 n = 2.0;
 s = 0.0;
 z = MACHEP * ai;
-while( md_fabs(v) > z )
+while( cfs_fabs(v) > z )
 	{
 	u = (n - b) * x / n;
 	t *= u;
@@ -391,19 +391,19 @@ while( md_fabs(v) > z )
 s += t1;
 s += ai;
 
-u = a * md_log(x);
-if( (a+b) < MAXGAM && md_fabs(u) < MAXLOG )
+u = a * cfs_log(x);
+if( (a+b) < MAXGAM && cfs_fabs(u) < MAXLOG )
 	{
-	t = md_gamma(a+b)/(md_gamma(a)*md_gamma(b));
-	s = s * t * md_pow(x,a);
+	t = cfs_gamma(a+b)/(cfs_gamma(a)*cfs_gamma(b));
+	s = s * t * cfs_pow(x,a);
 	}
 else
 	{
-	t = md_lgam(a+b) - md_lgam(a) - md_lgam(b) + u + md_log(s);
+	t = cfs_lgam(a+b) - cfs_lgam(a) - cfs_lgam(b) + u + cfs_log(s);
 	if( t < MINLOG )
 		s = 0.0;
 	else
-	s = md_exp(t);
+	s = cfs_exp(t);
 	}
 return(s);
 }

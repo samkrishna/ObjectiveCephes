@@ -27,10 +27,10 @@
  *	Riemann zeta(x) = zetac(x) + 1.
  *
  * Extension of the function definition for x < 1 is implemented.
- * Zero is returned for x > md_log2(MAXNUM).
+ * Zero is returned for x > cfs_log2(MAXNUM).
  *
  * An overflow error may occur for large negative x, due to the
- * md_gamma function in the reflection formula.
+ * cfs_gamma function in the reflection formula.
  *
  * ACCURACY:
  *
@@ -299,7 +299,7 @@ static unsigned short Q[32] = {
 };
 #endif
 
-/* md_log(zeta(x) - 1 - 2**-x), 10 <= x <= 50 */
+/* cfs_log(zeta(x) - 1 - 2**-x), 10 <= x <= 50 */
 #ifdef UNK
 static double A[11] = {
  8.70728567484590192539E6,
@@ -494,17 +494,17 @@ static unsigned short S[20] = {
  * Riemann zeta function, minus one
  */
 #ifdef ANSIPROT
-extern double md_sin ( double );
-extern double md_floor ( double );
-extern double md_gamma ( double );
-extern double md_pow ( double, double );
-extern double md_exp ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
+extern double cfs_sin ( double );
+extern double cfs_floor ( double );
+extern double cfs_gamma ( double );
+extern double cfs_pow ( double, double );
+extern double cfs_exp ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
 double zetac ( double );
 #else
-double md_sin(), md_floor(), md_gamma(), md_pow(), md_exp();
-double md_polevl(), md_p1evl(), zetac();
+double cfs_sin(), cfs_floor(), cfs_gamma(), cfs_pow(), cfs_exp();
+double cfs_polevl(), cfs_p1evl(), zetac();
 #endif
 extern double MACHEP;
 
@@ -527,7 +527,7 @@ if( x < 0.0 )
 		}
 	s = 1.0 - x;
 	w = zetac( s );
-	b = md_sin(0.5*PI*x) * md_pow(2.0*PI, x) * md_gamma(s) * (1.0 + w) / PI;
+	b = cfs_sin(0.5*PI*x) * cfs_pow(2.0*PI, x) * cfs_gamma(s) * (1.0 + w) / PI;
 	return(b - 1.0);
 	}
 
@@ -535,7 +535,7 @@ if( x >= MAXL2 )
 	return(0.0);	/* because first term is 2**-x */
 
 /* Tabulated values for integer argument */
-w = md_floor(x);
+w = cfs_floor(x);
 if( w == x )
 	{
 	i = x;
@@ -553,7 +553,7 @@ if( w == x )
 if( x < 1.0 )
 	{
 	w = 1.0 - x;
-	a = md_polevl( x, R, 5 ) / ( w * md_p1evl( x, S, 5 ));
+	a = cfs_polevl( x, R, 5 ) / ( w * cfs_p1evl( x, S, 5 ));
 	return( a );
 	}
 
@@ -565,17 +565,17 @@ if( x == 1.0 )
 
 if( x <= 10.0 )
 	{
-	b = md_pow( 2.0, x ) * (x - 1.0);
+	b = cfs_pow( 2.0, x ) * (x - 1.0);
 	w = 1.0/x;
-	s = (x * md_polevl( w, P, 8 )) / (b * md_p1evl( w, Q, 8 ));
+	s = (x * cfs_polevl( w, P, 8 )) / (b * cfs_p1evl( w, Q, 8 ));
 	return( s );
 	}
 
 if( x <= 50.0 )
 	{
-	b = md_pow( 2.0, -x );
-	w = md_polevl( x, A, 10 ) / md_p1evl( x, B, 10 );
-	w = md_exp(w) + b;
+	b = cfs_pow( 2.0, -x );
+	w = cfs_polevl( x, A, 10 ) / cfs_p1evl( x, B, 10 );
+	w = cfs_exp(w) + b;
 	return(w);
 	}
 
@@ -588,12 +588,12 @@ a = 1.0;
 do
 	{
 	a += 2.0;
-	b = md_pow( a, -x );
+	b = cfs_pow( a, -x );
 	s += b;
 	}
 while( b/s > MACHEP );
 
-b = md_pow( 2.0, -x );
+b = cfs_pow( 2.0, -x );
 s = (s + b)/(1.0-b);
 return(s);
 }

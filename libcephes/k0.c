@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_k0();
+ * double x, y, cfs_k0();
  *
- * y = md_k0( x );
+ * y = cfs_k0( x );
  *
  *
  *
@@ -76,11 +76,11 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-/* Chebyshev coefficients for K0(x) + md_log(x/2) md_i0(x)
+/* Chebyshev coefficients for K0(x) + cfs_log(x/2) cfs_i0(x)
  * in the interval [0,2].  The odd order coefficients are all
  * zero; only the even order coefficients are listed.
  * 
- * lim(x->0){ K0(x) + md_log(x/2) md_i0(x) } = -EUL.
+ * lim(x->0){ K0(x) + cfs_log(x/2) cfs_i0(x) } = -EUL.
  */
 
 #ifdef UNK
@@ -146,10 +146,10 @@ static unsigned short A[] = {
 
 
 
-/* Chebyshev coefficients for md_exp(x) md_sqrt(x) K0(x)
+/* Chebyshev coefficients for cfs_exp(x) cfs_sqrt(x) K0(x)
  * in the inverted interval [2,infinity].
  * 
- * lim(x->inf){ md_exp(x) md_sqrt(x) K0(x) } = md_sqrt(pi/2).
+ * lim(x->inf){ cfs_exp(x) cfs_sqrt(x) K0(x) } = cfs_sqrt(pi/2).
  */
 
 #ifdef UNK
@@ -274,18 +274,18 @@ static unsigned short B[] = {
 
 /*							k0.c	*/
 #ifdef ANSIPROT 
-extern double md_chbevl ( double, void *, int );
-extern double md_exp ( double );
-extern double md_i0 ( double );
-extern double md_log ( double );
-extern double md_sqrt ( double );
+extern double cfs_chbevl ( double, void *, int );
+extern double cfs_exp ( double );
+extern double cfs_i0 ( double );
+extern double cfs_log ( double );
+extern double cfs_sqrt ( double );
 #else
-double md_chbevl(), md_exp(), md_i0(), md_log(), md_sqrt();
+double cfs_chbevl(), cfs_exp(), cfs_i0(), cfs_log(), cfs_sqrt();
 #endif
 extern double PI;
 extern double MAXNUM;
 
-double md_k0(x)
+double cfs_k0(x)
 double x;
 {
 double y, z;
@@ -299,18 +299,18 @@ if( x <= 0.0 )
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y = md_chbevl( y, A, 10 ) - md_log( 0.5 * x ) * md_i0(x);
+	y = cfs_chbevl( y, A, 10 ) - cfs_log( 0.5 * x ) * cfs_i0(x);
 	return( y );
 	}
 z = 8.0/x - 2.0;
-y = md_exp(-x) * md_chbevl( z, B, 25 ) / md_sqrt(x);
+y = cfs_exp(-x) * cfs_chbevl( z, B, 25 ) / cfs_sqrt(x);
 return(y);
 }
 
 
 
 
-double md_k0e( x )
+double cfs_k0e( x )
 double x;
 {
 double y;
@@ -324,10 +324,10 @@ if( x <= 0.0 )
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y = md_chbevl( y, A, 10 ) - md_log( 0.5 * x ) * md_i0(x);
-	return( y * md_exp(x) );
+	y = cfs_chbevl( y, A, 10 ) - cfs_log( 0.5 * x ) * cfs_i0(x);
+	return( y * cfs_exp(x) );
 	}
 
-y = md_chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x);
+y = cfs_chbevl( 8.0/x - 2.0, B, 25 ) / cfs_sqrt(x);
 return(y);
 }

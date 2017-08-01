@@ -3,32 +3,32 @@
  * Relative error approximations for function arguments near
  * unity.
  *
- *    md_log1p(x) = md_log(1+x)
- *    expm1(x) = md_exp(x) - 1
- *    cosm1(x) = md_cos(x) - 1
+ *    cfs_log1p(x) = cfs_log(1+x)
+ *    expm1(x) = cfs_exp(x) - 1
+ *    cosm1(x) = cfs_cos(x) - 1
  *
  */
 
 #include "mconf.h"
 
 #ifdef ANSIPROT
-extern int md_isnan (double);
-extern int md_isfinite (double);
-extern double md_log ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_exp ( double );
-extern double md_cos ( double );
+extern int cfs_isnan (double);
+extern int cfs_isfinite (double);
+extern double cfs_log ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_exp ( double );
+extern double cfs_cos ( double );
 #else
-double md_log(), md_polevl(), md_p1evl(), md_exp(), md_cos();
-int md_isnan(), md_isfinite();
+double cfs_log(), cfs_polevl(), cfs_p1evl(), cfs_exp(), cfs_cos();
+int cfs_isnan(), cfs_isfinite();
 #endif
 extern double INFINITY;
 
-/* md_log1p(x) = md_log(1 + x)  */
+/* cfs_log1p(x) = cfs_log(1 + x)  */
 
-/* Coefficients for md_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
- * 1/md_sqrt(2) <= x < md_sqrt(2)
+/* Coefficients for cfs_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
+ * 1/cfs_sqrt(2) <= x < cfs_sqrt(2)
  * Theoretical peak relative error = 2.32e-20
  */
 static double LP[] = {
@@ -53,22 +53,22 @@ static double LQ[] = {
 #define SQRTH 0.70710678118654752440
 #define SQRT2 1.41421356237309504880
 
-double md_log1p(x)
+double cfs_log1p(x)
 double x;
 {
 double z;
 
 z = 1.0 + x;
 if( (z < SQRTH) || (z > SQRT2) )
-	return( md_log(z) );
+	return( cfs_log(z) );
 z = x*x;
-z = -0.5 * z + x * ( z * md_polevl( x, LP, 6 ) / md_p1evl( x, LQ, 6 ) );
+z = -0.5 * z + x * ( z * cfs_polevl( x, LP, 6 ) / cfs_p1evl( x, LQ, 6 ) );
 return (x + z);
 }
 
 
 
-/* expm1(x) = md_exp(x) - 1  */
+/* expm1(x) = cfs_exp(x) - 1  */
 
 /*  e^x =  1 + 2x P(x^2)/( Q(x^2) - P(x^2) )
  * -0.5 <= x <= 0.5
@@ -86,13 +86,13 @@ static double EQ[4] = {
  2.0000000000000000000897E0,
 };
 
-double md_expm1(x)
+double cfs_expm1(x)
 double x;
 {
 double r, xx;
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 #ifdef INFINITIES
@@ -102,16 +102,16 @@ if( x == -INFINITY )
 	return(-1.0);
 #endif
 if( (x < -0.5) || (x > 0.5) )
-	return( md_exp(x) - 1.0 );
+	return( cfs_exp(x) - 1.0 );
 xx = x * x;
-r = x * md_polevl( xx, EP, 2 );
-r = r/( md_polevl( xx, EQ, 3 ) - r );
+r = x * cfs_polevl( xx, EP, 2 );
+r = r/( cfs_polevl( xx, EQ, 3 ) - r );
 return (r + r);
 }
 
 
 
-/* cosm1(x) = md_cos(x) - 1  */
+/* cosm1(x) = cfs_cos(x) - 1  */
 
 static double coscof[7] = {
  4.7377507964246204691685E-14,
@@ -125,14 +125,14 @@ static double coscof[7] = {
 
 extern double PIO4;
 
-double md_cosm1(x)
+double cfs_cosm1(x)
 double x;
 {
 double xx;
 
 if( (x < -PIO4) || (x > PIO4) )
-	return( md_cos(x) - 1.0 );
+	return( cfs_cos(x) - 1.0 );
 xx = x * x;
-xx = -0.5*xx + xx * xx * md_polevl( xx, coscof, 6 );
+xx = -0.5*xx + xx * xx * cfs_polevl( xx, coscof, 6 );
 return xx;
 }

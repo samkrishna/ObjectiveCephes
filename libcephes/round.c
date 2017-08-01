@@ -1,4 +1,4 @@
-/*							md_round.c
+/*							cfs_round.c
  *
  *	Round double to nearest or even integer valued double
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_round();
+ * double x, y, cfs_round();
  *
- * y = md_round(x);
+ * y = cfs_round(x);
  *
  *
  *
@@ -34,18 +34,18 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 */
 #include "mconf.h"
 #ifdef ANSIPROT
-double md_floor ( double );
+double cfs_floor ( double );
 #else
-double md_floor();
+double cfs_floor();
 #endif
 
-double md_round(x)
+double cfs_round(x)
 double x;
 {
 double y, r;
 
 /* Largest integer <= x */
-y = md_floor(x);
+y = cfs_floor(x);
 
 /* Fractional part */
 r = x - y;
@@ -57,7 +57,7 @@ if( r > 0.5 )
 /* Round to even */
 if( r == 0.5 )
 	{
-	r = y - 2.0 * md_floor( 0.5 * y );
+	r = y - 2.0 * cfs_floor( 0.5 * y );
 	if( r == 1.0 )
 		{
 rndup:
@@ -65,6 +65,6 @@ rndup:
 		}
 	}
 
-/* Else md_round down. */
+/* Else cfs_round down. */
 return(y);
 }

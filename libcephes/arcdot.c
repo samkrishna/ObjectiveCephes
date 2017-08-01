@@ -7,9 +7,9 @@
  *
  * SYNOPSIS:
  *
- * double p[3], q[3], md_arcdot();
+ * double p[3], q[3], cfs_arcdot();
  *
- * y = md_arcdot( p, q );
+ * y = cfs_arcdot( p, q );
  *
  *
  *
@@ -17,10 +17,10 @@
  *
  * For two vectors p, q, the angle A between them is given by
  *
- *      p.q / (|p| |q|)  = md_cos A  .
+ *      p.q / (|p| |q|)  = cfs_cos A  .
  *
  * where "." represents inner product, "|x|" the length of vector x.
- * If the angle is small, an expression in md_sin A is preferred.
+ * If the angle is small, an expression in cfs_sin A is preferred.
  * Set r = q - p.  Then
  *
  *     p.q = p.p + p.r ,
@@ -30,14 +30,14 @@
  *     |q|^2 = p.p + 2 p.r + r.r ,
  *
  *                  p.p^2 + 2 p.p p.r + p.r^2
- *     md_cos^2 A  =  ----------------------------
+ *     cfs_cos^2 A  =  ----------------------------
  *                    p.p (p.p + 2 p.r + r.r)
  *
  *                  p.p + 2 p.r + p.r^2 / p.p
  *              =  --------------------------- ,
  *                     p.p + 2 p.r + r.r
  *
- *     md_sin^2 A  =  1 - md_cos^2 A
+ *     cfs_sin^2 A  =  1 - cfs_cos^2 A
  *
  *                   r.r - p.r^2 / p.p
  *              =  --------------------
@@ -60,16 +60,16 @@ Copyright 1995 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_sqrt ( double );
-extern double md_acos ( double );
-extern double md_asin ( double );
-extern double md_atan ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_acos ( double );
+extern double cfs_asin ( double );
+extern double cfs_atan ( double );
 #else
-double md_sqrt(), md_acos(), md_asin(), md_atan();
+double cfs_sqrt(), cfs_acos(), cfs_asin(), cfs_atan();
 #endif
 extern double PI;
 
-double md_arcdot(p,q)
+double cfs_arcdot(p,q)
 double p[], q[];
 {
 double pp, pr, qq, rr, rt, pt, qt, pq;
@@ -96,15 +96,15 @@ if (rr == 0.0 || pp == 0.0 || qq == 0.0)
 rt = (rr - (pr * pr) / pp) / qq;
 if (rt <= 0.75)
   {
-    rt = md_sqrt(rt);
-    qt = md_asin(rt);
+    rt = cfs_sqrt(rt);
+    qt = cfs_asin(rt);
     if (pq < 0.0)
       qt = PI - qt;
   }
 else
   {
-    pt = pq / md_sqrt(pp*qq);
-    qt = md_acos(pt);
+    pt = pq / cfs_sqrt(pp*qq);
+    qt = cfs_acos(pt);
   }
 return qt;
 }

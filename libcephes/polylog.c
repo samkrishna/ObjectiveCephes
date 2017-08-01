@@ -207,20 +207,20 @@ static short B4[48] = {
 
 #ifdef ANSIPROT
 extern double spence ( double );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
 extern double zetac ( double );
-extern double md_pow ( double, double );
-extern double md_powi ( double, int );
-extern double md_log ( double );
+extern double cfs_pow ( double, double );
+extern double cfs_powi ( double, int );
+extern double cfs_log ( double );
 extern double fac ( int i );
-extern double md_fabs (double);
+extern double cfs_fabs (double);
 double polylog (int, double);
 #else
-extern double spence(), md_polevl(), md_p1evl(), zetac();
-extern double md_pow(), md_powi(), md_log();
+extern double spence(), cfs_polevl(), cfs_p1evl(), zetac();
+extern double cfs_pow(), cfs_powi(), cfs_log();
 extern double fac(); /* factorial */
-extern double md_fabs();
+extern double cfs_fabs();
 double polylog();
 #endif
 extern double MACHEP;
@@ -265,7 +265,7 @@ polylog (n, x)
 
   if (n == 1)
     {
-      s = -md_log (1.0 - x);
+      s = -cfs_log (1.0 - x);
       return s;
     }
 
@@ -285,14 +285,14 @@ polylog (n, x)
     {
       /* Li_n(1) = zeta(n) */
       s = zetac ((double) n) + 1.0;
-      s = s * (md_powi (2.0, 1 - n) - 1.0);
+      s = s * (cfs_powi (2.0, 1 - n) - 1.0);
       return s;
     }
 
 /*  Inversion formula:
  *                                                   [n/2]   n-2r
- *                n                  1     n           -  md_log    (z)
- *  Li (-z) + (-1)  Li (-1/z)  =  - --- md_log (z)  +  2  >  ----------- Li  (-1)
+ *                n                  1     n           -  cfs_log    (z)
+ *  Li (-z) + (-1)  Li (-1/z)  =  - --- cfs_log (z)  +  2  >  ----------- Li  (-1)
  *    n               n              n!                -   (n - 2r)!    2r
  *                                                    r=1
  */
@@ -301,7 +301,7 @@ polylog (n, x)
       double q, w;
       int r;
 
-      w = md_log (-x);
+      w = cfs_log (-x);
       s = 0.0;
       for (r = 1; r <= n / 2; r++)
 	{
@@ -314,7 +314,7 @@ polylog (n, x)
 	      break;
 	    }
 	  q = (double) j;
-	  q = md_pow (w, q) * p / fac (j);
+	  q = cfs_pow (w, q) * p / fac (j);
 	  s = s + q;
 	}
       s = 2.0 * s;
@@ -322,7 +322,7 @@ polylog (n, x)
       if (n & 1)
 	q = -q;
       s = s - q;
-      s = s - md_pow (w, (double) n) / fac (n);
+      s = s - cfs_pow (w, (double) n) / fac (n);
       return s;
     }
 
@@ -340,7 +340,7 @@ polylog (n, x)
       Li (-x/(1-x)) + Li (1-x) + Li (x)
         3               3          3
                      2                               2                 3
-       = Li (1) + (pi /6) md_log(1-x) - (1/2) md_log(x) md_log (1-x) + (1/6) md_log (1-x)
+       = Li (1) + (pi /6) cfs_log(1-x) - (1/2) cfs_log(x) cfs_log (1-x) + (1/6) cfs_log (1-x)
            3
   */
 
@@ -349,10 +349,10 @@ polylog (n, x)
       p = x * x * x;
       if (x > 0.8)
 	{
-	  u = md_log(x);
+	  u = cfs_log(x);
 	  s = u * u * u / 6.0;
 	  xc = 1.0 - x;
-	  s = s - 0.5 * u * u * md_log(xc);
+	  s = s - 0.5 * u * u * cfs_log(xc);
           s = s + PI * PI * u / 6.0;
           s = s - polylog (3, -xc/x);
 	  s = s - polylog (3, xc);
@@ -374,7 +374,7 @@ polylog (n, x)
 	  s = s + h;
 	  k += 1.0;
 	}
-      while (md_fabs(h/s) > 1.1e-16);
+      while (cfs_fabs(h/s) > 1.1e-16);
       return (s + t);
     }
 
@@ -383,7 +383,7 @@ if (n == 4)
     if (x >= 0.875)
       {
 	u = 1.0 - x;
-	s = md_polevl(u, A4, 12) / md_p1evl(u, B4, 12);
+	s = cfs_polevl(u, A4, 12) / cfs_p1evl(u, B4, 12);
 	s =  s * u * u - 1.202056903159594285400 * u;
 	s +=  1.0823232337111381915160;
 	return s;
@@ -396,13 +396,13 @@ if (n == 4)
     goto pseries;
 
 
-/*  This expansion in powers of md_log(x) is especially useful when
+/*  This expansion in powers of cfs_log(x) is especially useful when
     x is near 1.
 
     See also the pari gp calculator.
 
                       inf                  j
-                       -    z(n-j) (md_log(x))
+                       -    z(n-j) (cfs_log(x))
     polylog(n,x)  =    >   -----------------
                        -           j!
                       j=0
@@ -413,13 +413,13 @@ if (n == 4)
 
                               n-1
                                -
-      z(1) =  -md_log(-md_log(x)) +  >  1/k
+      z(1) =  -cfs_log(-cfs_log(x)) +  >  1/k
                                -
                               k=1
   */
 
-  z = md_log(x);
-  h = -md_log(-z);
+  z = cfs_log(x);
+  h = -cfs_log(-z);
   for (i = 1; i < n; i++)
     h = h + 1.0/i;
   p = 1.0;
@@ -440,7 +440,7 @@ if (n == 4)
       h = (zetac((double)(n-j)) + 1.0);
       h = h * p;
       s = s + h;
-      if (md_fabs(h/s) < MACHEP)
+      if (cfs_fabs(h/s) < MACHEP)
 	break;
       j += 2;
     }
@@ -456,12 +456,12 @@ pseries:
     {
       p = p * x;
       k += 1.0;
-      h = p / md_powi(k, n);
+      h = p / cfs_powi(k, n);
       s = s + h;
     }
-  while (md_fabs(h/s) > MACHEP);
-  s += x * x * x / md_powi(3.0,n);
-  s += x * x / md_powi(2.0,n);
+  while (cfs_fabs(h/s) > MACHEP);
+  s += x * x * x / cfs_powi(3.0,n);
+  s += x * x / cfs_powi(2.0,n);
   s += x;
   return s;
 }

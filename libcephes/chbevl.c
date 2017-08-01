@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * int N;
- * double x, y, coef[N], md_chebevl();
+ * double x, y, coef[N], cfs_chebevl();
  *
- * y = md_chbevl( x, coef, N );
+ * y = cfs_chbevl( x, coef, N );
  *
  *
  *
@@ -57,7 +57,7 @@ Copyright 1985, 1987 by Stephen L. Moshier
 Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 */
 
-double md_chbevl( x, array, n )
+double cfs_chbevl( x, array, n )
 double x;
 double array[];
 int n;

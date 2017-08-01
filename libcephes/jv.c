@@ -60,39 +60,39 @@ Copyright 1984, 1987, 1989, 1992, 2000 by Stephen L. Moshier
 #endif
 
 #ifdef ANSIPROT
-extern int md_airy ( double, double *, double *, double *, double * );
-extern double md_fabs ( double );
-extern double md_floor ( double );
-extern double md_frexp ( double, int * );
-extern double md_polevl ( double, void *, int );
-extern double md_j0 ( double );
-extern double md_j1 ( double );
-extern double md_sqrt ( double );
-extern double md_cbrt ( double );
-extern double md_exp ( double );
-extern double md_log ( double );
-extern double md_sin ( double );
-extern double md_cos ( double );
-extern double md_acos ( double );
-extern double md_pow ( double, double );
-extern double md_gamma ( double );
-extern double md_lgam ( double );
-static double md_recur(double *, double, double *, int);
-static double md_jvs(double, double);
-static double md_hankel(double, double);
-static double md_jnx(double, double);
-static double md_jnt(double, double);
+extern int cfs_airy ( double, double *, double *, double *, double * );
+extern double cfs_fabs ( double );
+extern double cfs_floor ( double );
+extern double cfs_frexp ( double, int * );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_j0 ( double );
+extern double cfs_j1 ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_cbrt ( double );
+extern double cfs_exp ( double );
+extern double cfs_log ( double );
+extern double cfs_sin ( double );
+extern double cfs_cos ( double );
+extern double cfs_acos ( double );
+extern double cfs_pow ( double, double );
+extern double cfs_gamma ( double );
+extern double cfs_lgam ( double );
+static double cfs_recur(double *, double, double *, int);
+static double cfs_jvs(double, double);
+static double cfs_hankel(double, double);
+static double cfs_jnx(double, double);
+static double cfs_jnt(double, double);
 #else
-int md_airy();
-double md_fabs(), md_floor(), md_frexp(), md_polevl(), md_j0(), md_j1(), md_sqrt(), md_cbrt();
-double md_exp(), md_log(), md_sin(), md_cos(), md_acos(), md_pow(), md_gamma(), md_lgam();
-static double md_recur(), md_jvs(), md_hankel(), md_jnx(), md_jnt();
+int cfs_airy();
+double cfs_fabs(), cfs_floor(), cfs_frexp(), cfs_polevl(), cfs_j0(), cfs_j1(), cfs_sqrt(), cfs_cbrt();
+double cfs_exp(), cfs_log(), cfs_sin(), cfs_cos(), cfs_acos(), cfs_pow(), cfs_gamma(), cfs_lgam();
+static double cfs_recur(), cfs_jvs(), cfs_hankel(), cfs_jnx(), cfs_jnt();
 #endif
 
 extern double MAXNUM, MACHEP, MINLOG, MAXLOG;
 #define BIG  1.44115188075855872E+17
 
-double md_jv( n, x )
+double cfs_jv( n, x )
 double n, x;
 {
 double k, q, t, y, an;
@@ -100,12 +100,12 @@ int i, sign, nint;
 
 nint = 0;	/* Flag for integer n */
 sign = 1;	/* Flag for sign inversion */
-an = md_fabs( n );
-y = md_floor( an );
+an = cfs_fabs( n );
+y = cfs_floor( an );
 if( y == an )
 	{
 	nint = 1;
-	i = an - 16384.0 * md_floor( an/16384.0 );
+	i = an - 16384.0 * cfs_floor( an/16384.0 );
 	if( n < 0.0 )
 		{
 		if( i & 1 )
@@ -119,9 +119,9 @@ if( y == an )
 		x = -x;
 		}
 	if( n == 0.0 )
-		return( md_j0(x) );
+		return( cfs_j0(x) );
 	if( n == 1.0 )
-		return( sign * md_j1(x) );
+		return( sign * cfs_j1(x) );
 	}
 
 if( (x < 0.0) && (y != an) )
@@ -131,17 +131,17 @@ if( (x < 0.0) && (y != an) )
 	goto done;
  	}
 
-y = md_fabs(x);
+y = cfs_fabs(x);
 
 if( y < MACHEP )
 	goto underf;
 
-k = 3.6 * md_sqrt(y);
-t = 3.6 * md_sqrt(an);
+k = 3.6 * cfs_sqrt(y);
+t = 3.6 * cfs_sqrt(an);
 if( (y < t) && (an > 21.0) )
-	return( sign * md_jvs(n,x) );
+	return( sign * cfs_jvs(n,x) );
 if( (an < k) && (y > 21.0) )
-	return( sign * md_hankel(n,x) );
+	return( sign * cfs_hankel(n,x) );
 
 if( an < 500.0 )
 	{
@@ -152,15 +152,15 @@ if( an < 500.0 )
 	if( nint != 0 )
 		{
 		k = 0.0;
-		q = md_recur( &n, x, &k, 1 );
+		q = cfs_recur( &n, x, &k, 1 );
 		if( k == 0.0 )
 			{
-			y = md_j0(x)/q;
+			y = cfs_j0(x)/q;
 			goto done;
 			}
 		if( k == 1.0 )
 			{
-			y = md_j1(x)/q;
+			y = cfs_j1(x)/q;
 			goto done;
 			}
 		}
@@ -179,9 +179,9 @@ rlarger:
 		y = y + an + 1.0;
 		if( y < 30.0 )
 			y = 30.0;
-		y = n + md_floor(y-n);
-		q = md_recur( &y, x, &k, 0 );
-		y = md_jvs(y,x) * q;
+		y = n + cfs_floor(y-n);
+		q = cfs_recur( &y, x, &k, 0 );
+		y = cfs_jvs(y,x) * q;
 		goto done;
 		}
 
@@ -197,15 +197,15 @@ rlarger:
 		{
 		if( n < 0.0 )
 			k = -k;
-		q = n - md_floor(n);
-		k = md_floor(k) + q;
+		q = n - cfs_floor(n);
+		k = cfs_floor(k) + q;
 		if( n > 0.0 )
-			q = md_recur( &n, x, &k, 1 );
+			q = cfs_recur( &n, x, &k, 1 );
 		else
 			{
 			t = k;
 			k = n;
-			q = md_recur( &t, x, &k, 1 );
+			q = cfs_recur( &t, x, &k, 1 );
 			k = t;
 			}
 		if( q == 0.0 )
@@ -224,16 +224,16 @@ underf:
 /* boundary between convergence of
  * power series and Hankel expansion
  */
-	y = md_fabs(k);
+	y = cfs_fabs(k);
 	if( y < 26.0 )
 		t = (0.0083*y + 0.09)*y + 12.9;
 	else
 		t = 0.9 * y;
 
 	if( x > t )
-		y = md_hankel(k,x);
+		y = cfs_hankel(k,x);
 	else
-		y = md_jvs(k,x);
+		y = cfs_jvs(k,x);
 #if DEBUG
 printf( "y = %.16e, recur q = %.16e\n", y, q );
 #endif
@@ -260,9 +260,9 @@ else
 	t = x/n;
 	t /= n;
 	if( t > 0.3 )
-		y = md_hankel(n,x);
+		y = cfs_hankel(n,x);
 	else
-		y = md_jnx(n,x);
+		y = cfs_jnx(n,x);
 	}
 
 done:	return( sign * y);
@@ -272,7 +272,7 @@ done:	return( sign * y);
  * AMS55 #9.1.27 and 9.1.73.
  */
 
-static double md_recur( n, x, newn, cancel )
+static double cfs_recur( n, x, newn, cancel )
 double *n;
 double x;
 double *newn;
@@ -319,7 +319,7 @@ do
 		r = 0.0;
 	if( r != 0 )
 		{
-		t = md_fabs( (ans - r)/r );
+		t = cfs_fabs( (ans - r)/r );
 		ans = r;
 		}
 	else
@@ -333,7 +333,7 @@ do
 	if( t < MACHEP )
 		goto done;
 
-	if( md_fabs(pk) > big )
+	if( cfs_fabs(pk) > big )
 		{
 		pkm2 /= big;
 		pkm1 /= big;
@@ -353,7 +353,7 @@ printf( "%.6e\n", ans );
  */
 if( nflag > 0 )
 	{
-	if( md_fabs(ans) < 0.125 )
+	if( cfs_fabs(ans) < 0.125 )
 		{
 		nflag = -1;
 		*n = *n - 1.0;
@@ -382,8 +382,8 @@ do
 	pkm1 = pkm2;
 	r -= 2.0;
 /*
-	t = md_fabs(pkp1) + md_fabs(pk);
-	if( (k > (kf + 2.5)) && (md_fabs(pkm1) < 0.25*t) )
+	t = cfs_fabs(pkp1) + cfs_fabs(pk);
+	if( (k > (kf + 2.5)) && (cfs_fabs(pkm1) < 0.25*t) )
 		{
 		k -= 1.0;
 		t = x*x;
@@ -404,7 +404,7 @@ while( k > (kf + 0.5) );
 
 if( cancel )
 	{
-	if( (kf >= 0.0) && (md_fabs(pk) > md_fabs(pkm1)) )
+	if( (kf >= 0.0) && (cfs_fabs(pk) > cfs_fabs(pkm1)) )
 		{
 		k += 1.0;
 		pkm2 = pk;
@@ -426,7 +426,7 @@ return( pkm2 );
 extern double PI;
 extern int sgngam;
 
-static double md_jvs( n, x )
+static double cfs_jvs( n, x )
 double n, x;
 {
 double t, u, y, z, k;
@@ -444,42 +444,42 @@ while( t > MACHEP )
 	y += u;
 	k += 1.0;
 	if( y != 0 )
-		t = md_fabs( u/y );
+		t = cfs_fabs( u/y );
 	}
 #if DEBUG
 printf( "power series=%.5e ", y );
 #endif
-t = md_frexp( 0.5*x, &ex );
+t = cfs_frexp( 0.5*x, &ex );
 ex = ex * n;
 if(  (ex > -1023)
   && (ex < 1023) 
   && (n > 0.0)
   && (n < (MAXGAM-1.0)) )
 	{
-	t = md_pow( 0.5*x, n ) / md_gamma( n + 1.0 );
+	t = cfs_pow( 0.5*x, n ) / cfs_gamma( n + 1.0 );
 #if DEBUG
-printf( "md_pow(.5*x, %.4e)/md_gamma(n+1)=%.5e\n", n, t );
+printf( "cfs_pow(.5*x, %.4e)/cfs_gamma(n+1)=%.5e\n", n, t );
 #endif
 	y *= t;
 	}
 else
 	{
 #if DEBUG
-	z = n * md_log(0.5*x);
-	k = md_lgam( n+1.0 );
+	z = n * cfs_log(0.5*x);
+	k = cfs_lgam( n+1.0 );
 	t = z - k;
-	printf( "md_log md_pow=%.5e, md_lgam(%.4e)=%.5e\n", z, n+1.0, k );
+	printf( "cfs_log cfs_pow=%.5e, cfs_lgam(%.4e)=%.5e\n", z, n+1.0, k );
 #else
-	t = n * md_log(0.5*x) - md_lgam(n + 1.0);
+	t = n * cfs_log(0.5*x) - cfs_lgam(n + 1.0);
 #endif
 	if( y < 0 )
 		{
 		sgngam = -sgngam;
 		y = -y;
 		}
-	t += md_log(y);
+	t += cfs_log(y);
 #if DEBUG
-printf( "md_log y=%.5e\n", md_log(y) );
+printf( "cfs_log y=%.5e\n", cfs_log(y) );
 #endif
 	if( t < -MAXLOG )
 		{
@@ -490,7 +490,7 @@ printf( "md_log y=%.5e\n", md_log(y) );
 		mtherr( "Jv", OVERFLOW );
 		return( MAXNUM );
 		}
-	y = sgngam * md_exp( t );
+	y = sgngam * cfs_exp( t );
 	}
 return(y);
 }
@@ -500,7 +500,7 @@ return(y);
  * AMS55 #9.2.5.
  */
 
-static double md_hankel( n, x )
+static double cfs_hankel( n, x )
 double n, x;
 {
 double t, u, z, k, sign, conv;
@@ -532,7 +532,7 @@ while( t > MACHEP )
 	j += 1.0;
 	u *= (m - k * k)/(j * z);
 	q += sign * u;
-	t = md_fabs(u/p);
+	t = cfs_fabs(u/p);
 	if( t < conv )
 		{
 		conv = t;
@@ -552,7 +552,7 @@ while( t > MACHEP )
 
 hank1:
 u = x - (0.5*n + 0.25) * PI;
-t = md_sqrt( 2.0/(PI*x) ) * ( pp * md_cos(u) - qq * md_sin(u) );
+t = cfs_sqrt( 2.0/(PI*x) ) * ( pp * cfs_cos(u) - qq * cfs_sin(u) );
 #if DEBUG
 printf( "hank: %.6e\n", t );
 #endif
@@ -641,7 +641,7 @@ static double P7[] = {
 };
 
 
-static double md_jnx( n, x )
+static double cfs_jnx( n, x )
 double n, x;
 {
 double zeta, sqz, zz, zp, np;
@@ -655,10 +655,10 @@ static double ai, aip, bi, bip;
 /* Test for x very close to n.
  * Use expansion for transition region if so.
  */
-cbn = md_cbrt(n);
+cbn = cfs_cbrt(n);
 z = (x - n)/cbn;
-if( md_fabs(z) <= 0.7 )
-	return( md_jnt(n,x) );
+if( cfs_fabs(z) <= 0.7 )
+	return( cfs_jnt(n,x) );
 
 z = x/n;
 zz = 1.0 - z*z;
@@ -667,42 +667,42 @@ if( zz == 0.0 )
 
 if( zz > 0.0 )
 	{
-	sz = md_sqrt( zz );
-	t = 1.5 * (md_log( (1.0+sz)/z ) - sz );	/* zeta ** 3/2		*/
-	zeta = md_cbrt( t * t );
+	sz = cfs_sqrt( zz );
+	t = 1.5 * (cfs_log( (1.0+sz)/z ) - sz );	/* zeta ** 3/2		*/
+	zeta = cfs_cbrt( t * t );
 	nflg = 1;
 	}
 else
 	{
-	sz = md_sqrt(-zz);
-	t = 1.5 * (sz - md_acos(1.0/z));
-	zeta = -md_cbrt( t * t );
+	sz = cfs_sqrt(-zz);
+	t = 1.5 * (sz - cfs_acos(1.0/z));
+	zeta = -cfs_cbrt( t * t );
 	nflg = -1;
 	}
-z32i = md_fabs(1.0/t);
-sqz = md_cbrt(t);
+z32i = cfs_fabs(1.0/t);
+sqz = cfs_cbrt(t);
 
 /* Airy function */
-n23 = md_cbrt( n * n );
+n23 = cfs_cbrt( n * n );
 t = n23 * zeta;
 
 #if DEBUG
 printf("zeta %.5E, Airy(%.5E)\n", zeta, t );
 #endif
-md_airy( t, &ai, &aip, &bi, &bip );
+cfs_airy( t, &ai, &aip, &bi, &bip );
 
 /* polynomials in expansion */
 u[0] = 1.0;
 zzi = 1.0/zz;
-u[1] = md_polevl( zzi, P1, 1 )/sz;
-u[2] = md_polevl( zzi, P2, 2 )/zz;
-u[3] = md_polevl( zzi, P3, 3 )/(sz*zz);
+u[1] = cfs_polevl( zzi, P1, 1 )/sz;
+u[2] = cfs_polevl( zzi, P2, 2 )/zz;
+u[3] = cfs_polevl( zzi, P3, 3 )/(sz*zz);
 pp = zz*zz;
-u[4] = md_polevl( zzi, P4, 4 )/pp;
-u[5] = md_polevl( zzi, P5, 5 )/(pp*sz);
+u[4] = cfs_polevl( zzi, P4, 4 )/pp;
+u[5] = cfs_polevl( zzi, P5, 5 )/(pp*sz);
 pp *= zz;
-u[6] = md_polevl( zzi, P6, 6 )/pp;
-u[7] = md_polevl( zzi, P7, 7 )/(pp*sz);
+u[6] = cfs_polevl( zzi, P6, 6 )/pp;
+u[7] = cfs_polevl( zzi, P7, 7 )/(pp*sz);
 
 #if DEBUG
 for( k=0; k<=7; k++ )
@@ -751,7 +751,7 @@ for( k=0; k<=3; k++ )
 	if( doa )
 		{
 		ak *= np;
-		t = md_fabs(ak);
+		t = cfs_fabs(ak);
 		if( t < akl )
 			{
 			akl = t;
@@ -765,7 +765,7 @@ for( k=0; k<=3; k++ )
 		{
 		bk += lambda[tkp1] * zp * u[0];
 		bk *= -np/sqz;
-		t = md_fabs(bk);
+		t = cfs_fabs(bk);
 		if( t < bkl )
 			{
 			bkl = t;
@@ -784,9 +784,9 @@ for( k=0; k<=3; k++ )
 
 /* normalizing factor ( 4*zeta/(1 - z**2) )**1/4	*/
 t = 4.0 * zeta/zz;
-t = md_sqrt( md_sqrt(t) );
+t = cfs_sqrt( cfs_sqrt(t) );
 
-t *= ai*pp/md_cbrt(n)  +  aip*qq/(n23*n);
+t *= ai*pp/cfs_cbrt(n)  +  aip*qq/(n23*n);
 return(t);
 }
 
@@ -826,7 +826,7 @@ static double PG3[] = {
 };
 
 
-static double md_jnt( n, x )
+static double cfs_jnt( n, x )
 double n, x;
 {
 double z, zz, z3;
@@ -836,26 +836,26 @@ double nk, fk, gk, pp, qq;
 double F[5], G[4];
 int k;
 
-cbn = md_cbrt(n);
+cbn = cfs_cbrt(n);
 z = (x - n)/cbn;
-cbtwo = md_cbrt( 2.0 );
+cbtwo = cfs_cbrt( 2.0 );
 
 /* Airy function */
 zz = -cbtwo * z;
-md_airy( zz, &ai, &aip, &bi, &bip );
+cfs_airy( zz, &ai, &aip, &bi, &bip );
 
 /* polynomials in expansion */
 zz = z * z;
 z3 = zz * z;
 F[0] = 1.0;
 F[1] = -z/5.0;
-F[2] = md_polevl( z3, PF2, 1 ) * zz;
-F[3] = md_polevl( z3, PF3, 2 );
-F[4] = md_polevl( z3, PF4, 3 ) * z;
+F[2] = cfs_polevl( z3, PF2, 1 ) * zz;
+F[3] = cfs_polevl( z3, PF3, 2 );
+F[4] = cfs_polevl( z3, PF4, 3 ) * z;
 G[0] = 0.3 * zz;
-G[1] = md_polevl( z3, PG1, 1 );
-G[2] = md_polevl( z3, PG2, 2 ) * z;
-G[3] = md_polevl( z3, PG3, 2 ) * zz;
+G[1] = cfs_polevl( z3, PG1, 1 );
+G[2] = cfs_polevl( z3, PG2, 2 ) * z;
+G[3] = cfs_polevl( z3, PG3, 2 ) * zz;
 #if DEBUG
 for( k=0; k<=4; k++ )
 	printf( "F[%d] = %.5E\n", k, F[k] );
@@ -865,7 +865,7 @@ for( k=0; k<=3; k++ )
 pp = 0.0;
 qq = 0.0;
 nk = 1.0;
-n23 = md_cbrt( n * n );
+n23 = cfs_cbrt( n * n );
 
 for( k=0; k<=4; k++ )
 	{
@@ -882,7 +882,7 @@ for( k=0; k<=4; k++ )
 	nk /= n23;
 	}
 
-fk = cbtwo * ai * pp/cbn  +  md_cbrt(4.0) * aip * qq/n;
+fk = cbtwo * ai * pp/cbn  +  cfs_cbrt(4.0) * aip * qq/n;
 return(fk);
 }
 #endif // DEBUG

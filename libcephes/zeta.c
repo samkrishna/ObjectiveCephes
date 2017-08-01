@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, q, y, md_zeta();
+ * double x, q, y, cfs_zeta();
  *
- * y = md_zeta( x, q );
+ * y = cfs_zeta( x, q );
  *
  *
  *
@@ -28,7 +28,7 @@
  *
  *                   n
  *                   -       -x
- * md_zeta(x,q)  =   >  (k+q)
+ * cfs_zeta(x,q)  =   >  (k+q)
  *                   -
  *                  k=1
  *
@@ -39,7 +39,7 @@
  *                   2(n+q)      j=1       (2j)! (n+q)
  *
  * where the B2j are Bernoulli numbers.  Note that (see zetac.c)
- * md_zeta(x,1) = md_zetac(x) + 1.
+ * cfs_zeta(x,1) = cfs_zetac(x) + 1.
  *
  *
  *
@@ -61,11 +61,11 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_pow ( double, double );
-extern double md_floor ( double );
+extern double cfs_fabs ( double );
+extern double cfs_pow ( double, double );
+extern double cfs_floor ( double );
 #else
-double md_fabs(), md_pow(), md_floor();
+double cfs_fabs(), cfs_pow(), cfs_floor();
 #endif
 extern double MAXNUM, MACHEP;
 
@@ -91,7 +91,7 @@ static double A[] = {
 /* 30 Nov 86 -- error in third coefficient fixed */
 
 
-double md_zeta(x,q)
+double cfs_zeta(x,q)
 double x,q;
 {
 int i;
@@ -109,13 +109,13 @@ domerr:
 
 if( q <= 0.0 )
 	{
-	if(q == md_floor(q))
+	if(q == cfs_floor(q))
 		{
 		mtherr( "zeta", SING );
 retinf:
 		return( MAXNUM );
 		}
-	if( x != md_floor(x) )
+	if( x != cfs_floor(x) )
 		goto domerr; /* because q^-x not defined */
 	}
 
@@ -129,7 +129,7 @@ if( x < 25.0 )
  * If q<0 and x is an integer, there is a relation to
  * the polygamma function.
  */
-s = md_pow( q, -x );
+s = cfs_pow( q, -x );
 a = q;
 i = 0;
 b = 0.0;
@@ -137,9 +137,9 @@ while( (i < 9) || (a <= 9.0) )
 	{
 	i += 1;
 	a += 1.0;
-	b = md_pow( a, -x );
+	b = cfs_pow( a, -x );
 	s += b;
-	if( md_fabs(b/s) < MACHEP )
+	if( cfs_fabs(b/s) < MACHEP )
 		goto done;
 	}
 
@@ -154,7 +154,7 @@ for( i=0; i<12; i++ )
 	b /= w;
 	t = a*b/A[i];
 	s = s + t;
-	t = md_fabs(t/s);
+	t = cfs_fabs(t/s);
 	if( t < MACHEP )
 		goto done;
 	k += 1.0;
@@ -172,17 +172,17 @@ return(s);
 /*
 pseres:
 
-s = md_pow( q, -x );
+s = cfs_pow( q, -x );
 a = q;
 do
 	{
 	a += 2.0;
-	b = md_pow( a, -x );
+	b = cfs_pow( a, -x );
 	s += b;
 	}
 while( b/s > MACHEP );
 
-b = md_pow( 2.0, -x );
+b = cfs_pow( 2.0, -x );
 s = (s + b)/(1.0-b);
 return(s);
 */

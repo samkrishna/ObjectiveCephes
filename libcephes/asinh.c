@@ -1,4 +1,4 @@
-/*							md_asinh.c
+/*							cfs_asinh.c
  *
  *	Inverse hyperbolic sine
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_asinh();
+ * double x, y, cfs_asinh();
  *
- * y = md_asinh( x );
+ * y = cfs_asinh( x );
  *
  *
  *
@@ -19,7 +19,7 @@
  * If |x| < 0.5, the function is approximated by a rational
  * form  x + x**3 P(x)/Q(x).  Otherwise,
  *
- *     md_asinh(x) = md_log( x + md_sqrt(1 + x*x) ).
+ *     cfs_asinh(x) = cfs_log( x + cfs_sqrt(1 + x*x) ).
  *
  *
  *
@@ -33,7 +33,7 @@
  *
  */
 
-/*						md_asinh.c	*/
+/*						cfs_asinh.c	*/
 
 /*
 Cephes Math Library Release 2.8:  June, 2000
@@ -111,16 +111,16 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_sqrt ( double );
-extern double md_log ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_sqrt ( double );
+extern double cfs_log ( double );
 #else
-double md_log(), md_sqrt(), md_polevl(), md_p1evl();
+double cfs_log(), cfs_sqrt(), cfs_polevl(), cfs_p1evl();
 #endif
 extern double LOGE2, INFINITY;
 
-double md_asinh(xx)
+double cfs_asinh(xx)
 double xx;
 {
 double a, z, x;
@@ -147,19 +147,19 @@ if( x > 1.0e8 )
 	  if( x == INFINITY )
 	    return(xx);
 #endif
-	return( sign * (md_log(x) + LOGE2) );
+	return( sign * (cfs_log(x) + LOGE2) );
 	}
 
 z = x * x;
 if( x < 0.5 )
 	{
-	a = ( md_polevl(z, P, 4) / md_p1evl(z, Q, 4) ) * z;
+	a = ( cfs_polevl(z, P, 4) / cfs_p1evl(z, Q, 4) ) * z;
 	a = a * x  +  x;
 	if( sign < 0 )
 		a = -a;
 	return(a);
 	}	
 
-a = md_sqrt( z + 1.0 );
-return( sign * md_log(x + a) );
+a = cfs_sqrt( z + 1.0 );
+return( sign * cfs_log(x + a) );
 }

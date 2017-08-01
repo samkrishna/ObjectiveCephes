@@ -6,20 +6,20 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_expx2();
+ * double x, y, cfs_expx2();
  * int sign;
  *
- * y = md_expx2( x, sign );
+ * y = cfs_expx2( x, sign );
  *
  *
  *
  * DESCRIPTION:
  *
- * Computes y = md_exp(x*x) while suppressing error amplification
+ * Computes y = cfs_exp(x*x) while suppressing error amplification
  * that would ordinarily arise from the inexactness of the
  * exponential argument x*x.
  *
- * If sign < 0, the result is inverted; i.e., y = md_exp(-x*x) .
+ * If sign < 0, the result is inverted; i.e., y = cfs_exp(-x*x) .
  * 
  *
  * ACCURACY:
@@ -38,13 +38,13 @@ Copyright 2000 by Stephen L. Moshier
 #include "mconf.h"
 
 #ifdef ANSIPROT
-extern double md_fabs (double);
-extern double md_floor (double);
-extern double md_exp (double);
+extern double cfs_fabs (double);
+extern double cfs_floor (double);
+extern double cfs_exp (double);
 #else
-double md_fabs();
-double md_floor();
-double md_exp();
+double cfs_fabs();
+double cfs_floor();
+double cfs_exp();
 #endif
 
 #ifdef DEC
@@ -58,20 +58,20 @@ double md_exp();
 extern double MAXLOG;
 extern double INFINITY;
 
-double md_expx2 (x, sign)
+double cfs_expx2 (x, sign)
      double x;
      int sign;
 {
   double u, u1, m, f;
 
-  x = md_fabs (x);
+  x = cfs_fabs (x);
   if (sign < 0)
     x = -x;
 
   /* Represent x as an exact multiple of M plus a residual.
-     M is a power of 2 chosen so that md_exp(m * m) does not overflow
+     M is a power of 2 chosen so that cfs_exp(m * m) does not overflow
      or underflow and so that |x - m| is small.  */
-  m = MINV * md_floor(M * x + 0.5);
+  m = MINV * cfs_floor(M * x + 0.5);
   f = x - m;
 
   /* x^2 = m^2 + 2mf + f^2 */
@@ -88,6 +88,6 @@ double md_expx2 (x, sign)
     return (INFINITY);
 
   /* u is exact, u1 is small.  */
-  u = md_exp(u) * md_exp(u1);
+  u = cfs_exp(u) * cfs_exp(u1);
   return(u);
 }

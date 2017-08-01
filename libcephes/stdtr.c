@@ -6,10 +6,10 @@
  *
  * SYNOPSIS:
  *
- * double t, md_stdtr();
+ * double t, cfs_stdtr();
  * short k;
  *
- * y = md_stdtr( k, t );
+ * y = cfs_stdtr( k, t );
  *
  *
  * DESCRIPTION:
@@ -24,7 +24,7 @@
  *             | ( (k+1)/2 )           |  (     x   )
  *       ----------------------        |  ( 1 + --- )        dx
  *                     -               |  (      k  )
- *       md_sqrt( k pi ) | ( k/2 )        |
+ *       cfs_sqrt( k pi ) | ( k/2 )        |
  *                                   | |
  *                                    -
  *                                   -inf.
@@ -58,15 +58,15 @@
  *
  * SYNOPSIS:
  *
- * double p, t, md_stdtri();
+ * double p, t, cfs_stdtri();
  * int k;
  *
- * t = md_stdtri( k, p );
+ * t = cfs_stdtri( k, p );
  *
  *
  * DESCRIPTION:
  *
- * Given probability p, finds the argument t such that md_stdtr(k,t)
+ * Given probability p, finds the argument t such that cfs_stdtr(k,t)
  * is equal to p.
  * 
  * ACCURACY:
@@ -88,16 +88,16 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 extern double PI, MACHEP, MAXNUM;
 #ifdef ANSIPROT
-extern double md_sqrt ( double );
-extern double md_atan ( double );
-extern double md_incbet ( double, double, double );
-extern double md_incbi ( double, double, double );
-extern double md_fabs ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_atan ( double );
+extern double cfs_incbet ( double, double, double );
+extern double cfs_incbi ( double, double, double );
+extern double cfs_fabs ( double );
 #else
-double md_sqrt(), md_atan(), md_incbet(), md_incbi(), md_fabs();
+double cfs_sqrt(), cfs_atan(), cfs_incbet(), cfs_incbi(), cfs_fabs();
 #endif
 
-double md_stdtr( k, t )
+double cfs_stdtr( k, t )
 int k;
 double t;
 {
@@ -117,7 +117,7 @@ if( t < -2.0 )
 	{
 	rk = k;
 	z = rk / (rk + t * t);
-	p = 0.5 * md_incbet( 0.5*rk, 0.5, z );
+	p = 0.5 * cfs_incbet( 0.5*rk, 0.5, z );
 	return( p );
 	}
 
@@ -137,8 +137,8 @@ if( (k & 1) != 0)
 
 	/*	computation for odd k	*/
 
-	xsqk = x/md_sqrt(rk);
-	p = md_atan( xsqk );
+	xsqk = x/cfs_sqrt(rk);
+	p = cfs_atan( xsqk );
 	if( k > 1 )
 		{
 		f = 1.0;
@@ -171,7 +171,7 @@ else
 		f += tz;
 		j += 2;
 		}
-	p = f * x/md_sqrt(z*rk);
+	p = f * x/cfs_sqrt(z*rk);
 	}
 
 /*	common exit	*/
@@ -184,7 +184,7 @@ if( t < 0 )
 return(p);
 }
 
-double md_stdtri( k, p )
+double cfs_stdtri( k, p )
 int k;
 double p;
 {
@@ -204,8 +204,8 @@ if( p > 0.25 && p < 0.75 )
 	if( p == 0.5 )
 		return( 0.0 );
 	z = 1.0 - 2.0 * p;
-	z = md_incbi( 0.5, 0.5*rk, md_fabs(z) );
-	t = md_sqrt( rk*z/(1.0-z) );
+	z = cfs_incbi( 0.5, 0.5*rk, cfs_fabs(z) );
+	t = cfs_sqrt( rk*z/(1.0-z) );
 	if( p < 0.5 )
 		t = -t;
 	return( t );
@@ -216,10 +216,10 @@ if( p >= 0.5)
 	p = 1.0 - p;
 	rflg = 1;
 	}
-z = md_incbi( 0.5*rk, 0.5, 2.0*p );
+z = cfs_incbi( 0.5*rk, 0.5, 2.0*p );
 
 if( MAXNUM * z < rk )
 	return(rflg* MAXNUM);
-t = md_sqrt( rk/z - rk );
+t = cfs_sqrt( rk/z - rk );
 return( rflg * t );
 }

@@ -6,15 +6,15 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_rgamma();
+ * double x, y, cfs_rgamma();
  *
- * y = md_rgamma( x );
+ * y = cfs_rgamma( x );
  *
  *
  *
  * DESCRIPTION:
  *
- * Returns one divided by the md_gamma function of the argument.
+ * Returns one divided by the cfs_gamma function of the argument.
  *
  * The function is approximated by a Chebyshev expansion in
  * the interval [0,1].  Range reduction is by recurrence
@@ -24,7 +24,7 @@
  * reflection formula is applied; lograrithms are employed
  * to avoid unnecessary overflow.
  *
- * The reciprocal md_gamma function has no singularities,
+ * The reciprocal cfs_gamma function has no singularities,
  * but overflow and underflow may occur for large arguments.
  * These conditions return either MAXNUM or 1/MAXNUM with
  * appropriate sign.
@@ -46,8 +46,8 @@ Copyright 1985, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-/* Chebyshev coefficients for reciprocal md_gamma function
- * in interval 0 to 1.  Function is 1/(x md_gamma(x)) - 1
+/* Chebyshev coefficients for reciprocal cfs_gamma function
+ * in interval 0 to 1.  Function is 1/(x cfs_gamma(x)) - 1
  */
 
 #ifdef UNK
@@ -134,21 +134,21 @@ static unsigned short R[] = {
 };
 #endif
 
-static char name[] = "md_rgamma";
+static char name[] = "cfs_rgamma";
 
 #ifdef ANSIPROT
-extern double md_chbevl ( double, void *, int );
-extern double md_exp ( double );
-extern double md_log ( double );
-extern double md_sin ( double );
-extern double md_lgam ( double );
+extern double cfs_chbevl ( double, void *, int );
+extern double cfs_exp ( double );
+extern double cfs_log ( double );
+extern double cfs_sin ( double );
+extern double cfs_lgam ( double );
 #else
-double md_chbevl(), md_exp(), md_log(), md_sin(), md_lgam();
+double cfs_chbevl(), cfs_exp(), cfs_log(), cfs_sin(), cfs_lgam();
 #endif
 extern double PI, MAXLOG, MAXNUM;
 
 
-double md_rgamma(x)
+double cfs_rgamma(x)
 double x;
 {
 double w, y, z;
@@ -162,7 +162,7 @@ if( x > 34.84425627277176174)
 if( x < -34.034 )
 	{
 	w = -x;
-	z = md_sin( PI*w );
+	z = cfs_sin( PI*w );
 	if( z == 0.0 )
 		return(0.0);
 	if( z < 0.0 )
@@ -173,7 +173,7 @@ if( x < -34.034 )
 	else
 		sign = -1;
 
-	y = md_log( w * z ) - md_log(PI) + md_lgam(w);
+	y = cfs_log( w * z ) - cfs_log(PI) + cfs_lgam(w);
 	if( y < -MAXLOG )
 		{
 		mtherr( name, UNDERFLOW );
@@ -184,7 +184,7 @@ if( x < -34.034 )
 		mtherr( name, OVERFLOW );
 		return( sign * MAXNUM );
 		}
-	return( sign * md_exp(y));
+	return( sign * cfs_exp(y));
 	}
 z = 1.0;
 w = x;
@@ -204,6 +204,6 @@ if( w == 0.0 )		/* Nonpositive integer */
 if( w == 1.0 )		/* Other integer */
 	return( 1.0/z );
 
-y = w * ( 1.0 + md_chbevl( 4.0*w-2.0, R, 16 ) ) / z;
+y = w * ( 1.0 + cfs_chbevl( 4.0*w-2.0, R, 16 ) ) / z;
 return(y);
 }

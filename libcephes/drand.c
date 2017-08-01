@@ -48,9 +48,9 @@
 
 #include "mconf.h"
 #ifdef ANSIPROT
-static int md_ranwh ( void );
+static int cfs_ranwh ( void );
 #else
-static int md_ranwh();
+static int cfs_ranwh();
 #endif
 
 static int sx = 1;
@@ -66,7 +66,7 @@ static union {
  * congruential generators.
  */
  
-static int md_ranwh()
+static int cfs_ranwh()
 {
 int r, s;
 
@@ -103,7 +103,7 @@ return 0;
  *	drand( &x );
  */
 
-int md_drand( a )
+int cfs_drand( a )
 double *a;
 {
 unsigned short r;
@@ -114,7 +114,7 @@ unsigned short s, t;
 /* This algorithm of Wichmann and Hill computes a floating point
  * result:
  */
-md_ranwh();
+cfs_ranwh();
 unkans.d = sx/30269.0  +  sy/30307.0  +  sz/30323.0;
 r = unkans.d;
 unkans.d -= r;
@@ -128,7 +128,7 @@ unkans.d += 1.0;
 #ifdef UNK
 /* do nothing */
 #else
-md_ranwh();
+cfs_ranwh();
 r = sx * sy + sz;
 #endif
 

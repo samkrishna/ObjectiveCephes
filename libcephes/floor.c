@@ -1,10 +1,10 @@
-/*							md_ceil()
- *							md_floor()
- *							md_frexp()
- *							md_ldexp()
- *							md_signbit()
- *							md_isnan()
- *							md_isfinite()
+/*							cfs_ceil()
+ *							cfs_floor()
+ *							cfs_frexp()
+ *							cfs_ldexp()
+ *							cfs_signbit()
+ *							cfs_isnan()
+ *							cfs_isfinite()
  *
  *	Floating point numeric utilities
  *
@@ -12,18 +12,18 @@
  *
  * SYNOPSIS:
  *
- * double md_ceil(), md_floor(), md_frexp(), md_ldexp();
- * int signbit(), md_isnan(), md_isfinite();
+ * double cfs_ceil(), cfs_floor(), cfs_frexp(), cfs_ldexp();
+ * int signbit(), cfs_isnan(), cfs_isfinite();
  * double x, y;
  * int expnt, n;
  *
- * y = md_floor(x);
- * y = md_ceil(x);
- * y = md_frexp( x, &expnt );
- * y = md_ldexp( x, n );
- * n = md_signbit(x);
- * n = md_isnan(x);
- * n = md_isfinite(x);
+ * y = cfs_floor(x);
+ * y = cfs_ceil(x);
+ * y = cfs_frexp( x, &expnt );
+ * y = cfs_ldexp( x, n );
+ * n = cfs_signbit(x);
+ * n = cfs_isnan(x);
+ * n = cfs_isfinite(x);
  *
  *
  *
@@ -32,17 +32,17 @@
  * All four routines return a double precision floating point
  * result.
  *
- * md_floor() returns the largest integer less than or equal to x.
+ * cfs_floor() returns the largest integer less than or equal to x.
  * It truncates toward minus infinity.
  *
- * md_ceil() returns the smallest integer greater than or equal
+ * cfs_ceil() returns the smallest integer greater than or equal
  * to x.  It truncates toward plus infinity.
  *
- * md_frexp() extracts the exponent from x.  It returns an integer
+ * cfs_frexp() extracts the exponent from x.  It returns an integer
  * power of two to expnt and the significand between 0.5 and 1
- * to y.  Thus  x = y * 2**md_expn.
+ * to y.  Thus  x = y * 2**cfs_expn.
  *
- * md_ldexp() multiplies x by 2**n.
+ * cfs_ldexp() multiplies x by 2**n.
  *
  * signbit(x) returns 1 if the sign bit of x is 1, else 0.
  *
@@ -67,7 +67,7 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 #include "mconf.h"
 
 #ifdef UNK
-/* md_ceil(), md_floor(), md_frexp(), md_ldexp() may need to be rewritten. */
+/* cfs_ceil(), cfs_floor(), cfs_frexp(), cfs_ldexp() may need to be rewritten. */
 #undef UNK
 #if BIGENDIAN
 #define MIEEE 1
@@ -96,35 +96,35 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 
 extern double MAXNUM, NEGZERO;
 #ifdef ANSIPROT
-double md_floor ( double );
-int md_isnan ( double );
-int md_isfinite ( double );
-double md_ldexp ( double, int );
+double cfs_floor ( double );
+int cfs_isnan ( double );
+int cfs_isfinite ( double );
+double cfs_ldexp ( double, int );
 #else
-double md_floor();
-int md_isnan(), md_isfinite();
-double md_ldexp();
+double cfs_floor();
+int cfs_isnan(), cfs_isfinite();
+double cfs_ldexp();
 #endif
 
-double md_ceil(x)
+double cfs_ceil(x)
 double x;
 {
 double y;
 
 #ifdef UNK
-mtherr( "md_ceil", DOMAIN );
+mtherr( "cfs_ceil", DOMAIN );
 return(0.0);
 #endif
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return( x );
 #endif
 #ifdef INFINITIES
-if(!md_isfinite(x))
+if(!cfs_isfinite(x))
 	return(x);
 #endif
 
-y = md_floor(x);
+y = cfs_floor(x);
 if( y < x )
 	y += 1.0;
 #ifdef MINUSZERO
@@ -163,7 +163,7 @@ static unsigned short bmask[] = {
 
 
 
-double md_floor(x)
+double cfs_floor(x)
 double x;
 {
 union
@@ -175,15 +175,15 @@ unsigned short *p;
 int e;
 
 #ifdef UNK
-mtherr( "md_floor", DOMAIN );
+mtherr( "cfs_floor", DOMAIN );
 return(0.0);
 #endif
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return( x );
 #endif
 #ifdef INFINITIES
-if(!md_isfinite(x))
+if(!cfs_isfinite(x))
 	return(x);
 #endif
 #ifdef MINUSZERO
@@ -249,7 +249,7 @@ return(u.y);
 
 
 
-double md_frexp( x, pw2 )
+double cfs_frexp( x, pw2 )
 double x;
 int *pw2;
 {
@@ -267,7 +267,7 @@ short *q;
 u.y = x;
 
 #ifdef UNK
-mtherr( "md_frexp", DOMAIN );
+mtherr( "cfs_frexp", DOMAIN );
 return(0.0);
 #endif
 
@@ -356,7 +356,7 @@ return( u.y );
 
 
 
-double md_ldexp( x, pw2 )
+double cfs_ldexp( x, pw2 )
 double x;
 int pw2;
 {
@@ -369,7 +369,7 @@ short *q;
 int e;
 
 #ifdef UNK
-mtherr( "md_ldexp", DOMAIN );
+mtherr( "cfs_ldexp", DOMAIN );
 return(0.0);
 #endif
 
@@ -433,7 +433,7 @@ if( e < 1 )
 	/* For denormals, significant bits may be lost even
 	   when dividing by 2.  Construct 2^-(1-e) so the result
 	   is obtained with only one multiplication.  */
-	u.y *= md_ldexp(1.0, e-1);
+	u.y *= cfs_ldexp(1.0, e-1);
 	return(u.y);
 #else
 	return(0.0);

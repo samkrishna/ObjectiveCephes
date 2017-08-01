@@ -51,7 +51,7 @@ typedef struct
 	double i;
 	}cmplx;
 
-int md_cpmul( a, da, b, db, c, dc )
+int cfs_cpmul( a, da, b, db, c, dc )
 cmplx *a, *b, *c;
 int da, db;
 int *dc;

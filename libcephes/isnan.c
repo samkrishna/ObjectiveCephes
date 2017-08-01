@@ -1,6 +1,6 @@
-/*							md_isnan()
- *							md_signbit()
- *							md_isfinite()
+/*							cfs_isnan()
+ *							cfs_signbit()
+ *							cfs_isfinite()
  *
  *	Floating point numeric utilities
  *
@@ -8,18 +8,18 @@
  *
  * SYNOPSIS:
  *
- * double md_ceil(), md_floor(), md_frexp(), md_ldexp();
- * int md_signbit(), md_isnan(), md_isfinite();
+ * double cfs_ceil(), cfs_floor(), cfs_frexp(), cfs_ldexp();
+ * int cfs_signbit(), cfs_isnan(), cfs_isfinite();
  * double x, y;
  * int expnt, n;
  *
- * y = md_floor(x);
- * y = md_ceil(x);
- * y = md_frexp( x, &expnt );
- * y = md_ldexp( x, n );
- * n = md_signbit(x);
- * n = md_isnan(x);
- * n = md_isfinite(x);
+ * y = cfs_floor(x);
+ * y = cfs_ceil(x);
+ * y = cfs_frexp( x, &expnt );
+ * y = cfs_ldexp( x, n );
+ * n = cfs_signbit(x);
+ * n = cfs_isnan(x);
+ * n = cfs_isfinite(x);
  *
  *
  *
@@ -28,17 +28,17 @@
  * All four routines return a double precision floating point
  * result.
  *
- * md_floor() returns the largest integer less than or equal to x.
+ * cfs_floor() returns the largest integer less than or equal to x.
  * It truncates toward minus infinity.
  *
- * md_ceil() returns the smallest integer greater than or equal
+ * cfs_ceil() returns the smallest integer greater than or equal
  * to x.  It truncates toward plus infinity.
  *
- * md_frexp() extracts the exponent from x.  It returns an integer
+ * cfs_frexp() extracts the exponent from x.  It returns an integer
  * power of two to expnt and the significand between 0.5 and 1
- * to y.  Thus  x = y * 2**md_expn.
+ * to y.  Thus  x = y * 2**cfs_expn.
  *
- * md_ldexp() multiplies x by 2**n.
+ * cfs_ldexp() multiplies x by 2**n.
  *
  * signbit(x) returns 1 if the sign bit of x is 1, else 0.
  *
@@ -63,7 +63,7 @@ Copyright 1984, 1995 by Stephen L. Moshier
 #include "mconf.h"
 
 #ifdef UNK
-/* md_ceil(), md_floor(), md_frexp(), md_ldexp() may need to be rewritten. */
+/* cfs_ceil(), cfs_floor(), cfs_frexp(), cfs_ldexp() may need to be rewritten. */
 #undef UNK
 #if BIGENDIAN
 #define MIEEE 1
@@ -75,7 +75,7 @@ Copyright 1984, 1995 by Stephen L. Moshier
 
 /* Return 1 if the sign bit of x is 1, else 0.  */
 
-int md_signbit(x)
+int cfs_signbit(x)
 double x;
 {
 union
@@ -116,7 +116,7 @@ else
 
 /* Return 1 if x is a number that is Not a Number, else return 0.  */
 
-int md_isnan(x)
+int cfs_isnan(x)
 double x;
 {
 #ifdef NANS
@@ -185,7 +185,7 @@ return(0);
 
 /* Return 1 if x is not infinite and is not a NaN.  */
 
-int md_isfinite(x)
+int cfs_isfinite(x)
 double x;
 {
 #ifdef INFINITIES

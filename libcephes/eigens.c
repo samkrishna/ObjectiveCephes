@@ -47,10 +47,10 @@
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_sqrt ( double );
-extern double md_fabs ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_fabs ( double );
 #else
-double md_sqrt(), md_fabs();
+double cfs_sqrt(), cfs_fabs();
 #endif
 
 void eigens( A, RR, E, N )
@@ -90,7 +90,7 @@ for( I=0; I<N; I++ )
 	}
 if( ANORM <= 0.0 )
 	goto done;
-ANORM = md_sqrt( ANORM + ANORM );
+ANORM = cfs_sqrt( ANORM + ANORM );
 ANORMX = ANORM * RANGE / N;
 THR = ANORM;
 
@@ -110,7 +110,7 @@ for( M=L+1; M<N; M++ )
 	MQ=(M*M+M)/2;
 	LM=L+MQ;
 	ALM=A[LM];
-	if( md_fabs(ALM) < THR )
+	if( cfs_fabs(ALM) < THR )
 		continue;
 
 	IND=1;
@@ -120,12 +120,12 @@ for( M=L+1; M<N; M++ )
 	ALL=A[LL];
 	AMM=A[MM];
 	X=(ALL-AMM)/2.0;
-	Y=-ALM/md_sqrt(ALM*ALM+X*X);
+	Y=-ALM/cfs_sqrt(ALM*ALM+X*X);
 	if(X < 0.0)
 		Y=-Y;
-	SINX = Y / md_sqrt( 2.0 * (1.0 + md_sqrt( 1.0-Y*Y)) );
+	SINX = Y / cfs_sqrt( 2.0 * (1.0 + cfs_sqrt( 1.0-Y*Y)) );
 	SINX2=SINX*SINX;
-	COSX=md_sqrt(1.0-SINX2);
+	COSX=cfs_sqrt(1.0-SINX2);
 	COSX2=COSX*COSX;
 	SINCS=SINX*COSX;
 

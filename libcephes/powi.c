@@ -1,4 +1,4 @@
-/*							md_powi.c
+/*							cfs_powi.c
  *
  *	Real raised to integer power
  *
@@ -6,10 +6,10 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_powi();
+ * double x, y, cfs_powi();
  * int n;
  *
- * y = md_powi( x, n );
+ * y = cfs_powi( x, n );
  *
  *
  *
@@ -36,7 +36,7 @@
  *
  */
 
-/*							md_powi.c	*/
+/*							cfs_powi.c	*/
 
 /*
 Cephes Math Library Release 2.8:  June, 2000
@@ -45,23 +45,23 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_log ( double );
-extern double md_frexp ( double, int * );
+extern double cfs_log ( double );
+extern double cfs_frexp ( double, int * );
 extern int signbit ( double );
 #else
-double md_log(), md_frexp();
+double cfs_log(), cfs_frexp();
 int signbit();
 #endif
 extern double NEGZERO, INFINITY, MAXNUM, MAXLOG, MINLOG, LOGE2;
 
-double md_powi( x, nn )
+double cfs_powi( x, nn )
 double x;
 int nn;
 {
 int n, e, sign, asign, lx;
 double w, y, s;
 
-/* See md_pow.c for these tests.  */
+/* See cfs_pow.c for these tests.  */
 if( x == 0.0 )
 	{
 	if( nn == 0 )
@@ -110,7 +110,7 @@ if( (n & 1) == 0 )
 /* Overflow detection */
 
 /* Calculate approximate logarithm of answer */
-s = md_frexp( x, &lx );
+s = cfs_frexp( x, &lx );
 e = (lx - 1)*n;
 if( (e == 0) || (e > 64) || (e < -64) )
 	{
@@ -124,7 +124,7 @@ else
 
 if( s > MAXLOG )
 	{
-	mtherr( "md_powi", OVERFLOW );
+	mtherr( "cfs_powi", OVERFLOW );
 	y = INFINITY;
 	goto done;
 	}

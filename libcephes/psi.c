@@ -5,9 +5,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_psi();
+ * double x, y, cfs_psi();
  *
- * y = md_psi( x );
+ * y = cfs_psi( x );
  *
  *
  * DESCRIPTION:
@@ -16,7 +16,7 @@
  *   psi(x)  =  -- ln | (x)
  *              dx
  *
- * is the logarithmic derivative of the md_gamma function.
+ * is the logarithmic derivative of the cfs_gamma function.
  * For integer x,
  *                   n-1
  *                    -
@@ -33,7 +33,7 @@
  *
  *                           inf.   B
  *                            -      2k
- * psi(x) = md_log(x) - 1/2x -   >   -------
+ * psi(x) = cfs_log(x) - 1/2x -   >   -------
  *                            -        2k
  *                           k=1   2k x
  *
@@ -109,17 +109,17 @@ static unsigned short A[] = {
 #define EUL 0.57721566490153286061
 
 #ifdef ANSIPROT
-extern double md_floor ( double );
-extern double md_log ( double );
-extern double md_tan ( double );
-extern double md_polevl ( double, void *, int );
+extern double cfs_floor ( double );
+extern double cfs_log ( double );
+extern double cfs_tan ( double );
+extern double cfs_polevl ( double, void *, int );
 #else
-double md_floor(), md_log(), md_tan(), md_polevl();
+double cfs_floor(), cfs_log(), cfs_tan(), cfs_polevl();
 #endif
 extern double PI, MAXNUM;
 
 
-double md_psi(x)
+double cfs_psi(x)
 double x;
 {
 double p, q, nz, s, w, y, z;
@@ -132,13 +132,13 @@ if( x <= 0.0 )
 	{
 	negative = 1;
 	q = x;
-	p = md_floor(q);
+	p = cfs_floor(q);
 	if( p == q )
 		{
 		mtherr( "psi", SING );
 		return( MAXNUM );
 		}
-/* Remove the zeros of md_tan(PI x)
+/* Remove the zeros of cfs_tan(PI x)
  * by subtracting the nearest integer from x
  */
 	nz = q - p;
@@ -149,7 +149,7 @@ if( x <= 0.0 )
 			p += 1.0;
 			nz = q - p;
 			}
-		nz = PI/md_tan(PI*nz);
+		nz = PI/cfs_tan(PI*nz);
 		}
 	else
 		{
@@ -159,7 +159,7 @@ if( x <= 0.0 )
 	}
 
 /* check for positive integer up to 10 */
-if( (x <= 10.0) && (x == md_floor(x)) )
+if( (x <= 10.0) && (x == cfs_floor(x)) )
 	{
 	y = 0.0;
 	n = x;
@@ -183,12 +183,12 @@ while( s < 10.0 )
 if( s < 1.0e17 )
 	{
 	z = 1.0/(s * s);
-	y = z * md_polevl( z, A, 6 );
+	y = z * cfs_polevl( z, A, 6 );
 	}
 else
 	y = 0.0;
 
-y = md_log(s)  -  (0.5/s)  -  y  -  w;
+y = cfs_log(s)  -  (0.5/s)  -  y  -  w;
 
 done:
 

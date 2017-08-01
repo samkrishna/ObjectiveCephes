@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double df, x, y, md_chdtr();
+ * double df, x, y, cfs_chdtr();
  *
- * y = md_chdtr( df, x );
+ * y = cfs_chdtr( df, x );
  *
  *
  *
@@ -29,7 +29,7 @@
  *
  * where x is the Chi-square variable.
  *
- * The incomplete md_gamma integral is used, according to the
+ * The incomplete cfs_gamma integral is used, according to the
  * formula
  *
  *	y = chdtr( v, x ) = igam( v/2.0, x/2.0 ).
@@ -56,9 +56,9 @@
  *
  * SYNOPSIS:
  *
- * double v, x, y, md_chdtrc();
+ * double v, x, y, cfs_chdtrc();
  *
- * y = md_chdtrc( v, x );
+ * y = cfs_chdtrc( v, x );
  *
  *
  *
@@ -79,7 +79,7 @@
  *
  * where x is the Chi-square variable.
  *
- * The incomplete md_gamma integral is used, according to the
+ * The incomplete cfs_gamma integral is used, according to the
  * formula
  *
  *	y = chdtr( v, x ) = igamc( v/2.0, x/2.0 ).
@@ -91,7 +91,7 @@
  *
  * ACCURACY:
  *
- * See md_igamc().
+ * See cfs_igamc().
  *
  * ERROR MESSAGES:
  *
@@ -106,9 +106,9 @@
  *
  * SYNOPSIS:
  *
- * double df, x, y, md_chdtri();
+ * double df, x, y, cfs_chdtri();
  *
- * x = md_chdtri( df, y );
+ * x = cfs_chdtri( df, y );
  *
  *
  *
@@ -119,10 +119,10 @@
  * from x to infinity of the Chi-square density is equal
  * to the given cumulative probability y.
  *
- * This is accomplished using the inverse md_gamma integral
+ * This is accomplished using the inverse cfs_gamma integral
  * function and the relation
  *
- *    x/2 = md_igami( df/2, y );
+ *    x/2 = cfs_igami( df/2, y );
  *
  *
  *
@@ -134,12 +134,12 @@
  * ERROR MESSAGES:
  *
  *   message            condition      value returned
- * md_chdtri domain   y < 0 or y > 1        0.0
+ * cfs_chdtri domain   y < 0 or y > 1        0.0
  *                        v < 1
  *
  */
 
-/*								md_chdtr() */
+/*								cfs_chdtr() */
 
 
 /*
@@ -149,14 +149,14 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_igamc ( double, double );
-extern double md_igam ( double, double );
-extern double md_igami ( double, double );
+extern double cfs_igamc ( double, double );
+extern double cfs_igam ( double, double );
+extern double cfs_igami ( double, double );
 #else
-double md_igamc(), md_igam(), md_igami();
+double cfs_igamc(), cfs_igam(), cfs_igami();
 #endif
 
-double md_chdtrc(df,x)
+double cfs_chdtrc(df,x)
 double df, x;
 {
 
@@ -165,12 +165,12 @@ if( (x < 0.0) || (df < 1.0) )
 	mtherr( "chdtrc", DOMAIN );
 	return(0.0);
 	}
-return( md_igamc( df/2.0, x/2.0 ) );
+return( cfs_igamc( df/2.0, x/2.0 ) );
 }
 
 
 
-double md_chdtr(df,x)
+double cfs_chdtr(df,x)
 double df, x;
 {
 
@@ -179,12 +179,12 @@ if( (x < 0.0) || (df < 1.0) )
 	mtherr( "chdtr", DOMAIN );
 	return(0.0);
 	}
-return( md_igam( df/2.0, x/2.0 ) );
+return( cfs_igam( df/2.0, x/2.0 ) );
 }
 
 
 
-double md_chdtri( df, y )
+double cfs_chdtri( df, y )
 double df, y;
 {
 double x;
@@ -195,6 +195,6 @@ if( (y < 0.0) || (y > 1.0) || (df < 1.0) )
 	return(0.0);
 	}
 
-x = md_igami( 0.5 * df, y );
+x = cfs_igami( 0.5 * df, y );
 return( 2.0 * x );
 }

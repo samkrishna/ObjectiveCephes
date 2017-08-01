@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_ndtri();
+ * double x, y, cfs_ndtri();
  *
- * x = md_ndtri( y );
+ * x = cfs_ndtri( y );
  *
  *
  *
@@ -19,12 +19,12 @@
  * minus infinity to x) is equal to y.
  *
  *
- * For small arguments 0 < y < md_exp(-2), the program computes
- * z = md_sqrt( -2.0 * md_log(y) );  then the approximation is
- * x = z - md_log(z)/z  - (1/z) P(1/z) / Q(1/z).
- * There are two rational functions P/Q, one for 0 < y < md_exp(-32)
- * and the other for y up to md_exp(-2).  For larger arguments,
- * w = y - 0.5, and  x/md_sqrt(2pi) = w + w**3 R(w**2)/S(w**2)).
+ * For small arguments 0 < y < cfs_exp(-2), the program computes
+ * z = cfs_sqrt( -2.0 * cfs_log(y) );  then the approximation is
+ * x = z - cfs_log(z)/z  - (1/z) P(1/z) / Q(1/z).
+ * There are two rational functions P/Q, one for 0 < y < cfs_exp(-32)
+ * and the other for y up to cfs_exp(-2).  For larger arguments,
+ * w = y - 0.5, and  x/cfs_sqrt(2pi) = w + w**3 R(w**2)/S(w**2)).
  *
  *
  * ACCURACY:
@@ -40,8 +40,8 @@
  * ERROR MESSAGES:
  *
  *   message         condition    value returned
- * md_ndtri domain       x <= 0        -MAXNUM
- * md_ndtri domain       x >= 1         MAXNUM
+ * cfs_ndtri domain       x <= 0        -MAXNUM
+ * cfs_ndtri domain       x >= 1         MAXNUM
  *
  */
 
@@ -55,7 +55,7 @@ Copyright 1984, 1987, 1989, 2000 by Stephen L. Moshier
 extern double MAXNUM;
 
 #ifdef UNK
-/* md_sqrt(2pi) */
+/* cfs_sqrt(2pi) */
 static double s2pi = 2.50662827463100050242E0;
 #endif
 
@@ -159,8 +159,8 @@ static unsigned short Q0[32] = {
 #endif
 
 
-/* Approximation for interval z = md_sqrt(-2 md_log y ) between 2 and 8
- * i.e., y between md_exp(-2) = .135 and md_exp(-32) = 1.27e-14.
+/* Approximation for interval z = cfs_sqrt(-2 cfs_log y ) between 2 and 8
+ * i.e., y between cfs_exp(-2) = .135 and cfs_exp(-32) = 1.27e-14.
  */
 #ifdef UNK
 static double P1[9] = {
@@ -259,8 +259,8 @@ static unsigned short Q1[32] = {
 };
 #endif
 
-/* Approximation for interval z = md_sqrt(-2 md_log y ) between 8 and 64
- * i.e., y between md_exp(-32) = 1.27e-14 and md_exp(-2048) = 3.67e-890.
+/* Approximation for interval z = cfs_sqrt(-2 cfs_log y ) between 8 and 64
+ * i.e., y between cfs_exp(-32) = 1.27e-14 and cfs_exp(-2048) = 3.67e-890.
  */
 
 #ifdef UNK
@@ -361,33 +361,33 @@ static unsigned short Q2[32] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_log ( double );
-extern double md_sqrt ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_log ( double );
+extern double cfs_sqrt ( double );
 #else
-double md_polevl(), md_p1evl(), md_log(), md_sqrt();
+double cfs_polevl(), cfs_p1evl(), cfs_log(), cfs_sqrt();
 #endif
 
-double md_ndtri(md_y0)
-double md_y0;
+double cfs_ndtri(cfs_y0)
+double cfs_y0;
 {
 double x, y, z, y2, x0, x1;
 int code;
 
-if( md_y0 <= 0.0 )
+if( cfs_y0 <= 0.0 )
 	{
 	mtherr( "ndtri", DOMAIN );
 	return( -MAXNUM );
 	}
-if( md_y0 >= 1.0 )
+if( cfs_y0 >= 1.0 )
 	{
 	mtherr( "ndtri", DOMAIN );
 	return( MAXNUM );
 	}
 code = 1;
-y = md_y0;
-if( y > (1.0 - 0.13533528323661269189) ) /* 0.135... = md_exp(-2) */
+y = cfs_y0;
+if( y > (1.0 - 0.13533528323661269189) ) /* 0.135... = cfs_exp(-2) */
 	{
 	y = 1.0 - y;
 	code = 0;
@@ -397,19 +397,19 @@ if( y > 0.13533528323661269189 )
 	{
 	y = y - 0.5;
 	y2 = y * y;
-	x = y + y * (y2 * md_polevl( y2, P0, 4)/md_p1evl( y2, Q0, 8 ));
+	x = y + y * (y2 * cfs_polevl( y2, P0, 4)/cfs_p1evl( y2, Q0, 8 ));
 	x = x * s2pi; 
 	return(x);
 	}
 
-x = md_sqrt( -2.0 * md_log(y) );
-x0 = x - md_log(x)/x;
+x = cfs_sqrt( -2.0 * cfs_log(y) );
+x0 = x - cfs_log(x)/x;
 
 z = 1.0/x;
-if( x < 8.0 ) /* y > md_exp(-32) = 1.2664165549e-14 */
-	x1 = z * md_polevl( z, P1, 8 )/md_p1evl( z, Q1, 8 );
+if( x < 8.0 ) /* y > cfs_exp(-32) = 1.2664165549e-14 */
+	x1 = z * cfs_polevl( z, P1, 8 )/cfs_p1evl( z, Q1, 8 );
 else
-	x1 = z * md_polevl( z, P2, 8 )/md_p1evl( z, Q2, 8 );
+	x1 = z * cfs_polevl( z, P2, 8 )/cfs_p1evl( z, Q2, 8 );
 x = x0 - x1;
 if( code != 0 )
 	x = -x;

@@ -14,14 +14,14 @@ fract p[PD+1] = {0.0};
 */
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_log10 ( double );
+extern double cfs_fabs ( double );
+extern double cfs_log10 ( double );
 #else
-double md_fabs(), md_log10();
+double cfs_fabs(), cfs_log10();
 #endif
 extern double MACHEP;
 
-void md_bernum_wrap(num, den)
+void cfs_bernum_wrap(num, den)
   double num[PD-2], den[PD-2];
 
 {
@@ -29,10 +29,10 @@ void md_bernum_wrap(num, den)
   int np;
   int i, k, n;
   fract s, t;
-  extern void md_radd ( fract *, fract *, fract *);
-  extern void md_rsub ( fract *, fract *, fract *);
-  extern void md_rmul ( fract *, fract *, fract *);
-  extern void md_rdiv ( fract *, fract *, fract *);
+  extern void cfs_radd ( fract *, fract *, fract *);
+  extern void cfs_rsub ( fract *, fract *, fract *);
+  extern void cfs_rmul ( fract *, fract *, fract *);
+  extern void cfs_rdiv ( fract *, fract *, fract *);
   fract x[PD+1], p[PD+1];
 
 
@@ -58,7 +58,7 @@ void md_bernum_wrap(num, den)
       /* multiply p = u * p */
       for( k=0; k<=np; k++ )
 	{
-	  md_radd( &p[np-k+1], &p[np-k], &p[np-k+1] );
+	  cfs_radd( &p[np-k+1], &p[np-k], &p[np-k+1] );
 	}
       np += 1;
       
@@ -68,12 +68,12 @@ void md_bernum_wrap(num, den)
  
       for( i=0; i<n; i++ )
 	{
-	  md_rmul( &p[i], &x[i], &t );
-	  md_radd( &s, &t, &s );
+	  cfs_rmul( &p[i], &x[i], &t );
+	  cfs_radd( &s, &t, &s );
 	}
       
       
-      md_rdiv( &p[n], &s, &x[n] );	/* x[n] = -s/p[n] */
+      cfs_rdiv( &p[n], &s, &x[n] );	/* x[n] = -s/p[n] */
       x[n].n = -x[n].n;
       nx += 1;
       // printf( "%2d %.15e / %.15e\n", n, x[n].n, x[n].d );

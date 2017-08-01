@@ -8,12 +8,12 @@
  * result that suffers truncation at degree FMAXPOL.  The value of
  * FMAXPOL is set by calling the function
  *
- *     md_polini( maxpol );
+ *     cfs_polini( maxpol );
  *
  * where maxpol is the desired maximum degree.  This must be
  * done prior to calling any of the other functions in this module.
  * Memory for internal temporary polynomial storage is allocated
- * by md_polini().
+ * by cfs_polini().
  *
  * Each polynomial is represented by an array containing its
  * coefficients, together with a separately declared integer equal
@@ -79,11 +79,11 @@ int FMAXPOL = 0;
 extern int FMAXPOL;
 
 
-void md_fpoladd_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
+void cfs_fpoladd_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
 double an[], ad[], bn[], bd[], cn[], cd[];
 int na, nb, nc;
 {
-  extern void md_fpoladd(  fract a[], int na, fract b[], int nb, fract c[]);
+  extern void cfs_fpoladd(  fract a[], int na, fract b[], int nb, fract c[]);
   fract *a, *b, *c;
   int j;
   a = (fract *) malloc( (na+1) * sizeof (fract) ); 
@@ -101,7 +101,7 @@ int na, nb, nc;
     c[j].n = 0;
     c[j].d = 1;
   }
-  md_fpoladd(a, na, b, nb, c);
+  cfs_fpoladd(a, na, b, nb, c);
   for (j=0; j<=nc; j++) {
     cn[j] = c[j].n;
     cd[j] = c[j].d;
@@ -111,11 +111,11 @@ int na, nb, nc;
   free(c);
 }
 
-void md_fpolsub_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
+void cfs_fpolsub_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
 double an[], ad[], bn[], bd[], cn[], cd[];
 int na, nb, nc;
 {
-  extern void md_fpolsub(  fract a[], int na, fract b[], int nb, fract c[]);
+  extern void cfs_fpolsub(  fract a[], int na, fract b[], int nb, fract c[]);
   fract *a, *b, *c;
   int j;
   a = (fract *) malloc( (na+1) * sizeof (fract) ); 
@@ -133,7 +133,7 @@ int na, nb, nc;
     c[j].n = 0;
     c[j].d = 1;
   }
-  md_fpolsub(a, na, b, nb, c);
+  cfs_fpolsub(a, na, b, nb, c);
   for (j=0; j<=nc; j++) {
     cn[j] = c[j].n;
     cd[j] = c[j].d;
@@ -143,11 +143,11 @@ int na, nb, nc;
   free(c);
 }
 
-void md_fpolmul_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
+void cfs_fpolmul_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
 double an[], ad[], bn[], bd[], cn[], cd[];
 int na, nb, nc;
 {
-  extern void md_fpolmul(  fract a[], int na, fract b[], int nb, fract c[]);
+  extern void cfs_fpolmul(  fract a[], int na, fract b[], int nb, fract c[]);
   fract *a, *b, *c;
   int j;
   a = (fract *) malloc( (na+1) * sizeof (fract) ); 
@@ -165,7 +165,7 @@ int na, nb, nc;
     c[j].n = 0;
     c[j].d = 1;
   }
-  md_fpolmul(a, na, b, nb, c);
+  cfs_fpolmul(a, na, b, nb, c);
   for (j=0; j<=nc; j++) {
     cn[j] = c[j].n;
     cd[j] = c[j].d;
@@ -175,11 +175,11 @@ int na, nb, nc;
   free(c);
 }
 
-int md_fpoldiv_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
+int cfs_fpoldiv_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
 double an[], ad[], bn[], bd[], cn[], cd[];
 int na, nb, nc;
 {
-  extern int md_fpoldiv(  fract a[], int na, fract b[], int nb, fract c[]);
+  extern int cfs_fpoldiv(  fract a[], int na, fract b[], int nb, fract c[]);
   fract *a, *b, *c;
   int j, ret;
   a = (fract *) malloc( (na+1) * sizeof (fract) ); 
@@ -197,7 +197,7 @@ int na, nb, nc;
     c[j].n = 0;
     c[j].d = 1;
   }
-  ret = md_fpoldiv(a, na, b, nb, c);
+  ret = cfs_fpoldiv(a, na, b, nb, c);
   for (j=0; j<=nc; j++) {
     cn[j] = c[j].n;
     cd[j] = c[j].d;
@@ -208,12 +208,12 @@ int na, nb, nc;
   return ret;
 }
 
-void md_fpoleva_wrap( an, ad, na, x, s)
+void cfs_fpoleva_wrap( an, ad, na, x, s)
 double an[], ad[];
 int na;
 fract *x, *s;
 {
-  extern void md_fpoleva(  fract a[], int na, fract *x, fract *s);
+  extern void cfs_fpoleva(  fract a[], int na, fract *x, fract *s);
   fract *a;
   int j;
   a = (fract *) malloc( (na+1) * sizeof (fract) ); 
@@ -223,15 +223,15 @@ fract *x, *s;
   }
   s->n = 0.0;
   s->d = 1.0;
-  md_fpoleva(a, na, x, s);
+  cfs_fpoleva(a, na, x, s);
   free(a);
 }
 
-void md_fpolsbt_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
+void cfs_fpolsbt_wrap( an, ad, na, bn, bd, nb, cn, cd, nc)
 double an[], ad[], bn[], bd[], cn[], cd[];
 int na, nb, nc;
 {
-  extern void md_fpolsbt(  fract a[], int na, fract b[], int nb, fract c[]);
+  extern void cfs_fpolsbt(  fract a[], int na, fract b[], int nb, fract c[]);
   fract *a, *b, *c;
   int j;
   a = (fract *) malloc( (na+1) * sizeof (fract) ); 
@@ -249,7 +249,7 @@ int na, nb, nc;
     c[j].n = 0;
     c[j].d = 1;
   }
-  md_fpolsbt(a, na, b, nb, c);
+  cfs_fpolsbt(a, na, b, nb, c);
   for (j=0; j<=nc; j++) {
     cn[j] = c[j].n;
     cd[j] = c[j].d;

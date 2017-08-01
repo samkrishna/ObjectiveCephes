@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double phi, m, y, md_ellie();
+ * double phi, m, y, cfs_ellie();
  *
- * y = md_ellie( phi, m );
+ * y = cfs_ellie( phi, m );
  *
  *
  *
@@ -21,7 +21,7 @@
  *                 -
  *                | |
  *                |                   2
- * E(phi_\m)  =    |    md_sqrt( 1 - m md_sin t ) dt
+ * E(phi_\m)  =    |    cfs_sqrt( 1 - m cfs_sin t ) dt
  *                |
  *              | |    
  *               -
@@ -54,22 +54,22 @@ Copyright 1984, 1987, 1993, 2000 by Stephen L. Moshier
 #include "mconf.h"
 extern double PI, PIO2, MACHEP;
 #ifdef ANSIPROT
-extern double md_sqrt ( double );
-extern double md_fabs ( double );
-extern double md_log ( double );
-extern double md_sin ( double x );
-extern double md_tan ( double x );
-extern double md_atan ( double );
-extern double md_floor ( double );
-extern double md_ellpe ( double );
-extern double md_ellpk ( double );
-double md_ellie ( double, double );
+extern double cfs_sqrt ( double );
+extern double cfs_fabs ( double );
+extern double cfs_log ( double );
+extern double cfs_sin ( double x );
+extern double cfs_tan ( double x );
+extern double cfs_atan ( double );
+extern double cfs_floor ( double );
+extern double cfs_ellpe ( double );
+extern double cfs_ellpk ( double );
+double cfs_ellie ( double, double );
 #else
-double md_sqrt(), md_fabs(), md_log(), md_sin(), md_tan(), md_atan(), md_floor();
-double md_ellpe(), md_ellpk(), md_ellie();
+double cfs_sqrt(), cfs_fabs(), cfs_log(), cfs_sin(), cfs_tan(), cfs_atan(), cfs_floor();
+double cfs_ellpe(), cfs_ellpk(), cfs_ellie();
 #endif
 
-double md_ellie( phi, m )
+double cfs_ellie( phi, m )
 double phi, m;
 {
 double a, b, c, e, temp;
@@ -79,7 +79,7 @@ int d, mod, npio2, sign;
 if( m == 0.0 )
 	return( phi );
 lphi = phi;
-npio2 = md_floor( lphi/PIO2 );
+npio2 = cfs_floor( lphi/PIO2 );
 if( npio2 & 1 )
 	npio2 += 1;
 lphi = lphi - npio2 * PIO2;
@@ -93,50 +93,50 @@ else
 	sign = 1;
 	}
 a = 1.0 - m;
-E = md_ellpe( a );
+E = cfs_ellpe( a );
 if( a == 0.0 )
 	{
-	temp = md_sin( lphi );
+	temp = cfs_sin( lphi );
 	goto done;
 	}
-t = md_tan( lphi );
-b = md_sqrt(a);
+t = cfs_tan( lphi );
+b = cfs_sqrt(a);
 /* Thanks to Brian Fitzgerald <fitzgb@mml0.meche.rpi.edu>
    for pointing out an instability near odd multiples of pi/2.  */
-if( md_fabs(t) > 10.0 )
+if( cfs_fabs(t) > 10.0 )
 	{
 	/* Transform the amplitude */
 	e = 1.0/(b*t);
 	/* ... but avoid multiple recursions.  */
-	if( md_fabs(e) < 10.0 )
+	if( cfs_fabs(e) < 10.0 )
 		{
-		e = md_atan(e);
-		temp = E + m * md_sin( lphi ) * md_sin( e ) - md_ellie( e, m );
+		e = cfs_atan(e);
+		temp = E + m * cfs_sin( lphi ) * cfs_sin( e ) - cfs_ellie( e, m );
 		goto done;
 		}
 	}
-c = md_sqrt(m);
+c = cfs_sqrt(m);
 a = 1.0;
 d = 1;
 e = 0.0;
 mod = 0;
 
-while( md_fabs(c/a) > MACHEP )
+while( cfs_fabs(c/a) > MACHEP )
 	{
 	temp = b/a;
-	lphi = lphi + md_atan(t*temp) + mod * PI;
+	lphi = lphi + cfs_atan(t*temp) + mod * PI;
 	mod = (lphi + PIO2)/PI;
 	t = t * ( 1.0 + temp )/( 1.0 - temp * t * t );
 	c = ( a - b )/2.0;
-	temp = md_sqrt( a * b );
+	temp = cfs_sqrt( a * b );
 	a = ( a + b )/2.0;
 	b = temp;
 	d += d;
-	e += c * md_sin(lphi);
+	e += c * cfs_sin(lphi);
 	}
 
-temp = E / md_ellpk( 1.0 - m );
-temp *= (md_atan(t) + mod * PI)/(d * a);
+temp = E / cfs_ellpk( 1.0 - m );
+temp *= (cfs_atan(t) + mod * PI)/(d * a);
 temp += e;
 
 done:

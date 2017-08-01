@@ -1,4 +1,4 @@
-/*							md_log.c
+/*							cfs_log.c
  *
  *	Natural logarithm
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_log();
+ * double x, y, cfs_log();
  *
- * y = md_log( x );
+ * y = cfs_log( x );
  *
  *
  *
@@ -20,11 +20,11 @@
  * parts.  If the exponent is between -1 and +1, the logarithm
  * of the fraction is approximated by
  *
- *     md_log(1+x) = x - 0.5 x**2 + x**3 P(x)/Q(x).
+ *     cfs_log(1+x) = x - 0.5 x**2 + x**3 P(x)/Q(x).
  *
  * Otherwise, setting  z = 2(x-1)/x+1),
  * 
- *     md_log(x) = z + z**3 P(z)/Q(z).
+ *     cfs_log(x) = z + z**3 P(z)/Q(z).
  *
  *
  *
@@ -42,8 +42,8 @@
  *
  * ERROR MESSAGES:
  *
- * md_log singularity:  x = 0; returns -INFINITY
- * md_log domain:       x < 0; returns NAN
+ * cfs_log singularity:  x = 0; returns -INFINITY
+ * cfs_log domain:       x < 0; returns NAN
  */
 
 /*
@@ -52,10 +52,10 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 */
 
 #include "mconf.h"
-static char fname[] = {"md_log"};
+static char fname[] = {"cfs_log"};
 
-/* Coefficients for md_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
- * 1/md_sqrt(2) <= x < md_sqrt(2)
+/* Coefficients for cfs_log(1+x) = x - x**2/2 + x**3 P(x)/Q(x)
+ * 1/cfs_sqrt(2) <= x < cfs_sqrt(2)
  */
 #ifdef UNK
 static double P[] = {
@@ -134,9 +134,9 @@ static unsigned short Q[] = {
 };
 #endif
 
-/* Coefficients for md_log(x) = z + z**3 P(z)/Q(z),
+/* Coefficients for cfs_log(x) = z + z**3 P(z)/Q(z),
  * where z = 2(x-1)/(x+1)
- * 1/md_sqrt(2) <= x < md_sqrt(2)
+ * 1/cfs_sqrt(2) <= x < cfs_sqrt(2)
  */
 
 #ifdef UNK
@@ -193,20 +193,20 @@ static unsigned short S[12] = {
 #endif
 
 #ifdef ANSIPROT
-extern double md_frexp ( double, int * );
-extern double md_ldexp ( double, int );
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
+extern double cfs_frexp ( double, int * );
+extern double cfs_ldexp ( double, int );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
 #else
-double md_frexp(), md_ldexp(), md_polevl(), md_p1evl();
-int md_isnan(), md_isfinite();
+double cfs_frexp(), cfs_ldexp(), cfs_polevl(), cfs_p1evl();
+int cfs_isnan(), cfs_isfinite();
 #endif
 #define SQRTH 0.70710678118654752440
 extern double INFINITY, NAN;
 
-double md_log(x)
+double cfs_log(x)
 double x;
 {
 int e;
@@ -216,7 +216,7 @@ short *q;
 double y, z;
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 #ifdef INFINITIES
@@ -248,11 +248,11 @@ e = ((e >> 7) & 0377) - 0200;	/* the exponent */
 *q |= 040000;	/* x now between 0.5 and 1 */
 #endif
 
-/* Note, md_frexp is used so that denormal numbers
+/* Note, cfs_frexp is used so that denormal numbers
  * will be handled properly.
  */
 #ifdef IBMPC
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 /*
 q = (short *)&x;
 q += 3;
@@ -265,16 +265,16 @@ e = ((e >> 4) & 0x0fff) - 0x3fe;
 
 /* Equivalent C language standard library function: */
 #ifdef UNK
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 #endif
 
 #ifdef MIEEE
-x = md_frexp( x, &e );
+x = cfs_frexp( x, &e );
 #endif
 
 
 
-/* logarithm using md_log(x) = z + z**3 P(z)/Q(z),
+/* logarithm using cfs_log(x) = z + z**3 P(z)/Q(z),
  * where z = 2(x-1)/x+1)
  */
 
@@ -298,7 +298,7 @@ x = z / y;
 
 /* rational form */
 z = x*x;
-z = x * ( z * md_polevl( z, R, 2 ) / md_p1evl( z, S, 3 ) );
+z = x * ( z * cfs_polevl( z, R, 2 ) / cfs_p1evl( z, S, 3 ) );
 y = e;
 z = z - y * 2.121944400546905827679e-4;
 z = z + x;
@@ -308,12 +308,12 @@ goto ldone;
 
 
 
-/* logarithm using md_log(1+x) = x - .5x**2 + x**3 P(x)/Q(x) */
+/* logarithm using cfs_log(1+x) = x - .5x**2 + x**3 P(x)/Q(x) */
 
 if( x < SQRTH )
 	{
 	e -= 1;
-	x = md_ldexp( x, 1 ) - 1.0; /*  2x - 1  */
+	x = cfs_ldexp( x, 1 ) - 1.0; /*  2x - 1  */
 	}	
 else
 	{
@@ -324,13 +324,13 @@ else
 /* rational form */
 z = x*x;
 #if DEC
-y = x * ( z * md_polevl( x, P, 5 ) / md_p1evl( x, Q, 6 ) );
+y = x * ( z * cfs_polevl( x, P, 5 ) / cfs_p1evl( x, Q, 6 ) );
 #else
-y = x * ( z * md_polevl( x, P, 5 ) / md_p1evl( x, Q, 5 ) );
+y = x * ( z * cfs_polevl( x, P, 5 ) / cfs_p1evl( x, Q, 5 ) );
 #endif
 if( e )
 	y = y - e * 2.121944400546905827679e-4;
-y = y - md_ldexp( z, -1 );   /*  y - 0.5 * z  */
+y = y - cfs_ldexp( z, -1 );   /*  y - 0.5 * z  */
 z = x + y;
 if( e )
 	z = z + e * 0.693359375;

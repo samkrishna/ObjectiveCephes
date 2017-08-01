@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double a, b, y, md_beta();
+ * double a, b, y, cfs_beta();
  *
- * y = md_beta( a, b );
+ * y = cfs_beta( a, b );
  *
  *
  *
@@ -16,12 +16,12 @@
  *
  *                      -     -
  *                     | (a) | (b)
- * md_beta( a, b )  =  -----------.
+ * cfs_beta( a, b )  =  -----------.
  *                        -
  *                       | (a+b)
  *
  * For large arguments the logarithm of the function is
- * evaluated using md_lgam(), then exponentiated.
+ * evaluated using cfs_lgam(), then exponentiated.
  *
  *
  *
@@ -35,7 +35,7 @@
  * ERROR MESSAGES:
  *
  *   message         condition          value returned
- * beta overflow    md_log(beta) > MAXLOG       0.0
+ * beta overflow    cfs_log(beta) > MAXLOG       0.0
  *                     a or b <0 integer        0.0
  *
  */
@@ -65,19 +65,19 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 #endif
 
 #ifdef ANSIPROT
-extern double md_fabs ( double );
-extern double md_gamma ( double );
-extern double md_lgam ( double );
-extern double md_exp ( double );
-extern double md_log ( double );
-extern double md_floor ( double );
+extern double cfs_fabs ( double );
+extern double cfs_gamma ( double );
+extern double cfs_lgam ( double );
+extern double cfs_exp ( double );
+extern double cfs_log ( double );
+extern double cfs_floor ( double );
 #else
-double md_fabs(), md_gamma(), md_lgam(), md_exp(), md_log(), md_floor();
+double cfs_fabs(), cfs_gamma(), cfs_lgam(), cfs_exp(), cfs_log(), cfs_floor();
 #endif
 extern double MAXLOG, MAXNUM;
 extern int sgngam;
 
-double md_beta( a, b )
+double cfs_beta( a, b )
 double a, b;
 {
 double y;
@@ -87,24 +87,24 @@ sign = 1;
 
 if( a <= 0.0 )
 	{
-	if( a == md_floor(a) )
+	if( a == cfs_floor(a) )
 		goto over;
 	}
 if( b <= 0.0 )
 	{
-	if( b == md_floor(b) )
+	if( b == cfs_floor(b) )
 		goto over;
 	}
 
 
 y = a + b;
-if( md_fabs(y) > MAXGAM )
+if( cfs_fabs(y) > MAXGAM )
 	{
-	y = md_lgam(y);
+	y = cfs_lgam(y);
 	sign *= sgngam; /* keep track of the sign */
-	y = md_lgam(b) - y;
+	y = cfs_lgam(b) - y;
 	sign *= sgngam;
-	y = md_lgam(a) + y;
+	y = cfs_lgam(a) + y;
 	sign *= sgngam;
 	if( y > MAXLOG )
 		{
@@ -112,22 +112,22 @@ over:
 		mtherr( "beta", OVERFLOW );
 		return( sign * MAXNUM );
 		}
-	return( sign * md_exp(y) );
+	return( sign * cfs_exp(y) );
 	}
 
-y = md_gamma(y);
+y = cfs_gamma(y);
 if( y == 0.0 )
 	goto over;
 
 if( a > b )
 	{
-	y = md_gamma(a)/y;
-	y *= md_gamma(b);
+	y = cfs_gamma(a)/y;
+	y *= cfs_gamma(b);
 	}
 else
 	{
-	y = md_gamma(b)/y;
-	y *= md_gamma(a);
+	y = cfs_gamma(b)/y;
+	y *= cfs_gamma(a);
 	}
 
 return(y);
@@ -135,9 +135,9 @@ return(y);
 
 
 
-/* Natural md_log of |beta|.  Return the sign of beta in sgngam.  */
+/* Natural cfs_log of |beta|.  Return the sign of beta in sgngam.  */
 
-double md_lbeta( a, b )
+double cfs_lbeta( a, b )
 double a, b;
 {
 double y;
@@ -147,30 +147,30 @@ sign = 1;
 
 if( a <= 0.0 )
 	{
-	if( a == md_floor(a) )
+	if( a == cfs_floor(a) )
 		goto over;
 	}
 if( b <= 0.0 )
 	{
-	if( b == md_floor(b) )
+	if( b == cfs_floor(b) )
 		goto over;
 	}
 
 
 y = a + b;
-if( md_fabs(y) > MAXGAM )
+if( cfs_fabs(y) > MAXGAM )
 	{
-	y = md_lgam(y);
+	y = cfs_lgam(y);
 	sign *= sgngam; /* keep track of the sign */
-	y = md_lgam(b) - y;
+	y = cfs_lgam(b) - y;
 	sign *= sgngam;
-	y = md_lgam(a) + y;
+	y = cfs_lgam(a) + y;
 	sign *= sgngam;
 	sgngam = sign;
 	return( y );
 	}
 
-y = md_gamma(y);
+y = cfs_gamma(y);
 if( y == 0.0 )
 	{
 over:
@@ -180,13 +180,13 @@ over:
 
 if( a > b )
 	{
-	y = md_gamma(a)/y;
-	y *= md_gamma(b);
+	y = cfs_gamma(a)/y;
+	y *= cfs_gamma(b);
 	}
 else
 	{
-	y = md_gamma(b)/y;
-	y *= md_gamma(a);
+	y = cfs_gamma(b)/y;
+	y *= cfs_gamma(a);
 	}
 
 if( y < 0 )
@@ -197,5 +197,5 @@ if( y < 0 )
 else
   sgngam = 1;
 
-return( md_log(y) );
+return( cfs_log(y) );
 }

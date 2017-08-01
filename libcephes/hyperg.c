@@ -67,42 +67,42 @@ Copyright 1984, 1987, 1988, 2000 by Stephen L. Moshier
 #include "mconf.h"
 
 #ifdef ANSIPROT
-extern double md_exp ( double );
-extern double md_log ( double );
-extern double md_gamma ( double );
-extern double md_lgam ( double );
-extern double md_fabs ( double );
-double md_hyp2f0 ( double, double, double, int, double * );
-static double md_hy1f1p(double, double, double, double *);
-static double md_hy1f1a(double, double, double, double *);
-double md_hyperg (double, double, double);
+extern double cfs_exp ( double );
+extern double cfs_log ( double );
+extern double cfs_gamma ( double );
+extern double cfs_lgam ( double );
+extern double cfs_fabs ( double );
+double cfs_hyp2f0 ( double, double, double, int, double * );
+static double cfs_hy1f1p(double, double, double, double *);
+static double cfs_hy1f1a(double, double, double, double *);
+double cfs_hyperg (double, double, double);
 #else
-double md_exp(), md_log(), md_gamma(), md_lgam(), md_fabs(), md_hyp2f0();
-static double md_hy1f1p();
-static double md_hy1f1a();
-double md_hyperg();
+double cfs_exp(), cfs_log(), cfs_gamma(), cfs_lgam(), cfs_fabs(), cfs_hyp2f0();
+static double cfs_hy1f1p();
+static double cfs_hy1f1a();
+double cfs_hyperg();
 #endif
 extern double MAXNUM, MACHEP;
 
-double md_hyperg( a, b, x)
+double cfs_hyperg( a, b, x)
 double a, b, x;
 {
 double asum, psum, acanc, pcanc, temp;
 
 /* See if a Kummer transformation will help */
 temp = b - a;
-if( md_fabs(temp) < 0.001 * md_fabs(a) )
-	return( md_exp(x) * md_hyperg( temp, b, -x )  );
+if( cfs_fabs(temp) < 0.001 * cfs_fabs(a) )
+	return( cfs_exp(x) * cfs_hyperg( temp, b, -x )  );
 
 
-psum = md_hy1f1p( a, b, x, &pcanc );
+psum = cfs_hy1f1p( a, b, x, &pcanc );
 if( pcanc < 1.0e-15 )
 	goto done;
 
 
 /* try asymptotic series */
 
-asum = md_hy1f1a( a, b, x, &acanc );
+asum = cfs_hy1f1a( a, b, x, &acanc );
 
 
 /* Pick the result with less estimated error */
@@ -126,7 +126,7 @@ return( psum );
 /* Power series summation for confluent hypergeometric function		*/
 
 
-static double md_hy1f1p( a, b, x, err )
+static double cfs_hy1f1p( a, b, x, err )
 double a, b, x;
 double *err;
 {
@@ -158,7 +158,7 @@ while( t > MACHEP )
 	u = x * ( an / (bn * n) );
 
 	/* check for blowup */
-	temp = md_fabs(u);
+	temp = cfs_fabs(u);
 	if( (temp > 1.0 ) && (maxt > (MAXNUM/temp)) )
 		{
 		pcanc = 1.0;	/* estimate 100% error */
@@ -167,11 +167,11 @@ while( t > MACHEP )
 
 	a0 *= u;
 	sum += a0;
-	t = md_fabs(a0);
+	t = cfs_fabs(a0);
 	if( t > maxt )
 		maxt = t;
 /*
-	if( (maxt/md_fabs(sum)) > 1.0e17 )
+	if( (maxt/cfs_fabs(sum)) > 1.0e17 )
 		{
 		pcanc = 1.0;
 		goto blowup;
@@ -185,14 +185,14 @@ while( t > MACHEP )
 pdone:
 
 /* estimate error due to roundoff and cancellation */
-t = md_fabs(sum);
+t = cfs_fabs(sum);
 /* If the largest term is large and bigger than the sum, don't believe it */
 if( (t > 1.0) && (maxt > t) )
         goto blowup;
 if( t != 0.0)
         maxt /= t;
 maxt *= MACHEP; 	/* this way avoids multiply overflow */
-pcanc = md_fabs( MACHEP * n  +  maxt );
+pcanc = cfs_fabs( MACHEP * n  +  maxt );
 
 blowup:
 
@@ -219,7 +219,7 @@ return( sum );
  *                               |  (a)                        )
  */
 
-static double md_hy1f1a( a, b, x, err )
+static double cfs_hy1f1a( a, b, x, err )
 double a, b, x;
 double *err;
 {
@@ -231,29 +231,29 @@ if( x == 0 )
 	asum = MAXNUM;
 	goto adone;
 	}
-temp = md_log( md_fabs(x) );
+temp = cfs_log( cfs_fabs(x) );
 t = x + temp * (a-b);
 u = -temp * a;
 
 if( b > 0 )
 	{
-	temp = md_lgam(b);
+	temp = cfs_lgam(b);
 	t += temp;
 	u += temp;
 	}
 
-h1 = md_hyp2f0( a, a-b+1, -1.0/x, 1, &err1 );
+h1 = cfs_hyp2f0( a, a-b+1, -1.0/x, 1, &err1 );
 
-temp = md_exp(u) / md_gamma(b-a);
+temp = cfs_exp(u) / cfs_gamma(b-a);
 h1 *= temp;
 err1 *= temp;
 
-h2 = md_hyp2f0( b-a, 1.0-a, 1.0/x, 2, &err2 );
+h2 = cfs_hyp2f0( b-a, 1.0-a, 1.0/x, 2, &err2 );
 
 if( a < 0 )
-	temp = md_exp(t) / md_gamma(a);
+	temp = cfs_exp(t) / cfs_gamma(a);
 else
-	temp = md_exp( t - md_lgam(a) );
+	temp = cfs_exp( t - cfs_lgam(a) );
 
 h2 *= temp;
 err2 *= temp;
@@ -263,19 +263,19 @@ if( x < 0.0 )
 else
 	asum = h2;
 
-acanc = md_fabs(err1) + md_fabs(err2);
+acanc = cfs_fabs(err1) + cfs_fabs(err2);
 
 
 if( b < 0 )
 	{
-	temp = md_gamma(b);
+	temp = cfs_gamma(b);
 	asum *= temp;
-	acanc *= md_fabs(temp);
+	acanc *= cfs_fabs(temp);
 	}
 
 
 if( asum != 0.0 )
-	acanc /= md_fabs(asum);
+	acanc /= cfs_fabs(asum);
 
 acanc *= 30.0;	/* fudge factor, since error of asymptotic formula
 		 * often seems this much larger than advertised */
@@ -289,7 +289,7 @@ return( asum );
 
 /*							hyp2f0()	*/
 
-double md_hyp2f0( a, b, x, type, err )
+double cfs_hyp2f0( a, b, x, type, err )
 double a, b, x;
 int type;	/* determines what converging factor to use */
 double *err;
@@ -317,12 +317,12 @@ do
 	u = an * (bn * x / n);
 
 	/* check for blowup */
-	temp = md_fabs(u);
+	temp = cfs_fabs(u);
 	if( (temp > 1.0 ) && (maxt > (MAXNUM/temp)) )
 		goto error;
 
 	a0 *= u;
-	t = md_fabs(a0);
+	t = cfs_fabs(a0);
 
 	/* terminating condition for asymptotic series */
 	if( t > tlast )
@@ -347,7 +347,7 @@ while( t > MACHEP );
 pdone:	/* series converged! */
 
 /* estimate error due to roundoff and cancellation */
-*err = md_fabs(  MACHEP * (n + maxt)  );
+*err = cfs_fabs(  MACHEP * (n + maxt)  );
 
 alast = a0;
 goto done;
@@ -375,7 +375,7 @@ default:
 }
 
 /* estimate error due to roundoff, cancellation, and nonconvergence */
-*err = MACHEP * (n + maxt)  +  md_fabs ( a0 );
+*err = MACHEP * (n + maxt)  +  cfs_fabs ( a0 );
 
 
 done:

@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_tandg();
+ * double x, y, cfs_tandg();
  *
- * y = md_tandg( x );
+ * y = cfs_tandg( x );
  *
  *
  *
@@ -44,9 +44,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_cotdg();
+ * double x, y, cfs_cotdg();
  *
- * y = md_cotdg( x );
+ * y = cfs_cotdg( x );
  *
  *
  *
@@ -147,36 +147,36 @@ static double lossth = 1.0e14;
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_floor ( double );
-extern double md_ldexp ( double, int );
-static double md_tancot( double, int );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_floor ( double );
+extern double cfs_ldexp ( double, int );
+static double cfs_tancot( double, int );
 #else
-double md_polevl(), md_p1evl(), md_floor(), md_ldexp();
-static double md_tancot();
+double cfs_polevl(), cfs_p1evl(), cfs_floor(), cfs_ldexp();
+static double cfs_tancot();
 #endif
 extern double MAXNUM;
 extern double PIO4;
 
 
-double md_tandg(x)
+double cfs_tandg(x)
 double x;
 {
 
-return( md_tancot(x,0) );
+return( cfs_tancot(x,0) );
 }
 
 
-double md_cotdg(x)
+double cfs_cotdg(x)
 double x;
 {
 
-return( md_tancot(x,1) );
+return( cfs_tancot(x,1) );
 }
 
 
-static double md_tancot( xx, cotflg )
+static double cfs_tancot( xx, cotflg )
 double xx;
 int cotflg;
 {
@@ -202,12 +202,12 @@ if( x > lossth )
 	}
 
 /* compute x mod PIO4 */
-y = md_floor( x/45.0 );
+y = cfs_floor( x/45.0 );
 
 /* strip high bits of integer part */
-z = md_ldexp( y, -3 );
-z = md_floor(z);		/* integer part of y/8 */
-z = y - md_ldexp( z, 3 );  /* y - 16 * (y/16) */
+z = cfs_ldexp( y, -3 );
+z = cfs_floor(z);		/* integer part of y/8 */
+z = y - cfs_ldexp( z, 3 );  /* y - 16 * (y/16) */
 
 /* integer and fractional part modulo one octant */
 j = z;
@@ -225,7 +225,7 @@ z *= PI180;
 zz = z * z;
 
 if( zz > 1.0e-14 )
-	y = z  +  z * (zz * md_polevl( zz, P, 2 )/md_p1evl(zz, Q, 4));
+	y = z  +  z * (zz * cfs_polevl( zz, P, 2 )/cfs_p1evl(zz, Q, 4));
 else
 	y = z;
 	

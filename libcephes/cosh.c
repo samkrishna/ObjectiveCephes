@@ -1,4 +1,4 @@
-/*							md_cosh.c
+/*							cfs_cosh.c
  *
  *	Hyperbolic cosine
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_cosh();
+ * double x, y, cfs_cosh();
  *
- * y = md_cosh( x );
+ * y = cfs_cosh( x );
  *
  *
  *
@@ -17,7 +17,7 @@
  * Returns hyperbolic cosine of argument in the range MINLOG to
  * MAXLOG.
  *
- * md_cosh(x)  =  ( md_exp(x) + md_exp(-x) )/2.
+ * cfs_cosh(x)  =  ( cfs_exp(x) + cfs_exp(-x) )/2.
  *
  *
  *
@@ -32,12 +32,12 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_cosh overflow    |x| > MAXLOG       MAXNUM
+ * cfs_cosh overflow    |x| > MAXLOG       MAXNUM
  *
  *
  */
 
-/*							md_cosh.c */
+/*							cfs_cosh.c */
 
 /*
 Cephes Math Library Release 2.8:  June, 2000
@@ -46,38 +46,38 @@ Copyright 1985, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_exp ( double );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
+extern double cfs_exp ( double );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
 #else
-double md_exp();
-int md_isnan(), md_isfinite();
+double cfs_exp();
+int cfs_isnan(), cfs_isfinite();
 #endif
 extern double MAXLOG, INFINITY, LOGE2;
 
-double md_cosh(x)
+double cfs_cosh(x)
 double x;
 {
 double y;
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 if( x < 0 )
 	x = -x;
 if( x > (MAXLOG + LOGE2) )
 	{
-	mtherr( "md_cosh", OVERFLOW );
+	mtherr( "cfs_cosh", OVERFLOW );
 	return( INFINITY );
 	}	
 if( x >= (MAXLOG - LOGE2) )
 	{
-	y = md_exp(0.5 * x);
+	y = cfs_exp(0.5 * x);
 	y = (0.5 * y) * y;
 	return(y);
 	}
-y = md_exp(x);
+y = cfs_exp(x);
 y = 0.5 * (y + 1.0 / y);
 return( y );
 }

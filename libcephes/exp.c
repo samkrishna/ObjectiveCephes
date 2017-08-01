@@ -1,4 +1,4 @@
-/*							md_exp.c
+/*							cfs_exp.c
  *
  *	Exponential function
  *
@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_exp();
+ * double x, y, cfs_exp();
  *
- * y = md_exp( x );
+ * y = cfs_exp( x );
  *
  *
  *
@@ -23,7 +23,7 @@
  *    e  = 2  e.
  *
  * A Pade' form  1 + 2x P(x**2)/( Q(x**2) - P(x**2) )
- * of degree 2/3 is used to approximate md_exp(f) in the basic
+ * of degree 2/3 is used to approximate cfs_exp(f) in the basic
  * interval [-0.5, 0.5].
  *
  *
@@ -37,7 +37,7 @@
  *
  * Error amplification in the exponential function can be
  * a serious matter.  The error propagation involves
- * md_exp( X(1+delta) ) = md_exp(X) ( 1 + X*delta + ... ),
+ * cfs_exp( X(1+delta) ) = cfs_exp(X) ( 1 + X*delta + ... ),
  * which shows that a 1 lsb error in representing X produces
  * a relative error of X times 1 lsb in the function.
  * While the routine gives an accurate result for arguments
@@ -49,8 +49,8 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * md_exp underflow    x < MINLOG         0.0
- * md_exp overflow     x > MAXLOG         INFINITY
+ * cfs_exp underflow    x < MINLOG         0.0
+ * cfs_exp overflow     x > MAXLOG         INFINITY
  *
  */
 
@@ -136,29 +136,29 @@ static unsigned short sc2[] = {0x3eb7,0xf7d1,0xcf79,0xabca};
 #endif
 
 #ifdef ANSIPROT
-extern double md_polevl ( double, void *, int );
-extern double md_p1evl ( double, void *, int );
-extern double md_floor ( double );
-extern double md_ldexp ( double, int );
-extern int md_isnan ( double );
-extern int md_isfinite ( double );
+extern double cfs_polevl ( double, void *, int );
+extern double cfs_p1evl ( double, void *, int );
+extern double cfs_floor ( double );
+extern double cfs_ldexp ( double, int );
+extern int cfs_isnan ( double );
+extern int cfs_isfinite ( double );
 #else
-double md_polevl(), md_p1evl(), md_floor(), md_ldexp();
-int md_isnan(), md_isfinite();
+double cfs_polevl(), cfs_p1evl(), cfs_floor(), cfs_ldexp();
+int cfs_isnan(), cfs_isfinite();
 #endif
 extern double LOGE2, LOG2E, MAXLOG, MINLOG, MAXNUM;
 #ifdef INFINITIES
 extern double INFINITY;
 #endif
 
-double md_exp(x)
+double cfs_exp(x)
 double x;
 {
 double px, xx;
 int n;
 
 #ifdef NANS
-if( md_isnan(x) )
+if( cfs_isnan(x) )
 	return(x);
 #endif
 if( x > MAXLOG)
@@ -166,7 +166,7 @@ if( x > MAXLOG)
 #ifdef INFINITIES
 	return( INFINITY );
 #else
-	mtherr( "md_exp", OVERFLOW );
+	mtherr( "cfs_exp", OVERFLOW );
 	return( MAXNUM );
 #endif
 	}
@@ -174,7 +174,7 @@ if( x > MAXLOG)
 if( x < MINLOG )
 	{
 #ifndef INFINITIES
-	mtherr( "md_exp", UNDERFLOW );
+	mtherr( "cfs_exp", UNDERFLOW );
 #endif
 	return(0.0);
 	}
@@ -183,7 +183,7 @@ if( x < MINLOG )
  *   = e**g e**( n loge(2) )
  *   = e**( g + n loge(2) )
  */
-px = md_floor( LOG2E * x + 0.5 ); /* md_floor() truncates toward -infinity. */
+px = cfs_floor( LOG2E * x + 0.5 ); /* cfs_floor() truncates toward -infinity. */
 n = px;
 x -= px * C1;
 x -= px * C2;
@@ -193,11 +193,11 @@ x -= px * C2;
  * e**x = 1 + 2x P(x**2)/( Q(x**2) - P(x**2) )
  */
 xx = x * x;
-px = x * md_polevl( xx, P, 2 );
-x =  px/( md_polevl( xx, Q, 3 ) - px );
+px = x * cfs_polevl( xx, P, 2 );
+x =  px/( cfs_polevl( xx, Q, 3 ) - px );
 x = 1.0 + 2.0 * x;
 
 /* multiply by power of 2 */
-x = md_ldexp( x, n );
+x = cfs_ldexp( x, n );
 return(x);
 }

@@ -28,8 +28,8 @@
  * ACCURACY:
  *
  * For i < 34 the values are simply tabulated, and have
- * full machine accuracy.  If i > 55, fac(i) = md_gamma(i+1);
- * see md_gamma.c.
+ * full machine accuracy.  If i > 55, fac(i) = cfs_gamma(i+1);
+ * see cfs_gamma.c.
  *
  *                      Relative error:
  * arithmetic   domain      peak
@@ -207,9 +207,9 @@ static unsigned short factbl[] = {
 #endif
 
 #ifdef ANSIPROT
-double md_gamma ( double );
+double cfs_gamma ( double );
 #else
-double md_gamma();
+double cfs_gamma();
 #endif
 extern double MAXNUM;
 
@@ -240,11 +240,11 @@ if( i < 34 )
 	return( *(double *)(&factbl[4*i]) );
 #endif
 	}
-/* Use md_gamma function for large i. */
+/* Use cfs_gamma function for large i. */
 if( i > 55 )
 	{
 	x = i + 1;
-	return( md_gamma(x) );
+	return( cfs_gamma(x) );
 	}
 /* Compute directly for intermediate i. */
 n = 34.0;

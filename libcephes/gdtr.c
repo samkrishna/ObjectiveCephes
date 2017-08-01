@@ -6,15 +6,15 @@
  *
  * SYNOPSIS:
  *
- * double a, b, x, y, md_gdtr();
+ * double a, b, x, y, cfs_gdtr();
  *
- * y = md_gdtr( a, b, x );
+ * y = cfs_gdtr( a, b, x );
  *
  *
  *
  * DESCRIPTION:
  *
- * Returns the integral from zero to x of the md_gamma probability
+ * Returns the integral from zero to x of the cfs_gamma probability
  * density function:
  *
  *
@@ -26,15 +26,15 @@
  *      | (b)   -
  *               0
  *
- *  The incomplete md_gamma integral is used, according to the
+ *  The incomplete cfs_gamma integral is used, according to the
  * relation
  *
- * y = md_igam( b, ax ).
+ * y = cfs_igam( b, ax ).
  *
  *
  * ACCURACY:
  *
- * See md_igam().
+ * See cfs_igam().
  *
  * ERROR MESSAGES:
  *
@@ -51,15 +51,15 @@
  *
  * SYNOPSIS:
  *
- * double a, b, x, y, md_gdtrc();
+ * double a, b, x, y, cfs_gdtrc();
  *
- * y = md_gdtrc( a, b, x );
+ * y = cfs_gdtrc( a, b, x );
  *
  *
  *
  * DESCRIPTION:
  *
- * Returns the integral from x to infinity of the md_gamma
+ * Returns the integral from x to infinity of the cfs_gamma
  * probability density function:
  *
  *
@@ -71,15 +71,15 @@
  *      | (b)   -
  *               x
  *
- *  The incomplete md_gamma integral is used, according to the
+ *  The incomplete cfs_gamma integral is used, according to the
  * relation
  *
- * y = md_igamc( b, ax ).
+ * y = cfs_igamc( b, ax ).
  *
  *
  * ACCURACY:
  *
- * See md_igamc().
+ * See cfs_igamc().
  *
  * ERROR MESSAGES:
  *
@@ -98,13 +98,13 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_igam ( double, double );
-extern double md_igamc ( double, double );
+extern double cfs_igam ( double, double );
+extern double cfs_igamc ( double, double );
 #else
-double md_igam(), md_igamc();
+double cfs_igam(), cfs_igamc();
 #endif
 
-double md_gdtr( a, b, x )
+double cfs_gdtr( a, b, x )
 double a, b, x;
 {
 
@@ -113,12 +113,12 @@ if( x < 0.0 )
 	mtherr( "gdtr", DOMAIN );
 	return( 0.0 );
 	}
-return(  md_igam( b, a * x )  );
+return(  cfs_igam( b, a * x )  );
 }
 
 
 
-double md_gdtrc( a, b, x )
+double cfs_gdtrc( a, b, x )
 double a, b, x;
 {
 
@@ -127,5 +127,5 @@ if( x < 0.0 )
 	mtherr( "gdtrc", DOMAIN );
 	return( 0.0 );
 	}
-return(  md_igamc( b, a * x )  );
+return(  cfs_igamc( b, a * x )  );
 }

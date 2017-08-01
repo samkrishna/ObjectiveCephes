@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * int k, n;
- * double p, y, md_nbdtr();
+ * double p, y, cfs_nbdtr();
  *
- * y = md_nbdtr( k, n, p );
+ * y = cfs_nbdtr( k, n, p );
  *
  * DESCRIPTION:
  *
@@ -52,9 +52,9 @@
  * SYNOPSIS:
  *
  * int k, n;
- * double p, y, md_nbdtrc();
+ * double p, y, cfs_nbdtrc();
  *
- * y = md_nbdtrc( k, n, p );
+ * y = cfs_nbdtrc( k, n, p );
  *
  * DESCRIPTION:
  *
@@ -70,7 +70,7 @@
  * The terms are not computed individually; instead the incomplete
  * beta integral is employed, according to the formula
  *
- * y = md_nbdtrc( k, n, p ) = md_incbet( k+1, n, 1-p ).
+ * y = cfs_nbdtrc( k, n, p ) = cfs_incbet( k+1, n, 1-p ).
  *
  * The arguments must be positive, with p ranging from 0 to 1.
  *
@@ -92,9 +92,9 @@
  * SYNOPSIS:
  *
  * int k, n;
- * double p, y, md_nbdtri();
+ * double p, y, cfs_nbdtri();
  *
- * p = md_nbdtri( k, n, y );
+ * p = cfs_nbdtri( k, n, y );
  *
  * DESCRIPTION:
  *
@@ -117,13 +117,13 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double md_incbet ( double, double, double );
-extern double md_incbi ( double, double, double );
+extern double cfs_incbet ( double, double, double );
+extern double cfs_incbi ( double, double, double );
 #else
-double md_incbet(), md_incbi();
+double cfs_incbet(), cfs_incbi();
 #endif
 
-double md_nbdtrc( k, n, p )
+double cfs_nbdtrc( k, n, p )
 int k, n;
 double p;
 {
@@ -140,12 +140,12 @@ domerr:
 
 dk = k+1;
 dn = n;
-return( md_incbet( dk, dn, 1.0 - p ) );
+return( cfs_incbet( dk, dn, 1.0 - p ) );
 }
 
 
 
-double md_nbdtr( k, n, p )
+double cfs_nbdtr( k, n, p )
 int k, n;
 double p;
 {
@@ -161,12 +161,12 @@ domerr:
 	}
 dk = k+1;
 dn = n;
-return( md_incbet( dn, dk, p ) );
+return( cfs_incbet( dn, dk, p ) );
 }
 
 
 
-double md_nbdtri( k, n, p )
+double cfs_nbdtri( k, n, p )
 int k, n;
 double p;
 {
@@ -182,6 +182,6 @@ domerr:
 	}
 dk = k+1;
 dn = n;
-w = md_incbi( dn, dk, p );
+w = cfs_incbi( dn, dk, p );
 return( w );
 }

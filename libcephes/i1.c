@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, md_i1();
+ * double x, y, cfs_i1();
  *
- * y = md_i1( x );
+ * y = cfs_i1( x );
  *
  *
  *
@@ -17,7 +17,7 @@
  * Returns modified Bessel function of order one of the
  * argument.
  *
- * The function is defined as i1(x) = -i md_j1( ix ).
+ * The function is defined as i1(x) = -i cfs_j1( ix ).
  *
  * The range is partitioned into the two intervals [0,8] and
  * (8, infinity).  Chebyshev polynomial expansions are employed
@@ -54,7 +54,7 @@
  * Returns exponentially scaled modified Bessel function
  * of order one of the argument.
  *
- * The function is defined as i1(x) = -i md_exp(-|x|) md_j1( ix ).
+ * The function is defined as i1(x) = -i cfs_exp(-|x|) cfs_j1( ix ).
  *
  *
  *
@@ -77,10 +77,10 @@ Copyright 1985, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-/* Chebyshev coefficients for md_exp(-x) I1(x) / x
+/* Chebyshev coefficients for cfs_exp(-x) I1(x) / x
  * in the interval [0,8].
  *
- * lim(x->0){ md_exp(-x) I1(x) / x } = 1/2.
+ * lim(x->0){ cfs_exp(-x) I1(x) / x } = 1/2.
  */
 
 #ifdef UNK
@@ -222,10 +222,10 @@ static unsigned short A[] = {
 
 /*							i1.c	*/
 
-/* Chebyshev coefficients for md_exp(-x) md_sqrt(x) I1(x)
+/* Chebyshev coefficients for cfs_exp(-x) cfs_sqrt(x) I1(x)
  * in the inverted interval [8,infinity].
  *
- * lim(x->inf){ md_exp(-x) md_sqrt(x) I1(x) } = 1/md_sqrt(2pi).
+ * lim(x->inf){ cfs_exp(-x) cfs_sqrt(x) I1(x) } = 1/cfs_sqrt(2pi).
  */
 
 #ifdef UNK
@@ -351,28 +351,28 @@ static unsigned short B[] = {
 
 /*							i1.c	*/
 #ifdef ANSIPROT
-extern double md_chbevl ( double, void *, int );
-extern double md_exp ( double );
-extern double md_sqrt ( double );
-extern double md_fabs ( double );
+extern double cfs_chbevl ( double, void *, int );
+extern double cfs_exp ( double );
+extern double cfs_sqrt ( double );
+extern double cfs_fabs ( double );
 #else
-double md_chbevl(), md_exp(), md_sqrt(), md_fabs();
+double cfs_chbevl(), cfs_exp(), cfs_sqrt(), cfs_fabs();
 #endif
 
-double md_i1(x)
+double cfs_i1(x)
 double x;
 { 
 double y, z;
 
-z = md_fabs(x);
+z = cfs_fabs(x);
 if( z <= 8.0 )
 	{
 	y = (z/2.0) - 2.0;
-	z = md_chbevl( y, A, 29 ) * z * md_exp(z);
+	z = cfs_chbevl( y, A, 29 ) * z * cfs_exp(z);
 	}
 else
 	{
-	z = md_exp(z) * md_chbevl( 32.0/z - 2.0, B, 25 ) / md_sqrt(z);
+	z = cfs_exp(z) * cfs_chbevl( 32.0/z - 2.0, B, 25 ) / cfs_sqrt(z);
 	}
 if( x < 0.0 )
 	z = -z;
@@ -381,20 +381,20 @@ return( z );
 
 /*							i1e()	*/
 
-double md_i1e( x )
+double cfs_i1e( x )
 double x;
 { 
 double y, z;
 
-z = md_fabs(x);
+z = cfs_fabs(x);
 if( z <= 8.0 )
 	{
 	y = (z/2.0) - 2.0;
-	z = md_chbevl( y, A, 29 ) * z;
+	z = cfs_chbevl( y, A, 29 ) * z;
 	}
 else
 	{
-	z = md_chbevl( 32.0/z - 2.0, B, 25 ) / md_sqrt(z);
+	z = cfs_chbevl( 32.0/z - 2.0, B, 25 ) / cfs_sqrt(z);
 	}
 if( x < 0.0 )
 	z = -z;
