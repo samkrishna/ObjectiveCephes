@@ -39,27 +39,27 @@
     XCTAssertEqualWithAccuracy(md_j1(y), .06683312418, .00000000005, @"result = %.14f", md_j0(y));
     XCTAssertEqualWithAccuracy(md_jn(n, x), .007039629756, .00000000005, @"result = %.14f", md_jn(n, x));
     XCTAssertEqualWithAccuracy(md_jn(n, y), .1511697680, .00000000005, @"result = %.14f", md_jn(n, y));
-    XCTAssertEqualWithAccuracy(jv(v, x), .08901510322, .00000000005, @"result = %.14f", md_jn(v, x));
-    XCTAssertEqualWithAccuracy(jv(v, y), -.02862625778, .00000000005, @"result = %.14f", md_jn(v, y));
-    XCTAssertEqualWithAccuracy(jv(v, y), -.02862625778, .00000000005, @"result = %.14f", jv(v, y));
+    XCTAssertEqualWithAccuracy(md_jv(v, x), .08901510322, .00000000005, @"result = %.14f", md_jn(v, x));
+    XCTAssertEqualWithAccuracy(md_jv(v, y), -.02862625778, .00000000005, @"result = %.14f", md_jn(v, y));
+    XCTAssertEqualWithAccuracy(md_jv(v, y), -.02862625778, .00000000005, @"result = %.14f", md_jv(v, y));
     XCTAssertEqualWithAccuracy(md_y0(x), .5103756726, .00000000005, @"result = %.14f", md_y0(x));
     XCTAssertEqualWithAccuracy(md_y0(y), .06264059681, .00000000005, @"result = %.14f", md_y0(y));
     XCTAssertEqualWithAccuracy(md_y1(x), -.1070324315, .00000000005, @"result = %.14f", md_y1(x));
     XCTAssertEqualWithAccuracy(md_y1(y), -.1655116144 , .00000000005, @"result = %.14f", md_y1(y));
     XCTAssertEqualWithAccuracy(md_yn(n, x), -9.935989128 , .0000000005, @"result = %.14f", md_yn(n, x));
     XCTAssertEqualWithAccuracy(md_yn(n, y), -.1000357679, .00000000005, @"result = %.14f", md_yn(n, y));
-    XCTAssertEqualWithAccuracy(yv(v, x), -1.412002815 , .00000000005, @"result = %.14f", yv(v, x));
-    XCTAssertEqualWithAccuracy(yv(v, y), .1773183649, .00000000005, @"result = %.14f", yv(v, y));
-    XCTAssertEqualWithAccuracy(i0(x), 2.279585302, .0000000005, @"result = %.14f", i0(x));
-    XCTAssertEqualWithAccuracy(i0e(y), .08978031187, .00000000005, @"result = %.14f", i0e(y));
-    XCTAssertEqualWithAccuracy(i1(x), 1.590636855 , .0000000005, @"result = %.14f", i1(x));
-    XCTAssertEqualWithAccuracy(i1e(y), .08750622217, .0000000001, @"result = %.14f", i1e(y));
-    XCTAssertEqualWithAccuracy(iv(v, x), .1418012924, .00000000005, @"result = %.14f", iv(v, x));
-    XCTAssertEqualWithAccuracy(k0(x), .1138938727, .00000000005, @"result = %.14f", k0(x));
-    XCTAssertEqualWithAccuracy(k0e(y), .2785448766 , .0000000001, @"result = %.14f", k0e(y));
-    XCTAssertEqualWithAccuracy(k1(x), .1398658818, .00000000005, @"result = %.14f", k1(x));
-    XCTAssertEqualWithAccuracy(k1e(y), .2854254970, .0000000001, @"result = %.14f", k1e(y));
-    XCTAssertEqualWithAccuracy(kn(n, x), 9.431049101, .0000000005, @"result = %.14f", kn(n, x));
+    XCTAssertEqualWithAccuracy(md_yv(v, x), -1.412002815 , .00000000005, @"result = %.14f", md_yv(v, x));
+    XCTAssertEqualWithAccuracy(md_yv(v, y), .1773183649, .00000000005, @"result = %.14f", md_yv(v, y));
+    XCTAssertEqualWithAccuracy(md_i0(x), 2.279585302, .0000000005, @"result = %.14f", md_i0(x));
+    XCTAssertEqualWithAccuracy(md_i0e(y), .08978031187, .00000000005, @"result = %.14f", md_i0e(y));
+    XCTAssertEqualWithAccuracy(md_i1(x), 1.590636855 , .0000000005, @"result = %.14f", md_i1(x));
+    XCTAssertEqualWithAccuracy(md_i1e(y), .08750622217, .0000000001, @"result = %.14f", md_i1e(y));
+    XCTAssertEqualWithAccuracy(md_iv(v, x), .1418012924, .00000000005, @"result = %.14f", md_iv(v, x));
+    XCTAssertEqualWithAccuracy(md_k0(x), .1138938727, .00000000005, @"result = %.14f", md_k0(x));
+    XCTAssertEqualWithAccuracy(md_k0e(y), .2785448766 , .0000000001, @"result = %.14f", md_k0e(y));
+    XCTAssertEqualWithAccuracy(md_k1(x), .1398658818, .00000000005, @"result = %.14f", md_k1(x));
+    XCTAssertEqualWithAccuracy(md_k1e(y), .2854254970, .0000000001, @"result = %.14f", md_k1e(y));
+    XCTAssertEqualWithAccuracy(md_kn(n, x), 9.431049101, .0000000005, @"result = %.14f", md_kn(n, x));
 }
 
 - (void)testBetaCases
@@ -67,13 +67,13 @@
     double x = 5.57;
     double y = 2.2;
     double u = 0.3;
-    double z = beta(x, y);
+    double z = md_beta(x, y);
     double gammaResult = md_gamma(x) * md_gamma(y) / md_gamma(7.77);
     XCTAssertEqualWithAccuracy(z, gammaResult, 0.0000000000000005, @"result is %.20f", gammaResult);
-    XCTAssertEqual( lbeta(x, y), md_log(z));
-    z = incbet(x, y, u);
+    XCTAssertEqual(md_lbeta(x, y), md_log(z));
+    z = md_incbet(x, y, u);
     XCTAssertEqualWithAccuracy(z, 0.00761009624, 0.00000000001, @"result = %0.12f", z);
-    XCTAssertEqual( incbi(x, y, z), u);
+    XCTAssertEqual(md_incbi(x, y, z), u);
 
 }
 
@@ -83,56 +83,56 @@
     double n = 10;
     double p = 0.5;
     double y = 0.6;
-    XCTAssertEqualWithAccuracy(bdtr(k, n, p), incbet(n-k, k+1, 1-p), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(bdtrc(k, n, p), incbet(k+1, n-k, p), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(bdtri(k, n, y), 1-incbi(n-k, k+1, y), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(btdtr(k, n, y), incbet(k, n, y), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(chdtr(k, y), igam(k/2, y/2), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(chdtrc(k, y), igamc(k/2, y/2), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(chdtri(k, y), 2 * igami(k / 2, y), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(fdtr(k, n, y), incbet(k/2, n/2,k*y/(n + k*y)), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(fdtrc(k, n, y), incbet(n/2, k/2, n/(n + k*y)), 0.0000000000005);
-    double z = incbi( n/2, k/2, p);
-    XCTAssertEqualWithAccuracy(fdtri(k, n, p), n*(1-z)/(k*z), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(gdtr(k, n, y), igam(n, k*y), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(gdtrc(k, n, y), igamc(n, k*y), 0.0000000000005);
-    double w = nbdtr(k, n, p);
-    XCTAssertEqualWithAccuracy(w, incbet(n, k+1, p), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(nbdtrc(k, n, p), incbet(k+1, n, 1-p), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(nbdtri(k, n, w), p, 0.0000000000005);
-    w = ndtr(y);
-    XCTAssertEqualWithAccuracy(w, (1+erf(y/sqrt(2)))/2, 0.0000000000005);
-    XCTAssertEqualWithAccuracy(ndtri(w), y, 0.0000000000005);
-    XCTAssertEqualWithAccuracy(pdtr(k, n), igamc(k+1, n), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(pdtrc(k, n), igam(k+1, n), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(pdtri(k, y), igami(k+1, y), 0.0000000000005);
-    w = stdtr( k, y);
+    XCTAssertEqualWithAccuracy(md_bdtr(k, n, p), md_incbet(n-k, k+1, 1-p), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_bdtrc(k, n, p), md_incbet(k+1, n-k, p), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_bdtri(k, n, y), 1-md_incbi(n-k, k+1, y), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_btdtr(k, n, y), md_incbet(k, n, y), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_chdtr(k, y), md_igam(k/2, y/2), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_chdtrc(k, y), md_igamc(k/2, y/2), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_chdtri(k, y), 2 * md_igami(k / 2, y), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_fdtr(k, n, y), md_incbet(k/2, n/2,k*y/(n + k*y)), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_fdtrc(k, n, y), md_incbet(n/2, k/2, n/(n + k*y)), 0.0000000000005);
+    double z = md_incbi( n/2, k/2, p);
+    XCTAssertEqualWithAccuracy(md_fdtri(k, n, p), n*(1-z)/(k*z), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_gdtr(k, n, y), md_igam(n, k*y), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_gdtrc(k, n, y), md_igamc(n, k*y), 0.0000000000005);
+    double w = md_nbdtr(k, n, p);
+    XCTAssertEqualWithAccuracy(w, md_incbet(n, k+1, p), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_nbdtrc(k, n, p), md_incbet(k+1, n, 1-p), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_nbdtri(k, n, w), p, 0.0000000000005);
+    w = md_ndtr(y);
+    XCTAssertEqualWithAccuracy(w, (1+md_erf(y/md_sqrt(2)))/2, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_ndtri(w), y, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_pdtr(k, n), md_igamc(k+1, n), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_pdtrc(k, n), md_igam(k+1, n), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_pdtri(k, y), md_igami(k+1, y), 0.0000000000005);
+    w = md_stdtr( k, y);
     z = k/(k + y*y);
-    double zed = 1 - 0.5 * incbet(k / 2, (1.0 / 2.0), z);
+    double zed = 1 - 0.5 * md_incbet(k / 2, (1.0 / 2.0), z);
     XCTAssertEqualWithAccuracy(w, zed, 0.0000000000005);
-    XCTAssertEqualWithAccuracy(stdtri(k, w), y, 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_stdtri(k, w), y, 0.0000000000005);
 }
 
 - (void)testEllipticCases
 {
     double x = 0.3;
-    XCTAssertEqualWithAccuracy(ellpk(1-x*x), 1.608048620, 0.0000000005);
-    XCTAssertEqualWithAccuracy(ellik(asin(0.2), x*x), .2014795901, 0.0000000005);
-    XCTAssertEqualWithAccuracy(ellpe(1-x*x), 1.534833465, 0.0000000005);
-    XCTAssertEqualWithAccuracy(ellie(asin(0.2), x*x), .2012363833, 0.0000000005);
+    XCTAssertEqualWithAccuracy(md_ellpk(1-x*x), 1.608048620, 0.0000000005);
+    XCTAssertEqualWithAccuracy(md_ellik(md_asin(0.2), x*x), .2014795901, 0.0000000005);
+    XCTAssertEqualWithAccuracy(md_ellpe(1-x*x), 1.534833465, 0.0000000005);
+    XCTAssertEqualWithAccuracy(md_ellie(md_asin(0.2), x*x), .2012363833, 0.0000000005);
     double phi = PIO4;
     double m = 0.3;
-    double u = ellik(phi, m);
+    double u = md_ellik(phi, m);
 
     // 2017-07-27 14:12:00 -0700
     // There's some weird Clang shit going on that causes the declaration of the double pointers
     // to inconsistently be initialized NULL/not NULL. As a result, this causes an EXC_BAD_ACCESS in the
-    // guts of the ellpj() code. I had to explicitly malloc the pointers to get past this issue.
+    // guts of the md_ellpj() code. I had to explicitly malloc the pointers to get past this issue.
     double *sn = (double *)malloc(sizeof(double));
     double *cn = (double *)malloc(sizeof(double));
     double *dn = (double *)malloc(sizeof(double));
     double *phi_out = (double *)malloc(sizeof(double));
-    int flag = ellpj(u, m, sn, cn, dn, phi_out);
+    int flag = md_ellpj(u, m, sn, cn, dn, phi_out);
 
     XCTAssertEqualWithAccuracy(flag, 0, 0.0000000000005);
     XCTAssertEqualWithAccuracy(phi, *phi_out, 0.0000000000005);
@@ -161,11 +161,11 @@
     XCTAssertEqualWithAccuracy(md_log2(256), 8, 0.0000000000005);
     XCTAssertEqualWithAccuracy(md_log1p(0.5), md_log(1.5), 0.0000000000005);
     XCTAssertEqualWithAccuracy(md_expm1(0.5), md_exp(0.5)-1, 0.0000000000005);
-    XCTAssertEqualWithAccuracy(expx2(2, -1), md_exp(-4), 0.0000000000005);
-    XCTAssertEqualWithAccuracy(expx2(0.5, 1), md_exp(0.25), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_expx2(2, -1), md_exp(-4), 0.0000000000005);
+    XCTAssertEqualWithAccuracy(md_expx2(0.5, 1), md_exp(0.25), 0.0000000000005);
 
-    // No idea what to do with this since SQRTH has a weird unsigned short array
-//    XCTAssertEqualWithAccuracy(md_exp2(-1/2), SQRTH, 0.0000000000005);
+    // No idea what to do with this since SQRTH has the unusual unsigned short array
+//    XCTAssertEqualWithAccuracy(md_exp2(-1/2), SQRTH, 0.01);
 }
 
 @end
