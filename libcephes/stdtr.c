@@ -6,10 +6,10 @@
  *
  * SYNOPSIS:
  *
- * double t, stdtr();
+ * double t, md_stdtr();
  * short k;
  *
- * y = stdtr( k, t );
+ * y = md_stdtr( k, t );
  *
  *
  * DESCRIPTION:
@@ -58,15 +58,15 @@
  *
  * SYNOPSIS:
  *
- * double p, t, stdtri();
+ * double p, t, md_stdtri();
  * int k;
  *
- * t = stdtri( k, p );
+ * t = md_stdtri( k, p );
  *
  *
  * DESCRIPTION:
  *
- * Given probability p, finds the argument t such that stdtr(k,t)
+ * Given probability p, finds the argument t such that md_stdtr(k,t)
  * is equal to p.
  * 
  * ACCURACY:
@@ -90,14 +90,14 @@ extern double PI, MACHEP, MAXNUM;
 #ifdef ANSIPROT
 extern double md_sqrt ( double );
 extern double md_atan ( double );
-extern double incbet ( double, double, double );
-extern double incbi ( double, double, double );
+extern double md_incbet ( double, double, double );
+extern double md_incbi ( double, double, double );
 extern double md_fabs ( double );
 #else
-double md_sqrt(), md_atan(), incbet(), incbi(), md_fabs();
+double md_sqrt(), md_atan(), md_incbet(), md_incbi(), md_fabs();
 #endif
 
-double stdtr( k, t )
+double md_stdtr( k, t )
 int k;
 double t;
 {
@@ -117,7 +117,7 @@ if( t < -2.0 )
 	{
 	rk = k;
 	z = rk / (rk + t * t);
-	p = 0.5 * incbet( 0.5*rk, 0.5, z );
+	p = 0.5 * md_incbet( 0.5*rk, 0.5, z );
 	return( p );
 	}
 
@@ -184,7 +184,7 @@ if( t < 0 )
 return(p);
 }
 
-double stdtri( k, p )
+double md_stdtri( k, p )
 int k;
 double p;
 {
@@ -204,7 +204,7 @@ if( p > 0.25 && p < 0.75 )
 	if( p == 0.5 )
 		return( 0.0 );
 	z = 1.0 - 2.0 * p;
-	z = incbi( 0.5, 0.5*rk, md_fabs(z) );
+	z = md_incbi( 0.5, 0.5*rk, md_fabs(z) );
 	t = md_sqrt( rk*z/(1.0-z) );
 	if( p < 0.5 )
 		t = -t;
@@ -216,7 +216,7 @@ if( p >= 0.5)
 	p = 1.0 - p;
 	rflg = 1;
 	}
-z = incbi( 0.5*rk, 0.5, 2.0*p );
+z = md_incbi( 0.5*rk, 0.5, 2.0*p );
 
 if( MAXNUM * z < rk )
 	return(rflg* MAXNUM);

@@ -194,15 +194,15 @@ static unsigned short P3[] = {0x3ce8,0x4698,0x98cc,0x5170};
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_floor ( double );
 extern double md_ldexp ( double, int );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern int md_isnan ( double );
+extern int md_isfinite ( double );
 #else
-double polevl(), md_floor(), md_ldexp();
-int isnan(), isfinite();
+double md_polevl(), md_floor(), md_ldexp();
+int md_isnan(), md_isfinite();
 #endif
 extern double PIO4;
 static double lossth = 1.073741824e9;
@@ -225,9 +225,9 @@ if( x == 0.0 )
 	return(x);
 #endif
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
-if( !isfinite(x) )
+if( !md_isfinite(x) )
 	{
 	mtherr( "md_sin", DOMAIN );
 	return(NAN);
@@ -276,12 +276,12 @@ zz = z * z;
 
 if( (j==1) || (j==2) )
 	{
-	y = 1.0 - md_ldexp(zz,-1) + zz * zz * polevl( zz, coscof, 5 );
+	y = 1.0 - md_ldexp(zz,-1) + zz * zz * md_polevl( zz, coscof, 5 );
 	}
 else
 	{
-/*	y = z  +  z * (zz * polevl( zz, sincof, 5 ));*/
-	y = z  +  z * z * z * polevl( zz, sincof, 5 );
+/*	y = z  +  z * (zz * md_polevl( zz, sincof, 5 ));*/
+	y = z  +  z * z * z * md_polevl( zz, sincof, 5 );
 	}
 
 if(sign < 0)
@@ -302,9 +302,9 @@ long i;
 int j, sign;
 
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
-if( !isfinite(x) )
+if( !md_isfinite(x) )
 	{
 	mtherr( "md_cos", DOMAIN );
 	return(NAN);
@@ -351,12 +351,12 @@ zz = z * z;
 
 if( (j==1) || (j==2) )
 	{
-/*	y = z  +  z * (zz * polevl( zz, sincof, 5 ));*/
-	y = z  +  z * z * z * polevl( zz, sincof, 5 );
+/*	y = z  +  z * (zz * md_polevl( zz, sincof, 5 ));*/
+	y = z  +  z * z * z * md_polevl( zz, sincof, 5 );
 	}
 else
 	{
-	y = 1.0 - md_ldexp(zz,-1) + zz * zz * polevl( zz, coscof, 5 );
+	y = 1.0 - md_ldexp(zz,-1) + zz * zz * md_polevl( zz, coscof, 5 );
 	}
 
 if(sign < 0)
@@ -379,7 +379,7 @@ static unsigned short P648[] = {034513,054170,0176773,0116043,};
 static double P64800 = 4.8481368110953599358991410e-6;
 #endif
 
-double radian(d,m,s)
+double md_radian(d,m,s)
 double d,m,s;
 {
 

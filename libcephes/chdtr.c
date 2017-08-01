@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double df, x, y, chdtr();
+ * double df, x, y, md_chdtr();
  *
- * y = chdtr( df, x );
+ * y = md_chdtr( df, x );
  *
  *
  *
@@ -56,9 +56,9 @@
  *
  * SYNOPSIS:
  *
- * double v, x, y, chdtrc();
+ * double v, x, y, md_chdtrc();
  *
- * y = chdtrc( v, x );
+ * y = md_chdtrc( v, x );
  *
  *
  *
@@ -91,7 +91,7 @@
  *
  * ACCURACY:
  *
- * See igamc().
+ * See md_igamc().
  *
  * ERROR MESSAGES:
  *
@@ -106,9 +106,9 @@
  *
  * SYNOPSIS:
  *
- * double df, x, y, chdtri();
+ * double df, x, y, md_chdtri();
  *
- * x = chdtri( df, y );
+ * x = md_chdtri( df, y );
  *
  *
  *
@@ -122,7 +122,7 @@
  * This is accomplished using the inverse md_gamma integral
  * function and the relation
  *
- *    x/2 = igami( df/2, y );
+ *    x/2 = md_igami( df/2, y );
  *
  *
  *
@@ -133,13 +133,13 @@
  *
  * ERROR MESSAGES:
  *
- *   message         condition      value returned
- * chdtri domain   y < 0 or y > 1        0.0
- *                     v < 1
+ *   message            condition      value returned
+ * md_chdtri domain   y < 0 or y > 1        0.0
+ *                        v < 1
  *
  */
 
-/*								chdtr() */
+/*								md_chdtr() */
 
 
 /*
@@ -149,14 +149,14 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double igamc ( double, double );
-extern double igam ( double, double );
-extern double igami ( double, double );
+extern double md_igamc ( double, double );
+extern double md_igam ( double, double );
+extern double md_igami ( double, double );
 #else
-double igamc(), igam(), igami();
+double md_igamc(), md_igam(), md_igami();
 #endif
 
-double chdtrc(df,x)
+double md_chdtrc(df,x)
 double df, x;
 {
 
@@ -165,12 +165,12 @@ if( (x < 0.0) || (df < 1.0) )
 	mtherr( "chdtrc", DOMAIN );
 	return(0.0);
 	}
-return( igamc( df/2.0, x/2.0 ) );
+return( md_igamc( df/2.0, x/2.0 ) );
 }
 
 
 
-double chdtr(df,x)
+double md_chdtr(df,x)
 double df, x;
 {
 
@@ -179,12 +179,12 @@ if( (x < 0.0) || (df < 1.0) )
 	mtherr( "chdtr", DOMAIN );
 	return(0.0);
 	}
-return( igam( df/2.0, x/2.0 ) );
+return( md_igam( df/2.0, x/2.0 ) );
 }
 
 
 
-double chdtri( df, y )
+double md_chdtri( df, y )
 double df, y;
 {
 double x;
@@ -195,6 +195,6 @@ if( (y < 0.0) || (y > 1.0) || (df < 1.0) )
 	return(0.0);
 	}
 
-x = igami( 0.5 * df, y );
+x = md_igami( 0.5 * df, y );
 return( 2.0 * x );
 }

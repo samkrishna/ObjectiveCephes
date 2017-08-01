@@ -157,13 +157,13 @@ static double MAXL10 = 308.2547155599167;
 #ifdef ANSIPROT
 extern double md_floor ( double );
 extern double md_ldexp ( double, int );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern int isnan ( double );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
+extern int md_isnan ( double );
 extern int isfinite ( double );
 #else
-double md_floor(), md_ldexp(), polevl(), p1evl();
-int isnan(), isfinite();
+double md_floor(), md_ldexp(), md_polevl(), md_p1evl();
+int md_isnan(), md_isfinite();
 #endif
 extern double MAXNUM;
 #ifdef INFINITIES
@@ -177,7 +177,7 @@ double px, xx;
 short n;
 
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
 #endif
 if( x > MAXL10 )
@@ -212,8 +212,8 @@ x -= px * LG102B;
  * 10**x = 1 + 2x P(x**2)/( Q(x**2) - P(x**2) )
  */
 xx = x * x;
-px = x * polevl( xx, P, 3 );
-x =  px/( p1evl( xx, Q, 3 ) - px );
+px = x * md_polevl( xx, P, 3 );
+x =  px/( md_p1evl( xx, Q, 3 ) - px );
 x = 1.0 + md_ldexp( x, 1 );
 
 /* multiply by power of 2 */

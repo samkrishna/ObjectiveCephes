@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * int df1, df2;
- * double x, y, fdtr();
+ * double x, y, md_fdtr();
  *
- * y = fdtr( df1, df2, x );
+ * y = md_fdtr( df1, df2, x );
  *
  * DESCRIPTION:
  *
@@ -23,7 +23,7 @@
  * The incomplete beta integral is used, according to the
  * formula
  *
- *	P(x) = incbet( df1/2, df2/2, (df1*x/(df2 + df1*x) ).
+ *	P(x) = md_incbet( df1/2, df2/2, (df1*x/(df2 + df1*x) ).
  *
  *
  * The arguments a and b are greater than zero, and x is
@@ -57,9 +57,9 @@
  * SYNOPSIS:
  *
  * int df1, df2;
- * double x, y, fdtrc();
+ * double x, y, md_fdtrc();
  *
- * y = fdtrc( df1, df2, x );
+ * y = md_fdtrc( df1, df2, x );
  *
  * DESCRIPTION:
  *
@@ -80,7 +80,7 @@
  * The incomplete beta integral is used, according to the
  * formula
  *
- *	P(x) = incbet( df2/2, df1/2, (df2/(df2 + df1*x) ).
+ *	P(x) = md_incbet( df2/2, df1/2, (df2/(df2 + df1*x) ).
  *
  *
  * ACCURACY:
@@ -109,9 +109,9 @@
  * SYNOPSIS:
  *
  * int df1, df2;
- * double x, p, fdtri();
+ * double x, p, md_fdtri();
  *
- * x = fdtri( df1, df2, p );
+ * x = md_fdtri( df1, df2, p );
  *
  * DESCRIPTION:
  *
@@ -122,13 +122,13 @@
  * This is accomplished using the inverse beta integral
  * function and the relations
  *
- *      z = incbi( df2/2, df1/2, p )
+ *      z = md_incbi( df2/2, df1/2, p )
  *      x = df2 (1-z) / (df1 z).
  *
  * Note: the following relations hold for the inverse of
  * the uncomplemented F distribution:
  *
- *      z = incbi( df1/2, df2/2, p )
+ *      z = md_incbi( df1/2, df2/2, p )
  *      x = df2 z / (df1 (1-z)).
  *
  * ACCURACY:
@@ -162,13 +162,13 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double incbet ( double, double, double );
-extern double incbi ( double, double, double );
+extern double md_incbet ( double, double, double );
+extern double md_incbi ( double, double, double );
 #else
-double incbet(), incbi();
+double md_incbet(), md_incbi();
 #endif
 
-double fdtrc( ia, ib, x )
+double md_fdtrc( ia, ib, x )
 int ia, ib;
 double x;
 {
@@ -182,12 +182,12 @@ if( (ia < 1) || (ib < 1) || (x < 0.0) )
 a = ia;
 b = ib;
 w = b / (b + a * x);
-return( incbet( 0.5*b, 0.5*a, w ) );
+return( md_incbet( 0.5*b, 0.5*a, w ) );
 }
 
 
 
-double fdtr( ia, ib, x )
+double md_fdtr( ia, ib, x )
 int ia, ib;
 double x;
 {
@@ -202,11 +202,11 @@ a = ia;
 b = ib;
 w = a * x;
 w = w / (b + w);
-return( incbet(0.5*a, 0.5*b, w) );
+return( md_incbet(0.5*a, 0.5*b, w) );
 }
 
 
-double fdtri( ia, ib, y )
+double md_fdtri( ia, ib, y )
 int ia, ib;
 double y;
 {
@@ -220,17 +220,17 @@ if( (ia < 1) || (ib < 1) || (y <= 0.0) || (y > 1.0) )
 a = ia;
 b = ib;
 /* Compute probability for x = 0.5.  */
-w = incbet( 0.5*b, 0.5*a, 0.5 );
+w = md_incbet( 0.5*b, 0.5*a, 0.5 );
 /* If that is greater than y, then the solution w < .5.
    Otherwise, solve at 1-y to remove cancellation in (b - b*w).  */
 if( w > y || y < 0.001)
 	{
-	w = incbi( 0.5*b, 0.5*a, y );
+	w = md_incbi( 0.5*b, 0.5*a, y );
 	x = (b - b*w)/(a*w);
 	}
 else
 	{
-	w = incbi( 0.5*a, 0.5*b, 1.0-y );
+	w = md_incbi( 0.5*a, 0.5*b, 1.0-y );
 	x = b*w/(a*(1.0-w));
 	}
 return(x);

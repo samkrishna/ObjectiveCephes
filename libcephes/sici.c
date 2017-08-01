@@ -579,10 +579,10 @@ static unsigned short GD8[] = {
 extern double md_log ( double );
 extern double md_sin ( double );
 extern double md_cos ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 #else
-double md_log(), md_sin(), md_cos(), polevl(), p1evl();
+double md_log(), md_sin(), md_cos(), md_polevl(), md_p1evl();
 #endif
 #define EUL 0.57721566490153286061
 extern double MAXNUM, PIO2, MACHEP;
@@ -625,8 +625,8 @@ if( x > 4.0 )
 	goto asympt;
 
 z = x * x;
-s = x * polevl( z, SN, 5 ) / polevl( z, SD, 5 );
-c = z * polevl( z, CN, 5 ) / polevl( z, CD, 5 );
+s = x * md_polevl( z, SN, 5 ) / md_polevl( z, SD, 5 );
+c = z * md_polevl( z, CN, 5 ) / md_polevl( z, CD, 5 );
 
 if( sign )
 	s = -s;
@@ -658,13 +658,13 @@ c = md_cos(x);
 z = 1.0/(x*x);
 if( x < 8.0 )
 	{
-	f = polevl( z, FN4, 6 ) / (x * p1evl( z, FD4, 7 ));
-	g = z * polevl( z, GN4, 7 ) / p1evl( z, GD4, 7 );
+	f = md_polevl( z, FN4, 6 ) / (x * md_p1evl( z, FD4, 7 ));
+	g = z * md_polevl( z, GN4, 7 ) / md_p1evl( z, GD4, 7 );
 	}
 else
 	{
-	f = polevl( z, FN8, 8 ) / (x * p1evl( z, FD8, 8 ));
-	g = z * polevl( z, GN8, 8 ) / p1evl( z, GD8, 9 );
+	f = md_polevl( z, FN8, 8 ) / (x * md_p1evl( z, FD8, 8 ));
+	g = z * md_polevl( z, GN8, 8 ) / md_p1evl( z, GD8, 9 );
 	}
 *si = PIO2 - f * c - g * s;
 if( sign )

@@ -2,9 +2,9 @@
  *							md_floor()
  *							md_frexp()
  *							md_ldexp()
- *							signbit()
- *							isnan()
- *							isfinite()
+ *							md_signbit()
+ *							md_isnan()
+ *							md_isfinite()
  *
  *	Floating point numeric utilities
  *
@@ -13,7 +13,7 @@
  * SYNOPSIS:
  *
  * double md_ceil(), md_floor(), md_frexp(), md_ldexp();
- * int signbit(), isnan(), isfinite();
+ * int signbit(), md_isnan(), md_isfinite();
  * double x, y;
  * int expnt, n;
  *
@@ -21,9 +21,9 @@
  * y = md_ceil(x);
  * y = md_frexp( x, &expnt );
  * y = md_ldexp( x, n );
- * n = signbit(x);
- * n = isnan(x);
- * n = isfinite(x);
+ * n = md_signbit(x);
+ * n = md_isnan(x);
+ * n = md_isfinite(x);
  *
  *
  *
@@ -97,12 +97,12 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 extern double MAXNUM, NEGZERO;
 #ifdef ANSIPROT
 double md_floor ( double );
-int isnan ( double );
-int isfinite ( double );
+int md_isnan ( double );
+int md_isfinite ( double );
 double md_ldexp ( double, int );
 #else
 double md_floor();
-int isnan(), isfinite();
+int md_isnan(), md_isfinite();
 double md_ldexp();
 #endif
 
@@ -116,11 +116,11 @@ mtherr( "md_ceil", DOMAIN );
 return(0.0);
 #endif
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return( x );
 #endif
 #ifdef INFINITIES
-if(!isfinite(x))
+if(!md_isfinite(x))
 	return(x);
 #endif
 
@@ -179,11 +179,11 @@ mtherr( "md_floor", DOMAIN );
 return(0.0);
 #endif
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return( x );
 #endif
 #ifdef INFINITIES
-if(!isfinite(x))
+if(!md_isfinite(x))
 	return(x);
 #endif
 #ifdef MINUSZERO

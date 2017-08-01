@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double a, x, y, igam();
+ * double a, x, y, md_igam();
  *
- * y = igam( a, x );
+ * y = md_igam( a, x );
  *
  * DESCRIPTION:
  *
@@ -35,7 +35,8 @@
  *    IEEE      0,30       200000       3.6e-14     2.9e-15
  *    IEEE      0,100      300000       9.9e-14     1.5e-14
  */
-/*							igamc()
+
+/*							igamc()
  *
  *	Complemented incomplete md_gamma integral
  *
@@ -43,9 +44,9 @@
  *
  * SYNOPSIS:
  *
- * double a, x, y, igamc();
+ * double a, x, y, md_igamc();
  *
- * y = igamc( a, x );
+ * y = md_igamc( a, x );
  *
  * DESCRIPTION:
  *
@@ -84,21 +85,21 @@ Copyright 1985, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double lgam ( double );
+extern double md_lgam ( double );
 extern double md_exp ( double );
 extern double md_log ( double );
 extern double md_fabs ( double );
-extern double igam ( double, double );
-extern double igamc ( double, double );
+extern double md_igam ( double, double );
+extern double md_igamc ( double, double );
 #else
-double lgam(), md_exp(), md_log(), md_fabs(), igam(), igamc();
+double md_lgam(), md_exp(), md_log(), md_fabs(), md_igam(), md_igamc();
 #endif
 
 extern double MACHEP, MAXLOG;
 static double big = 4.503599627370496e15;
 static double biginv =  2.22044604925031308085e-16;
 
-double igamc( a, x )
+double md_igamc( a, x )
 double a, x;
 {
 double ans, ax, c, yc, r, t, y, z;
@@ -108,9 +109,9 @@ if( (x <= 0) || ( a <= 0) )
 	return( 1.0 );
 
 if( (x < 1.0) || (x < a) )
-	return( 1.0 - igam(a,x) );
+	return( 1.0 - md_igam(a,x) );
 
-ax = a * md_log(x) - x - lgam(a);
+ax = a * md_log(x) - x - md_lgam(a);
 if( ax < -MAXLOG )
 	{
 	mtherr( "igamc", UNDERFLOW );
@@ -173,7 +174,7 @@ return( ans * ax );
  *
  */
 
-double igam( a, x )
+double md_igam( a, x )
 double a, x;
 {
 double ans, ax, c, r;
@@ -182,10 +183,10 @@ if( (x <= 0) || ( a <= 0) )
 	return( 0.0 );
 
 if( (x > 1.0) && (x > a ) )
-	return( 1.0 - igamc(a,x) );
+	return( 1.0 - md_igamc(a,x) );
 
 /* Compute  x**a * md_exp(-x) / md_gamma(a)  */
-ax = a * md_log(x) - x - lgam(a);
+ax = a * md_log(x) - x - md_lgam(a);
 if( ax < -MAXLOG )
 	{
 	mtherr( "igam", UNDERFLOW );

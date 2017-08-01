@@ -446,15 +446,15 @@ static unsigned short DZ2[] = {0x4048,0x9bf6,0x6072,0xa432};
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_log ( double );
 extern double md_sin ( double );
 extern double md_cos ( double );
 extern double md_sqrt ( double );
 double md_j1 ( double );
 #else
-double polevl(), p1evl(), md_log(), md_sin(), md_cos(), md_sqrt();
+double md_polevl(), md_p1evl(), md_log(), md_sin(), md_cos(), md_sqrt();
 double md_j1();
 #endif
 extern double TWOOPI, THPIO4, SQ2OPI;
@@ -471,15 +471,15 @@ if( x < 0 )
 if( w <= 5.0 )
 	{
 	z = x * x;	
-	w = polevl( z, RP, 3 ) / p1evl( z, RQ, 8 );
+	w = md_polevl( z, RP, 3 ) / md_p1evl( z, RQ, 8 );
 	w = w * x * (z - Z1) * (z - Z2);
 	return( w );
 	}
 
 w = 5.0/x;
 z = w * w;
-p = polevl( z, PP, 6)/polevl( z, PQ, 6 );
-q = polevl( z, QP, 7)/p1evl( z, QQ, 7 );
+p = md_polevl( z, PP, 6)/md_polevl( z, PQ, 6 );
+q = md_polevl( z, QP, 7)/md_p1evl( z, QQ, 7 );
 xn = x - THPIO4;
 p = p * md_cos(xn) - w * q * md_sin(xn);
 return( p * SQ2OPI / md_sqrt(x) );
@@ -501,15 +501,15 @@ if( x <= 5.0 )
 		return( -MAXNUM );
 		}
 	z = x * x;
-	w = x * (polevl( z, YP, 5 ) / p1evl( z, YQ, 8 ));
+	w = x * (md_polevl( z, YP, 5 ) / md_p1evl( z, YQ, 8 ));
 	w += TWOOPI * ( md_j1(x) * md_log(x)  -  1.0/x );
 	return( w );
 	}
 
 w = 5.0/x;
 z = w * w;
-p = polevl( z, PP, 6)/polevl( z, PQ, 6 );
-q = polevl( z, QP, 7)/p1evl( z, QQ, 7 );
+p = md_polevl( z, PP, 6)/md_polevl( z, PQ, 6 );
+q = md_polevl( z, QP, 7)/md_p1evl( z, QQ, 7 );
 xn = x - THPIO4;
 p = p * md_sin(xn) + w * q * md_cos(xn);
 return( p * SQ2OPI / md_sqrt(x) );

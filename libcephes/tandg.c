@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, tandg();
+ * double x, y, md_tandg();
  *
- * y = tandg( x );
+ * y = md_tandg( x );
  *
  *
  *
@@ -44,9 +44,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, cotdg();
+ * double x, y, md_cotdg();
  *
- * y = cotdg( x );
+ * y = md_cotdg( x );
  *
  *
  *
@@ -147,36 +147,36 @@ static double lossth = 1.0e14;
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_floor ( double );
 extern double md_ldexp ( double, int );
-static double tancot( double, int );
+static double md_tancot( double, int );
 #else
-double polevl(), p1evl(), md_floor(), md_ldexp();
-static double tancot();
+double md_polevl(), md_p1evl(), md_floor(), md_ldexp();
+static double md_tancot();
 #endif
 extern double MAXNUM;
 extern double PIO4;
 
 
-double tandg(x)
+double md_tandg(x)
 double x;
 {
 
-return( tancot(x,0) );
+return( md_tancot(x,0) );
 }
 
 
-double cotdg(x)
+double md_cotdg(x)
 double x;
 {
 
-return( tancot(x,1) );
+return( md_tancot(x,1) );
 }
 
 
-static double tancot( xx, cotflg )
+static double md_tancot( xx, cotflg )
 double xx;
 int cotflg;
 {
@@ -225,7 +225,7 @@ z *= PI180;
 zz = z * z;
 
 if( zz > 1.0e-14 )
-	y = z  +  z * (zz * polevl( zz, P, 2 )/p1evl(zz, Q, 4));
+	y = z  +  z * (zz * md_polevl( zz, P, 2 )/md_p1evl(zz, Q, 4));
 else
 	y = z;
 	

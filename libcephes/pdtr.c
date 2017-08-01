@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * int k;
- * double m, y, pdtr();
+ * double m, y, md_pdtr();
  *
- * y = pdtr( k, m );
+ * y = md_pdtr( k, m );
  *
  *
  *
@@ -27,7 +27,7 @@
  * The terms are not summed directly; instead the incomplete
  * md_gamma integral is employed, according to the relation
  *
- * y = pdtr( k, m ) = igamc( k+1, m ).
+ * y = md_pdtr( k, m ) = md_igamc( k+1, m ).
  *
  * The arguments must both be positive.
  *
@@ -35,10 +35,11 @@
  *
  * ACCURACY:
  *
- * See igamc().
+ * See md_igamc().
  *
  */
-/*							pdtrc()
+
+/*							md_pdtrc()
  *
  *	Complemented poisson distribution
  *
@@ -47,9 +48,9 @@
  * SYNOPSIS:
  *
  * int k;
- * double m, y, pdtrc();
+ * double m, y, md_pdtrc();
  *
- * y = pdtrc( k, m );
+ * y = md_pdtrc( k, m );
  *
  *
  *
@@ -67,7 +68,7 @@
  * The terms are not summed directly; instead the incomplete
  * md_gamma integral is employed, according to the formula
  *
- * y = pdtrc( k, m ) = igam( k+1, m ).
+ * y = md_pdtrc( k, m ) = md_igam( k+1, m ).
  *
  * The arguments must both be positive.
  *
@@ -78,7 +79,8 @@
  * See igam.c.
  *
  */
-/*							pdtri()
+
+/*							md_pdtri()
  *
  *	Inverse Poisson distribution
  *
@@ -87,9 +89,9 @@
  * SYNOPSIS:
  *
  * int k;
- * double m, y, pdtr();
+ * double m, y, md_pdtri();
  *
- * m = pdtri( k, y );
+ * m = md_pdtri( k, y );
  *
  *
  *
@@ -103,7 +105,7 @@
  * This is accomplished using the inverse md_gamma integral
  * function and the relation
  *
- *    m = igami( k+1, y ).
+ *    m = md_igami( k+1, y ).
  *
  *
  *
@@ -127,14 +129,14 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double igam ( double, double );
-extern double igamc ( double, double );
-extern double igami ( double, double );
+extern double md_igam ( double, double );
+extern double md_igamc ( double, double );
+extern double md_igami ( double, double );
 #else
-double igam(), igamc(), igami();
+double md_igam(), md_igamc(), md_igami();
 #endif
 
-double pdtrc( k, m )
+double md_pdtrc( k, m )
 int k;
 double m;
 {
@@ -146,12 +148,12 @@ if( (k < 0) || (m <= 0.0) )
 	return( 0.0 );
 	}
 v = k+1;
-return( igam( v, m ) );
+return( md_igam( v, m ) );
 }
 
 
 
-double pdtr( k, m )
+double md_pdtr( k, m )
 int k;
 double m;
 {
@@ -163,11 +165,11 @@ if( (k < 0) || (m <= 0.0) )
 	return( 0.0 );
 	}
 v = k+1;
-return( igamc( v, m ) );
+return( md_igamc( v, m ) );
 }
 
 
-double pdtri( k, y )
+double md_pdtri( k, y )
 int k;
 double y;
 {
@@ -179,6 +181,6 @@ if( (k < 0) || (y < 0.0) || (y >= 1.0) )
 	return( 0.0 );
 	}
 v = k+1;
-v = igami( v, y );
+v = md_igami( v, y );
 return( v );
 }

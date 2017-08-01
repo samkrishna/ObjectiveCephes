@@ -7,9 +7,9 @@
  *
  * SYNOPSIS:
  *
- * double p[3], q[3], arcdot();
+ * double p[3], q[3], md_arcdot();
  *
- * y = arcdot( p, q );
+ * y = md_arcdot( p, q );
  *
  *
  *
@@ -69,7 +69,7 @@ double md_sqrt(), md_acos(), md_asin(), md_atan();
 #endif
 extern double PI;
 
-double arcdot(p,q)
+double md_arcdot(p,q)
 double p[], q[];
 {
 double pp, pr, qq, rr, rt, pt, qt, pq;

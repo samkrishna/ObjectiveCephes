@@ -29,14 +29,14 @@ typedef struct
 	}cmplx;
 
 int 
-cpmul_wrap( ar, ai, da, br, bi, db, cr, ci, dc )
+md_cpmul_wrap( ar, ai, da, br, bi, db, cr, ci, dc )
      double *ar, *ai, *br, *bi, *cr, *ci;
      int da, db;
      int *dc;
 {
   int i, ret;
   cmplx *a, *b, *c;
-  extern int cpmul( cmplx a[], int da, cmplx b[], int db, cmplx c[], int *dc);
+  extern int md_cpmul( cmplx a[], int da, cmplx b[], int db, cmplx c[], int *dc);
 
   a = (cmplx *) malloc (da * sizeof(cmplx));
   b = (cmplx *) malloc (db * sizeof(cmplx));
@@ -55,7 +55,7 @@ cpmul_wrap( ar, ai, da, br, bi, db, cr, ci, dc )
     c[i].i = ci[i];
   }
 
-  ret = cpmul( a, da-1, b, db-1, c, dc);
+  ret = md_cpmul( a, da-1, b, db-1, c, dc);
   if (ret > 0) return ret;
   
   for (i=0; i<=*dc; i++) {

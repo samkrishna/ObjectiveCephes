@@ -71,21 +71,21 @@ typedef struct{
 
 #ifdef ANSIPROT
 void exit (int);
-extern void radd ( fract *, fract *, fract * );
-extern void rsub ( fract *, fract *, fract * );
-extern void rmul ( fract *, fract *, fract * );
-extern void rdiv ( fract *, fract *, fract * );
-void fpolmov ( fract *, int, fract * );
-void fpolmul ( fract *, int, fract *, int, fract * );
-int fpoldiv ( fract *, int, fract *, int, fract * );
+extern void md_radd ( fract *, fract *, fract * );
+extern void md_rsub ( fract *, fract *, fract * );
+extern void md_rmul ( fract *, fract *, fract * );
+extern void md_rdiv ( fract *, fract *, fract * );
+void md_fpolmov ( fract *, int, fract * );
+void md_fpolmul ( fract *, int, fract *, int, fract * );
+int md_fpoldiv ( fract *, int, fract *, int, fract * );
 //void * malloc ( long );
 extern void	*malloc(size_t __size) __result_use_check;
 void free ( void * );
 #else
 void exit ();
-void radd(), rsub(), rmul(), rdiv();
-void fpolmov(), fpolmul();
-int fpoldiv();
+void md_radd(), md_rsub(), md_rmul(), md_rdiv();
+void md_fpolmov(), md_fpolmul();
+int md_fpoldiv();
 void * malloc();
 void free ();
 #endif
@@ -112,7 +112,7 @@ static int psize = 0;
 /* Initialize max degree of polynomials
  * and allocate temporary storage.
  */
-void fpolini( maxdeg )
+void md_fpolini( maxdeg )
 int maxdeg;
 {
 
@@ -146,7 +146,7 @@ if( (pt1 == NULL) || (pt2 == NULL) || (pt3 == NULL) )
  */
 static char *form = "abcdefghijk";
 
-void fpolprt( a, na, d )
+void md_fpolprt( a, na, d )
 fract a[];
 int na, d;
 {
@@ -203,7 +203,7 @@ printf( "\n" );
 
 /* Set a = 0.
  */
-void fpolclr( a, n )
+void md_fpolclr( a, n )
 fract a[];
 int n;
 {
@@ -222,7 +222,7 @@ for( i=0; i<=n; i++ )
 
 /* Set b = a.
  */
-void fpolmov( a, na, b )
+void md_fpolmov( a, na, b )
 fract a[], b[];
 int na;
 {
@@ -241,7 +241,7 @@ for( i=0; i<= na; i++ )
 
 /* c = b * a.
  */
-void fpolmul( a, na, b, nb, c )
+void md_fpolmul( a, na, b, nb, c )
 fract a[], b[], c[];
 int na, nb;
 {
@@ -249,7 +249,7 @@ int i, j, k, nc;
 fract temp;
 fract *p;
 nc = na + nb;
-fpolclr( pt3, FMAXPOL );
+md_fpolclr( pt3, FMAXPOL );
 p = &a[0];
 for( i=0; i<=na; i++ )
 	{
@@ -258,8 +258,8 @@ for( i=0; i<=na; i++ )
 		k = i + j;
 		if( k > FMAXPOL )
 			break;
-		rmul( p, &b[j], &temp ); /*pt3[k] += a[i] * b[j];*/
-		radd( &temp, &pt3[k], &pt3[k] );
+		md_rmul( p, &b[j], &temp ); /*pt3[k] += a[i] * b[j];*/
+		md_radd( &temp, &pt3[k], &pt3[k] );
 		}
 	++p;
 	}
@@ -278,7 +278,7 @@ for( i=0; i<=nc; i++ )
  
 /* c = b + a.
  */
-void fpoladd( a, na, b, nb, c )
+void md_fpoladd( a, na, b, nb, c )
 fract a[], b[], c[];
 int na, nb;
 {
@@ -307,14 +307,14 @@ for( i=0; i<=n; i++ )
 		}
 	else
 		{
-		radd( &a[i], &b[i], &c[i] ); /*c[i] = b[i] + a[i];*/
+		md_radd( &a[i], &b[i], &c[i] ); /*c[i] = b[i] + a[i];*/
 		}
 	}
 }
 
 /* c = b - a.
  */
-void fpolsub( a, na, b, nb, c )
+void md_fpolsub( a, na, b, nb, c )
 fract a[], b[], c[];
 int na, nb;
 {
@@ -343,7 +343,7 @@ for( i=0; i<=n; i++ )
 		}
 	else
 		{
-		rsub( &a[i], &b[i], &c[i] ); /*c[i] = b[i] - a[i];*/
+		md_rsub( &a[i], &b[i], &c[i] ); /*c[i] = b[i] - a[i];*/
 		}
 	}
 }
@@ -352,7 +352,7 @@ for( i=0; i<=n; i++ )
 
 /* c = b/a
  */
-int fpoldiv( a, na, b, nb, c )
+int md_fpoldiv( a, na, b, nb, c )
 fract a[], b[], c[];
 int na, nb;
 {
@@ -368,15 +368,15 @@ sing = 0;
  * may be hard to obtain on a small computer.
  */
 ta = (fract * )malloc( psize );
-fpolclr( ta, FMAXPOL );
-fpolmov( a, na, ta );
+md_fpolclr( ta, FMAXPOL );
+md_fpolmov( a, na, ta );
 
 tb = (fract * )malloc( psize );
-fpolclr( tb, FMAXPOL );
-fpolmov( b, nb, tb );
+md_fpolclr( tb, FMAXPOL );
+md_fpolmov( b, nb, tb );
 
 tq = (fract * )malloc( psize );
-fpolclr( tq, FMAXPOL );
+md_fpolclr( tq, FMAXPOL );
 
 /* What to do if leading (constant) coefficient
  * of denominator is zero.
@@ -420,7 +420,7 @@ nzero:
 		tb[nb].d = 1.0;
 		}
 /* Call self, using reduced polynomials. */
-	sing += fpoldiv( ta, na, tb, nb, c );
+	sing += md_fpoldiv( ta, na, tb, nb, c );
 	goto done;
 	}
 
@@ -428,21 +428,21 @@ nzero:
  */
 for( i=0; i<=FMAXPOL; i++ )
 	{
-	rdiv( &ta[0], &tb[i], &quot ); /*quot = tb[i]/ta[0];*/
+	md_rdiv( &ta[0], &tb[i], &quot ); /*quot = tb[i]/ta[0];*/
 	for( j=0; j<=FMAXPOL; j++ )
 		{
 		k = j + i;
 		if( k > FMAXPOL )
 			break;
 
-		rmul( &ta[j], &quot, &temp ); /*tb[k] -= quot * ta[j];*/
-		rsub( &temp, &tb[k], &tb[k] );
+		md_rmul( &ta[j], &quot, &temp ); /*tb[k] -= quot * ta[j];*/
+		md_rsub( &temp, &tb[k], &tb[k] );
 		}
 	tq[i].n = quot.n;
 	tq[i].d = quot.d;
 	}
 /* Send quotient to output array. */
-fpolmov( tq, FMAXPOL, c );
+md_fpolmov( tq, FMAXPOL, c );
 
 done:
 
@@ -462,7 +462,7 @@ return( sing );
  * c(x) = b(x) = b(a(y)).
  */
 
-void fpolsbt( a, na, b, nb, c )
+void md_fpolsbt( a, na, b, nb, c )
 fract a[], b[], c[];
 int na, nb;
 {
@@ -472,11 +472,11 @@ fract *p;
 
 /* 0th degree term:
  */
-fpolclr( pt1, FMAXPOL );
+md_fpolclr( pt1, FMAXPOL );
 pt1[0].n = b[0].n;
 pt1[0].d = b[0].d;
 
-fpolclr( pt2, FMAXPOL );
+md_fpolclr( pt2, FMAXPOL );
 pt2[0].n = 1.0;
 pt2[0].d = 1.0;
 n2 = 0;
@@ -485,15 +485,15 @@ p = &b[1];
 for( i=1; i<=nb; i++ )
 	{
 /* Form ith power of a. */
-	fpolmul( a, na, pt2, n2, pt2 );
+	md_fpolmul( a, na, pt2, n2, pt2 );
 	n2 += na;
 /* Add the ith coefficient of b times the ith power of a. */
 	for( j=0; j<=n2; j++ )
 		{
 		if( j > FMAXPOL )
 			break;
-		rmul( &pt2[j], p, &temp ); /*pt1[j] += b[i] * pt2[j];*/
-		radd( &temp, &pt1[j], &pt1[j] );
+		md_rmul( &pt2[j], p, &temp ); /*pt1[j] += b[i] * pt2[j];*/
+		md_radd( &temp, &pt1[j], &pt1[j] );
 		}
 	++p;
 	}
@@ -513,7 +513,7 @@ for( i=0; i<=k; i++ )
 
 /* Evaluate polynomial a(t) at t = x.
  */
-void fpoleva( a, na, x, s )
+void md_fpoleva( a, na, x, s )
 fract a[];
 int na;
 fract *x;
@@ -526,8 +526,8 @@ s->n = a[na].n;
 s->d = a[na].d;
 for( i=na-1; i>=0; i-- )
 	{
-	rmul( s, x, &temp ); /*s = s * x + a[i];*/
-	radd( &a[i], &temp, s );
+	md_rmul( s, x, &temp ); /*s = s * x + a[i];*/
+	md_radd( &a[i], &temp, s );
 	}
 }
 

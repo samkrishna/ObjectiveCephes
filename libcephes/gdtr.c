@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double a, b, x, y, gdtr();
+ * double a, b, x, y, md_gdtr();
  *
- * y = gdtr( a, b, x );
+ * y = md_gdtr( a, b, x );
  *
  *
  *
@@ -29,12 +29,12 @@
  *  The incomplete md_gamma integral is used, according to the
  * relation
  *
- * y = igam( b, ax ).
+ * y = md_igam( b, ax ).
  *
  *
  * ACCURACY:
  *
- * See igam().
+ * See md_igam().
  *
  * ERROR MESSAGES:
  *
@@ -42,17 +42,18 @@
  * gdtr domain         x < 0            0.0
  *
  */
-/*							gdtrc.c
+
+/*							gdtrc.c
  *
- *	Complemented md_gamma distribution function
+ *	Complemented gamma distribution function
  *
  *
  *
  * SYNOPSIS:
  *
- * double a, b, x, y, gdtrc();
+ * double a, b, x, y, md_gdtrc();
  *
- * y = gdtrc( a, b, x );
+ * y = md_gdtrc( a, b, x );
  *
  *
  *
@@ -73,12 +74,12 @@
  *  The incomplete md_gamma integral is used, according to the
  * relation
  *
- * y = igamc( b, ax ).
+ * y = md_igamc( b, ax ).
  *
  *
  * ACCURACY:
  *
- * See igamc().
+ * See md_igamc().
  *
  * ERROR MESSAGES:
  *
@@ -97,13 +98,13 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double igam ( double, double );
-extern double igamc ( double, double );
+extern double md_igam ( double, double );
+extern double md_igamc ( double, double );
 #else
-double igam(), igamc();
+double md_igam(), md_igamc();
 #endif
 
-double gdtr( a, b, x )
+double md_gdtr( a, b, x )
 double a, b, x;
 {
 
@@ -112,12 +113,12 @@ if( x < 0.0 )
 	mtherr( "gdtr", DOMAIN );
 	return( 0.0 );
 	}
-return(  igam( b, a * x )  );
+return(  md_igam( b, a * x )  );
 }
 
 
 
-double gdtrc( a, b, x )
+double md_gdtrc( a, b, x )
 double a, b, x;
 {
 
@@ -126,5 +127,5 @@ if( x < 0.0 )
 	mtherr( "gdtrc", DOMAIN );
 	return( 0.0 );
 	}
-return(  igamc( b, a * x )  );
+return(  md_igamc( b, a * x )  );
 }

@@ -12,16 +12,16 @@
 #include "mconf.h"
 
 #ifdef ANSIPROT
-extern int isnan (double);
-extern int isfinite (double);
+extern int md_isnan (double);
+extern int md_isfinite (double);
 extern double md_log ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_exp ( double );
 extern double md_cos ( double );
 #else
-double md_log(), polevl(), p1evl(), md_exp(), md_cos();
-int isnan(), isfinite();
+double md_log(), md_polevl(), md_p1evl(), md_exp(), md_cos();
+int md_isnan(), md_isfinite();
 #endif
 extern double INFINITY;
 
@@ -62,7 +62,7 @@ z = 1.0 + x;
 if( (z < SQRTH) || (z > SQRT2) )
 	return( md_log(z) );
 z = x*x;
-z = -0.5 * z + x * ( z * polevl( x, LP, 6 ) / p1evl( x, LQ, 6 ) );
+z = -0.5 * z + x * ( z * md_polevl( x, LP, 6 ) / md_p1evl( x, LQ, 6 ) );
 return (x + z);
 }
 
@@ -92,7 +92,7 @@ double x;
 double r, xx;
 
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
 #endif
 #ifdef INFINITIES
@@ -104,8 +104,8 @@ if( x == -INFINITY )
 if( (x < -0.5) || (x > 0.5) )
 	return( md_exp(x) - 1.0 );
 xx = x * x;
-r = x * polevl( xx, EP, 2 );
-r = r/( polevl( xx, EQ, 3 ) - r );
+r = x * md_polevl( xx, EP, 2 );
+r = r/( md_polevl( xx, EQ, 3 ) - r );
 return (r + r);
 }
 
@@ -125,7 +125,7 @@ static double coscof[7] = {
 
 extern double PIO4;
 
-double cosm1(x)
+double md_cosm1(x)
 double x;
 {
 double xx;
@@ -133,6 +133,6 @@ double xx;
 if( (x < -PIO4) || (x > PIO4) )
 	return( md_cos(x) - 1.0 );
 xx = x * x;
-xx = -0.5*xx + xx * xx * polevl( xx, coscof, 6 );
+xx = -0.5*xx + xx * xx * md_polevl( xx, coscof, 6 );
 return xx;
 }

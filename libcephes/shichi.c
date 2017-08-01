@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, Chi, Shi, shichi();
+ * double x, Chi, Shi, md_shichi();
  *
- * shichi( x, &Chi, &Shi );
+ * md_shichi( x, &Chi, &Shi );
  *
  *
  * DESCRIPTION:
@@ -503,14 +503,14 @@ static unsigned short C2[] = {
 extern double md_log ( double );
 extern double md_exp ( double );
 extern double md_fabs ( double );
-extern double chbevl ( double, void *, int );
+extern double md_chbevl ( double, void *, int );
 #else
-double md_log(), md_exp(), md_fabs(), chbevl();
+double md_log(), md_exp(), md_fabs(), md_chbevl();
 #endif
 #define EUL 0.57721566490153286061
 extern double MACHEP, MAXNUM, PIO2;
 
-int shichi( x, si, ci )
+int md_shichi( x, si, ci )
 double x;
 double *si, *ci;
 {
@@ -566,8 +566,8 @@ if( x < 18.0 )
 	{
 	a = (576.0/x - 52.0)/10.0;
 	k = md_exp(x) / x;
-	s = k * chbevl( a, S1, 22 );
-	c = k * chbevl( a, C1, 23 );
+	s = k * md_chbevl( a, S1, 22 );
+	c = k * md_chbevl( a, C1, 23 );
 	goto done;
 	}
 
@@ -575,8 +575,8 @@ if( x <= 88.0 )
 	{
 	a = (6336.0/x - 212.0)/70.0;
 	k = md_exp(x) / x;
-	s = k * chbevl( a, S2, 23 );
-	c = k * chbevl( a, C2, 24 );
+	s = k * md_chbevl( a, S2, 23 );
+	c = k * md_chbevl( a, C2, 24 );
 	goto done;
 	}
 else

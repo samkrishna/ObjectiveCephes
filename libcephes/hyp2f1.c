@@ -96,19 +96,19 @@ extern double md_round ( double );
 extern double md_gamma ( double );
 extern double md_log ( double );
 extern double md_exp ( double );
-extern double psi ( double );
-static double hyt2f1(double, double, double, double, double *);
-static double hys2f1(double, double, double, double, double *);
-double hyp2f1(double, double, double, double);
+extern double md_psi ( double );
+static double md_hyt2f1(double, double, double, double, double *);
+static double md_hys2f1(double, double, double, double, double *);
+double md_hyp2f1(double, double, double, double);
 #else
 double md_fabs(), md_pow(), md_round(), md_gamma(), md_log(), md_exp(), psi();
-static double hyt2f1();
-static double hys2f1();
-double hyp2f1();
+static double md_hyt2f1();
+static double md_hys2f1();
+double md_hyp2f1();
 #endif
 extern double MAXNUM, MACHEP;
 
-double hyp2f1( a, b, c, x )
+double md_hyp2f1( a, b, c, x )
 double a, b, c, x;
 {
 double d, d1, d2, e;
@@ -215,15 +215,15 @@ if( md_fabs(ax-1.0) < EPS )			/* |x| == 1.0	*/
 if( d < 0.0 )
 	{
 /* Try the power series first */
-	y = hyt2f1( a, b, c, x, &err );
+	y = md_hyt2f1( a, b, c, x, &err );
 	if( err < ETHRESH )
 		goto hypdon;
 /* Apply the recurrence if power series fails */
 	err = 0.0;
 	aid = 2 - id;
 	e = c + aid;
-	d2 = hyp2f1(a,b,e,x);
-	d1 = hyp2f1(a,b,e+1.0,x);
+	d2 = md_hyp2f1(a,b,e,x);
+	d1 = md_hyp2f1(a,b,e+1.0,x);
 	q = a + b + 1.0;
 	for( i=0; i<aid; i++ )
 		{
@@ -241,7 +241,7 @@ if( flag & 12 )
 	goto hypf; /* negative integer c-a or c-b */
 
 hypok:
-y = hyt2f1( a, b, c, x, &err );
+y = md_hyt2f1( a, b, c, x, &err );
 
 
 hypdon:
@@ -256,7 +256,7 @@ return(y);
  * AMS55 #15.3.3
  */
 hypf:
-y = md_pow( s, d ) * hys2f1( c-a, c-b, c, x, &err );
+y = md_pow( s, d ) * md_hys2f1( c-a, c-b, c, x, &err );
 goto hypdon;
 
 /* The alarm exit */
@@ -273,7 +273,7 @@ return( MAXNUM );
 /* Apply transformations for |x| near 1
  * then call the power series
  */
-static double hyt2f1( a, b, c, x, loss )
+static double md_hyt2f1( a, b, c, x, loss )
 double a, b, c, x;
 double *loss;
 {
@@ -286,10 +286,10 @@ s = 1.0 - x;
 if( x < -0.5 )
 	{
 	if( b > a )
-		y = md_pow( s, -a ) * hys2f1( a, c-b, c, -x/s, &err );
+		y = md_pow( s, -a ) * md_hys2f1( a, c-b, c, -x/s, &err );
 
 	else
-		y = md_pow( s, -b ) * hys2f1( c-a, b, c, -x/s, &err );
+		y = md_pow( s, -b ) * md_hys2f1( c-a, b, c, -x/s, &err );
 
 	goto done;
 	}
@@ -302,13 +302,13 @@ if( x > 0.9 )
 if( md_fabs(d-id) > EPS ) /* test for integer c-a-b */
 	{
 /* Try the power series first */
-	y = hys2f1( a, b, c, x, &err );
+	y = md_hys2f1( a, b, c, x, &err );
 	if( err < ETHRESH )
 		goto done;
 /* If power series fails, then apply AMS55 #15.3.6 */
-	q = hys2f1( a, b, 1.0-d, s, &err );	
+	q = md_hys2f1( a, b, 1.0-d, s, &err );	
 	q *= md_gamma(d) /(md_gamma(c-a) * md_gamma(c-b));
-	r = md_pow(s,d) * hys2f1( c-a, c-b, d+1.0, s, &err1 );
+	r = md_pow(s,d) * md_hys2f1( c-a, c-b, d+1.0, s, &err1 );
 	r *= md_gamma(-d)/(md_gamma(a) * md_gamma(b));
 	y = q + r;
 
@@ -342,15 +342,15 @@ else
 	ax = md_log(s);
 
 	/* sum for t = 0 */
-	y = psi(1.0) + psi(1.0+e) - psi(a+d1) - psi(b+d1) - ax;
+	y = md_psi(1.0) + md_psi(1.0+e) - md_psi(a+d1) - md_psi(b+d1) - ax;
 	y /= md_gamma(e+1.0);
 
 	p = (a+d1) * (b+d1) * s / md_gamma(e+2.0);	/* Poch for t=1 */
 	t = 1.0;
 	do
 		{
-		r = psi(1.0+t) + psi(1.0+t+e) - psi(a+t+d1)
-			- psi(b+t+d1) - ax;
+		r = md_psi(1.0+t) + md_psi(1.0+t+e) - md_psi(a+t+d1)
+			- md_psi(b+t+d1) - ax;
 		q = p * r;
 		y += q;
 		p *= s * (a+t+d1) / (t+1.0);
@@ -403,7 +403,7 @@ psidon:
 }
 
 /* Use defining power series if no special cases */
-y = hys2f1( a, b, c, x, &err );
+y = md_hys2f1( a, b, c, x, &err );
 
 done:
 *loss = err;
@@ -416,7 +416,7 @@ return(y);
 
 /* Defining power series expansion of Gauss hypergeometric function */
 
-static double hys2f1( a, b, c, x, loss )
+static double md_hys2f1( a, b, c, x, loss )
 double a, b, c, x;
 double *loss; /* estimates loss of significance */
 {

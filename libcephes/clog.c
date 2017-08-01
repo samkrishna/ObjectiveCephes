@@ -20,7 +20,7 @@
  *
  * If z = x + iy, r = md_sqrt( x**2 + y**2 ),
  * then
- *       w = md_log(r) + i arctan(y/x).
+ *       w = md_log(r) + i md_arctan(y/x).
  * 
  * The arctangent ranges from -PI to +PI.
  *
@@ -43,9 +43,9 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 */
 #include "mconf.h"
 #ifdef ANSIPROT
-static void cchsh ( double x, double *c, double *s );
-static double redupi ( double x );
-static double ctans ( cmplx *z );
+static void md_cchsh ( double x, double *c, double *s );
+static double md_redupi ( double x );
+static double md_ctans ( cmplx *z );
 /* These are supposed to be in some standard place. */
 double md_fabs (double);
 double md_sqrt (double);
@@ -59,24 +59,24 @@ double md_asin (double);
 double md_sin (double);
 double md_cos (double);
 double md_cabs (cmplx *);
-void cadd ( cmplx *, cmplx *, cmplx * );
-void cmul ( cmplx *, cmplx *, cmplx * );
+void md_cadd ( cmplx *, cmplx *, cmplx * );
+void md_cmul ( cmplx *, cmplx *, cmplx * );
 void md_csqrt ( cmplx *, cmplx * );
-static void cchsh ( double, double *, double * );
-static double redupi ( double );
-static double ctans ( cmplx * );
+static void md_cchsh ( double, double *, double * );
+static double md_redupi ( double );
+static double md_ctans ( cmplx * );
 void md_clog ( cmplx *, cmplx * );
 void md_casin ( cmplx *, cmplx * );
 void md_cacos ( cmplx *, cmplx * );
 void md_catan ( cmplx *, cmplx * );
 #else
-static void cchsh();
-static double redupi();
-static double ctans();
+static void md_cchsh();
+static double md_redupi();
+static double md_ctans();
 double md_cabs(), md_fabs(), md_sqrt(), md_pow();
 double md_log(), md_exp(), md_atan2(), md_cosh(), md_sinh();
 double md_asin(), md_sin(), md_cos();
-void cadd(), cmul(), md_csqrt();
+void md_cadd(), md_cmul(), md_csqrt();
 void md_clog(), md_casin(), md_cacos(), md_catan();
 #endif
 
@@ -101,7 +101,8 @@ if( rr > PI )
 w->i = rr;
 w->r = p;
 }
-/*							md_cexp()
+
+/*							md_cexp()
  *
  *	Complex exponential function
  *
@@ -148,7 +149,8 @@ r = md_exp( z->r );
 w->r = r * md_cos( z->i );
 w->i = r * md_sin( z->i );
 }
-/*							md_csin()
+
+/*							md_csin()
  *
  *	Complex circular sine
  *
@@ -189,7 +191,7 @@ register cmplx *z, *w;
 {
 double ch, sh;
 
-cchsh( z->i, &ch, &sh );
+md_cchsh( z->i, &ch, &sh );
 w->r = md_sin( z->r ) * ch;
 w->i = md_cos( z->r ) * sh;
 }
@@ -198,7 +200,7 @@ w->i = md_cos( z->r ) * sh;
 
 /* calculate md_cosh and md_sinh */
 
-static void cchsh( x, c, s )
+static void md_cchsh( x, c, s )
 double x, *c, *s;
 {
 double e, ei;
@@ -218,7 +220,7 @@ else
 	}
 }
 
-/*							md_ccos()
+/*							md_ccos()
  *
  *	Complex circular cosine
  *
@@ -257,11 +259,12 @@ register cmplx *z, *w;
 {
 double ch, sh;
 
-cchsh( z->i, &ch, &sh );
+md_cchsh( z->i, &ch, &sh );
 w->r = md_cos( z->r ) * ch;
 w->i = -md_sin( z->r ) * sh;
 }
-/*							md_ctan()
+
+/*							md_ctan()
  *
  *	Complex circular tangent
  *
@@ -309,7 +312,7 @@ double d;
 d = md_cos( 2.0 * z->r ) + md_cosh( 2.0 * z->i );
 
 if( md_fabs(d) < 0.25 )
-	d = ctans(z);
+	d = md_ctans(z);
 
 if( d == 0.0 )
 	{
@@ -322,7 +325,8 @@ if( d == 0.0 )
 w->r = md_sin( 2.0 * z->r ) / d;
 w->i = md_sinh( 2.0 * z->i ) / d;
 }
-/*							ccot()
+
+/*							md_ccot()
  *
  *	Complex circular cotangent
  *
@@ -330,7 +334,7 @@ w->i = md_sinh( 2.0 * z->i ) / d;
  *
  * SYNOPSIS:
  *
- * void ccot();
+ * void md_ccot();
  * cmplx z, w;
  *
  * ccot( &z, &w );
@@ -359,10 +363,10 @@ w->i = md_sinh( 2.0 * z->i ) / d;
  * arithmetic   domain     # trials      peak         rms
  *    DEC       -10,+10      3000       6.5e-17     1.6e-17
  *    IEEE      -10,+10     30000       9.2e-16     1.2e-16
- * Also tested by md_ctan * ccot = 1 + i0.
+ * Also tested by md_ctan * ccot = 1 + md_i0.
  */
 
-void ccot( z, w )
+void md_ccot( z, w )
 register cmplx *z, *w;
 {
 double d;
@@ -370,7 +374,7 @@ double d;
 d = md_cosh(2.0 * z->i) - md_cos(2.0 * z->r);
 
 if( md_fabs(d) < 0.25 )
-	d = ctans(z);
+	d = md_ctans(z);
 
 if( d == 0.0 )
 	{
@@ -425,7 +429,7 @@ static unsigned short P3[] = {
 #define DP3 *(double *)P3
 #endif
 
-static double redupi(x)
+static double md_redupi(x)
 double x;
 {
 double t;
@@ -445,7 +449,7 @@ return(t);
 
 /*  Taylor series expansion for md_cosh(2y) - md_cos(2x)	*/
 
-static double ctans(z)
+static double md_ctans(z)
 cmplx *z;
 {
 double f, x, x2, y, y2, rn, t;
@@ -454,7 +458,7 @@ double d;
 x = md_fabs( 2.0 * z->r );
 y = md_fabs( 2.0 * z->i );
 
-x = redupi(x);
+x = md_redupi(x);
 
 x = x * x;
 y = y * y;
@@ -488,7 +492,8 @@ do
 while( md_fabs(t/d) > MACHEP );
 return(d);
 }
-/*							md_casin()
+
+/*							md_casin()
  *
  *	Complex circular arc sine
  *
@@ -594,7 +599,7 @@ ct.r = -ca.i;	/* iz */
 ct.i = ca.r;
 
 	/* md_sqrt( 1 - z*z) */
-/* cmul( &ca, &ca, &zz ) */
+/* md_cmul( &ca, &ca, &zz ) */
 zz.r = (ca.r - ca.i) * (ca.r + ca.i);	/*x * x  -  y * y */
 zz.i = 2.0 * ca.r * ca.i;
 
@@ -602,13 +607,14 @@ zz.r = 1.0 - zz.r;
 zz.i = -zz.i;
 md_csqrt( &zz, &z2 );
 
-cadd( &z2, &ct, &zz );
+md_cadd( &z2, &ct, &zz );
 md_clog( &zz, &zz );
 w->r = zz.i;	/* mult by 1/i = -i */
 w->i = -zz.r;
 return;
 }
-/*							md_cacos()
+
+/*							md_cacos()
  *
  *	Complex circular arc cosine
  *
@@ -626,7 +632,7 @@ return;
  * DESCRIPTION:
  *
  *
- * w = arccos z  =  PI/2 - arcsin z.
+ * w = md_arccos z  =  PI/2 - md_arcsin z.
  *
  *
  *
@@ -647,7 +653,8 @@ md_casin( z, w );
 w->r = PIO2  -  w->r;
 w->i = -w->i;
 }
-/*							md_catan()
+
+/*							md_catan()
  *
  *	Complex circular arc tangent
  *
@@ -715,7 +722,7 @@ t = md_atan2( 2.0 * x, a )/2.0;
 #else
 t = md_atan2( a, 2.0 * x )/2.0;
 #endif
-w->r = redupi( t );
+w->r = md_redupi( t );
 
 t = y - 1.0;
 a = x2 + (t * t);
@@ -809,11 +816,11 @@ md_casinh (z, w)
 
   u.r = 0.0;
   u.i = 1.0;
-  cmul( z, &u, &u );
+  md_cmul( z, &u, &u );
   md_casin( &u, w );
   u.r = 0.0;
   u.i = -1.0;
-  cmul( &u, w, w );
+  md_cmul( &u, w, w );
 }
 
 /*							md_ccosh
@@ -892,7 +899,7 @@ md_cacosh (z, w)
   md_cacos( z, w );
   u.r = 0.0;
   u.i = 1.0;
-  cmul( &u, w, w );
+  md_cmul( &u, w, w );
 }
 
 
@@ -975,11 +982,11 @@ md_catanh (z, w)
 
   u.r = 0.0;
   u.i = 1.0;
-  cmul (z, &u, &u);  /* i z */
+  md_cmul (z, &u, &u);  /* i z */
   md_catan (&u, w);
   u.r = 0.0;
   u.i = -1.0;
-  cmul (&u, w, w);  /* -i md_catan iz */
+  md_cmul (&u, w, w);  /* -i md_catan iz */
   return;
 }
 

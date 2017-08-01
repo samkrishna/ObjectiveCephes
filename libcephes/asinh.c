@@ -111,12 +111,12 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_sqrt ( double );
 extern double md_log ( double );
 #else
-double md_log(), md_sqrt(), polevl(), p1evl();
+double md_log(), md_sqrt(), md_polevl(), md_p1evl();
 #endif
 extern double LOGE2, INFINITY;
 
@@ -153,7 +153,7 @@ if( x > 1.0e8 )
 z = x * x;
 if( x < 0.5 )
 	{
-	a = ( polevl(z, P, 4)/p1evl(z, Q, 4) ) * z;
+	a = ( md_polevl(z, P, 4) / md_p1evl(z, Q, 4) ) * z;
 	a = a * x  +  x;
 	if( sign < 0 )
 		a = -a;

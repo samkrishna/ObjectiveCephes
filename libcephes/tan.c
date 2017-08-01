@@ -35,7 +35,8 @@
  * md_tan total loss   x > 1.073741824e9     0.0
  *
  */
-/*							cot.c
+
+/*							cot.c
  *
  *	Circular cotangent
  *
@@ -43,9 +44,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, cot();
+ * double x, y, md_cot();
  *
- * y = cot( x );
+ * y = md_cot( x );
  *
  *
  *
@@ -180,17 +181,17 @@ static double lossth = 1.073741824e9;
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_floor ( double );
 extern double md_ldexp ( double, int );
-extern int isnan ( double );
-extern int isfinite ( double );
-static double tancot(double, int);
+extern int md_isnan ( double );
+extern int md_isfinite ( double );
+static double md_tancot(double, int);
 #else
-double polevl(), p1evl(), md_floor(), md_ldexp();
-static double tancot();
-int isnan(), isfinite();
+double md_polevl(), md_p1evl(), md_floor(), md_ldexp();
+static double md_tancot();
+int md_isnan(), md_isfinite();
 #endif
 extern double PIO4;
 extern double INFINITY;
@@ -204,19 +205,19 @@ if( x == 0.0 )
 	return(x);
 #endif
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
-if( !isfinite(x) )
+if( !md_isfinite(x) )
 	{
 	mtherr( "md_tan", DOMAIN );
 	return(NAN);
 	}
 #endif
-return( tancot(x,0) );
+return( md_tancot(x,0) );
 }
 
 
-double cot(x)
+double md_cot(x)
 double x;
 {
 
@@ -225,11 +226,11 @@ if( x == 0.0 )
 	mtherr( "cot", SING );
 	return( INFINITY );
 	}
-return( tancot(x,1) );
+return( md_tancot(x,1) );
 }
 
 
-static double tancot( xx, cotflg )
+static double md_tancot( xx, cotflg )
 double xx;
 int cotflg;
 {
@@ -280,7 +281,7 @@ z = ((x - y * DP1) - y * DP2) - y * DP3;
 zz = z * z;
 
 if( zz > 1.0e-14 )
-	y = z  +  z * (zz * polevl( zz, P, 2 )/p1evl(zz, Q, 4));
+	y = z  +  z * (zz * md_polevl( zz, P, 2 )/md_p1evl(zz, Q, 4));
 else
 	y = z;
 	

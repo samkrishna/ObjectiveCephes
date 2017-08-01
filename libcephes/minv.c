@@ -10,9 +10,9 @@
  * double A[n*n], X[n*n];
  * double B[n];
  * int IPS[n];
- * int minv();
+ * int md_minv();
  *
- * errcod = minv( A, X, n, B, IPS );
+ * errcod = md_minv( A, X, n, B, IPS );
  *
  *
  *
@@ -27,8 +27,7 @@
  *
  */
 
-int
-minv( A, X, n, B, IPS )
+int md_minv( A, X, n, B, IPS )
 double A[], X[];
 int n;
 double B[];
@@ -36,15 +35,15 @@ int IPS[];
 {
 double *pX;
 int i, k;
-extern int simq(double *, double *, double *, int, int, int *);
-extern void mtransp(int, double *, double *);
+extern int md_simq(double *, double *, double *, int, int, int *);
+extern void md_mtransp(int, double *, double *);
 
 for( i=1; i<n; i++ )
 	B[i] = 0.0;
 B[0] = 1.0;
 /* Reduce the matrix and solve for first right hand side vector */
 pX = X;
-k = simq( A, B, pX, n, 1, IPS );
+k = md_simq( A, B, pX, n, 1, IPS );
 if( k )
 	return(-1);
 /* Solve for the remaining right hand side vectors */
@@ -53,12 +52,12 @@ for( i=1; i<n; i++ )
 	B[i-1] = 0.0;
 	B[i] = 1.0;
 	pX += n;
-	k = simq( A, B, pX, n, -1, IPS );
+	k = md_simq( A, B, pX, n, -1, IPS );
 	if( k )
 		return(-1);
 	}
 /* Transpose the array of solution vectors */
-mtransp( n, X, X );
+md_mtransp( n, X, X );
 return(0);
 }
 

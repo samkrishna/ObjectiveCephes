@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * int k, n;
- * double p, y, nbdtr();
+ * double p, y, md_nbdtr();
  *
- * y = nbdtr( k, n, p );
+ * y = md_nbdtr( k, n, p );
  *
  * DESCRIPTION:
  *
@@ -42,7 +42,8 @@
  * See also incbet.c.
  *
  */
-/*							nbdtr.c
+
+/*							nbdtr.c
  *
  *	Complemented negative binomial distribution
  *
@@ -51,9 +52,9 @@
  * SYNOPSIS:
  *
  * int k, n;
- * double p, y, nbdtrc();
+ * double p, y, md_nbdtrc();
  *
- * y = nbdtrc( k, n, p );
+ * y = md_nbdtrc( k, n, p );
  *
  * DESCRIPTION:
  *
@@ -69,7 +70,7 @@
  * The terms are not computed individually; instead the incomplete
  * beta integral is employed, according to the formula
  *
- * y = nbdtrc( k, n, p ) = incbet( k+1, n, 1-p ).
+ * y = md_nbdtrc( k, n, p ) = md_incbet( k+1, n, 1-p ).
  *
  * The arguments must be positive, with p ranging from 0 to 1.
  *
@@ -91,9 +92,9 @@
  * SYNOPSIS:
  *
  * int k, n;
- * double p, y, nbdtri();
+ * double p, y, md_nbdtri();
  *
- * p = nbdtri( k, n, y );
+ * p = md_nbdtri( k, n, y );
  *
  * DESCRIPTION:
  *
@@ -116,13 +117,13 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double incbet ( double, double, double );
-extern double incbi ( double, double, double );
+extern double md_incbet ( double, double, double );
+extern double md_incbi ( double, double, double );
 #else
-double incbet(), incbi();
+double md_incbet(), md_incbi();
 #endif
 
-double nbdtrc( k, n, p )
+double md_nbdtrc( k, n, p )
 int k, n;
 double p;
 {
@@ -139,12 +140,12 @@ domerr:
 
 dk = k+1;
 dn = n;
-return( incbet( dk, dn, 1.0 - p ) );
+return( md_incbet( dk, dn, 1.0 - p ) );
 }
 
 
 
-double nbdtr( k, n, p )
+double md_nbdtr( k, n, p )
 int k, n;
 double p;
 {
@@ -160,12 +161,12 @@ domerr:
 	}
 dk = k+1;
 dn = n;
-return( incbet( dn, dk, p ) );
+return( md_incbet( dn, dk, p ) );
 }
 
 
 
-double nbdtri( k, n, p )
+double md_nbdtri( k, n, p )
 int k, n;
 double p;
 {
@@ -181,6 +182,6 @@ domerr:
 	}
 dk = k+1;
 dn = n;
-w = incbi( dn, dk, p );
+w = md_incbi( dn, dk, p );
 return( w );
 }

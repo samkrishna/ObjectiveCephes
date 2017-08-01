@@ -277,18 +277,18 @@ static unsigned short B[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double chbevl ( double, void *, int );
+extern double md_chbevl ( double, void *, int );
 extern double md_exp ( double );
-extern double i1 ( double );
+extern double md_i1 ( double );
 extern double md_log ( double );
 extern double md_sqrt ( double );
 #else
-double chbevl(), md_exp(), i1(), md_log(), md_sqrt();
+double md_chbevl(), md_exp(), md_i1(), md_log(), md_sqrt();
 #endif
 extern double PI;
 extern double MINLOG, MAXNUM;
 
-double k1(x)
+double md_k1(x)
 double x;
 {
 double y, z;
@@ -303,17 +303,17 @@ if( z <= 0.0 )
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y =  md_log(z) * i1(x)  +  chbevl( y, A, 11 ) / x;
+	y =  md_log(z) * md_i1(x)  +  md_chbevl( y, A, 11 ) / x;
 	return( y );
 	}
 
-return(  md_exp(-x) * chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x) );
+return(  md_exp(-x) * md_chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x) );
 }
 
 
 
 
-double k1e( x )
+double md_k1e( x )
 double x;
 {
 double y;
@@ -327,9 +327,9 @@ if( x <= 0.0 )
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y =  md_log( 0.5 * x ) * i1(x)  +  chbevl( y, A, 11 ) / x;
+	y =  md_log( 0.5 * x ) * md_i1(x)  +  md_chbevl( y, A, 11 ) / x;
 	return( y * md_exp(x) );
 	}
 
-return(  chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x) );
+return(  md_chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x) );
 }

@@ -70,21 +70,21 @@ Copyright 1984, 1987, 1988, 2000 by Stephen L. Moshier
 extern double md_exp ( double );
 extern double md_log ( double );
 extern double md_gamma ( double );
-extern double lgam ( double );
+extern double md_lgam ( double );
 extern double md_fabs ( double );
-double hyp2f0 ( double, double, double, int, double * );
-static double hy1f1p(double, double, double, double *);
-static double hy1f1a(double, double, double, double *);
-double hyperg (double, double, double);
+double md_hyp2f0 ( double, double, double, int, double * );
+static double md_hy1f1p(double, double, double, double *);
+static double md_hy1f1a(double, double, double, double *);
+double md_hyperg (double, double, double);
 #else
-double md_exp(), md_log(), md_gamma(), lgam(), md_fabs(), hyp2f0();
-static double hy1f1p();
-static double hy1f1a();
-double hyperg();
+double md_exp(), md_log(), md_gamma(), md_lgam(), md_fabs(), md_hyp2f0();
+static double md_hy1f1p();
+static double md_hy1f1a();
+double md_hyperg();
 #endif
 extern double MAXNUM, MACHEP;
 
-double hyperg( a, b, x)
+double md_hyperg( a, b, x)
 double a, b, x;
 {
 double asum, psum, acanc, pcanc, temp;
@@ -92,17 +92,17 @@ double asum, psum, acanc, pcanc, temp;
 /* See if a Kummer transformation will help */
 temp = b - a;
 if( md_fabs(temp) < 0.001 * md_fabs(a) )
-	return( md_exp(x) * hyperg( temp, b, -x )  );
+	return( md_exp(x) * md_hyperg( temp, b, -x )  );
 
 
-psum = hy1f1p( a, b, x, &pcanc );
+psum = md_hy1f1p( a, b, x, &pcanc );
 if( pcanc < 1.0e-15 )
 	goto done;
 
 
 /* try asymptotic series */
 
-asum = hy1f1a( a, b, x, &acanc );
+asum = md_hy1f1a( a, b, x, &acanc );
 
 
 /* Pick the result with less estimated error */
@@ -126,7 +126,7 @@ return( psum );
 /* Power series summation for confluent hypergeometric function		*/
 
 
-static double hy1f1p( a, b, x, err )
+static double md_hy1f1p( a, b, x, err )
 double a, b, x;
 double *err;
 {
@@ -219,7 +219,7 @@ return( sum );
  *                               |  (a)                        )
  */
 
-static double hy1f1a( a, b, x, err )
+static double md_hy1f1a( a, b, x, err )
 double a, b, x;
 double *err;
 {
@@ -237,23 +237,23 @@ u = -temp * a;
 
 if( b > 0 )
 	{
-	temp = lgam(b);
+	temp = md_lgam(b);
 	t += temp;
 	u += temp;
 	}
 
-h1 = hyp2f0( a, a-b+1, -1.0/x, 1, &err1 );
+h1 = md_hyp2f0( a, a-b+1, -1.0/x, 1, &err1 );
 
 temp = md_exp(u) / md_gamma(b-a);
 h1 *= temp;
 err1 *= temp;
 
-h2 = hyp2f0( b-a, 1.0-a, 1.0/x, 2, &err2 );
+h2 = md_hyp2f0( b-a, 1.0-a, 1.0/x, 2, &err2 );
 
 if( a < 0 )
 	temp = md_exp(t) / md_gamma(a);
 else
-	temp = md_exp( t - lgam(a) );
+	temp = md_exp( t - md_lgam(a) );
 
 h2 *= temp;
 err2 *= temp;
@@ -289,7 +289,7 @@ return( asum );
 
 /*							hyp2f0()	*/
 
-double hyp2f0( a, b, x, type, err )
+double md_hyp2f0( a, b, x, type, err )
 double a, b, x;
 int type;	/* determines what converging factor to use */
 double *err;

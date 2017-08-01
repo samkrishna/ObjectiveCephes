@@ -19,7 +19,7 @@
  * correctly signed, and the sign (+1 or -1) is also
  * returned in a global (extern) variable named sgngam.
  * This variable is also filled in by the logarithmic md_gamma
- * function lgam().
+ * function md_lgam().
  *
  * Arguments |x| <= 34 are reduced by recurrence and the function
  * approximated by a rational function of degree 6/7 in the
@@ -49,10 +49,10 @@
  *
  * SYNOPSIS:
  *
- * double x, y, lgam();
+ * double x, y, md_lgam();
  * extern int sgngam;
  *
- * y = lgam( x );
+ * y = md_lgam( x );
  *
  *
  *
@@ -274,19 +274,19 @@ extern double md_pow ( double, double );
 extern double md_log ( double );
 extern double md_exp ( double );
 extern double md_sin ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_floor ( double );
 extern double md_fabs ( double );
-extern int isnan ( double );
-extern int isfinite ( double );
-static double stirf ( double );
-double lgam ( double );
+extern int md_isnan ( double );
+extern int md_isfinite ( double );
+static double md_stirf ( double );
+double md_lgam ( double );
 #else
-double md_pow(), md_log(), md_exp(), md_sin(), polevl(), p1evl(), md_floor(), md_fabs();
-int isnan(), isfinite();
-static double stirf();
-double lgam();
+double md_pow(), md_log(), md_exp(), md_sin(), md_polevl(), md_p1evl(), md_floor(), md_fabs();
+int md_isnan(), md_isfinite();
+static double md_stirf();
+double md_lgam();
 #endif
 #ifdef INFINITIES
 extern double INFINITY;
@@ -298,13 +298,13 @@ extern double NAN;
 /* Gamma function computed by Stirling's formula.
  * The polynomial STIR is valid for 33 <= x <= 172.
  */
-static double stirf(x)
+static double md_stirf(x)
 double x;
 {
 double y, w, v;
 
 w = 1.0/x;
-w = 1.0 + w * polevl( w, STIR, 4 );
+w = 1.0 + w * md_polevl( w, STIR, 4 );
 y = md_exp(x);
 if( x > MAXSTIR )
 	{ /* Avoid overflow in md_pow() */
@@ -329,7 +329,7 @@ int i;
 
 sgngam = 1;
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
 #endif
 #ifdef INFINITIES
@@ -339,7 +339,7 @@ if( x == INFINITY )
 if( x == -INFINITY )
 	return(NAN);
 #else
-if( !isfinite(x) )
+if( !md_isfinite(x) )
 	return(x);
 #endif
 #endif
@@ -381,11 +381,11 @@ goverf:
 #endif
 			}
 		z = md_fabs(z);
-		z = PI/(z * stirf(q) );
+		z = PI/(z * md_stirf(q) );
 		}
 	else
 		{
-		z = stirf(x);
+		z = md_stirf(x);
 		}
 	return( sgngam * z );
 	}
@@ -417,8 +417,8 @@ if( x == 2.0 )
 	return(z);
 
 x -= 2.0;
-p = polevl( x, P, 6 );
-q = polevl( x, Q, 7 );
+p = md_polevl( x, P, 6 );
+q = md_polevl( x, Q, 7 );
 return( z * p / q );
 
 small:
@@ -574,7 +574,7 @@ static unsigned short LS2P[] = {
 /* Logarithm of md_gamma function */
 
 
-double lgam(x)
+double md_lgam(x)
 double x;
 {
 double p, q, u, w, z;
@@ -582,19 +582,19 @@ int i;
 
 sgngam = 1;
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
 #endif
 
 #ifdef INFINITIES
-if( !isfinite(x) )
+if( !md_isfinite(x) )
 	return(INFINITY);
 #endif
 
 if( x < -34.0 )
 	{
 	q = -x;
-	w = lgam(q); /* note this modifies sgngam! */
+	w = md_lgam(q); /* note this modifies sgngam! */
 	p = md_floor(q);
 	if( p == q )
 		{
@@ -655,7 +655,7 @@ if( x < 13.0 )
 		return( md_log(z) );
 	p -= 2.0;
 	x = x + p;
-	p = x * polevl( x, B, 5 ) / p1evl( x, C, 6);
+	p = x * md_polevl( x, B, 5 ) / md_p1evl( x, C, 6);
 	return( md_log(z) + p );
 	}
 
@@ -680,6 +680,6 @@ if( x >= 1000.0 )
 		- 2.7777777777777777777778e-3) *p
 		+ 0.0833333333333333333333) / x;
 else
-	q += polevl( p, A, 4 ) / x;
+	q += md_polevl( p, A, 4 ) / x;
 return( q );
 }

@@ -8,9 +8,9 @@
  * SYNOPSIS:
  *
  * int N;
- * double x, y, coef[N+1], polevl[];
+ * double x, y, coef[N+1], md_polevl[];
  *
- * y = polevl( x, coef, N );
+ * y = md_polevl( x, coef, N );
  *
  *
  *
@@ -29,7 +29,7 @@
  *
  *  The function p1evl() assumes that coef[N] = 1.0 and is
  * omitted from the array.  Its calling arguments are
- * otherwise the same as polevl().
+ * otherwise the same as md_polevl().
  *
  *
  * SPEED:
@@ -50,7 +50,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 */
 
 
-double polevl( x, coef, N )
+double md_polevl( x, coef, N )
 double x;
 double coef[];
 int N;
@@ -73,10 +73,10 @@ return( ans );
 /*							p1evl()	*/
 /*                                          N
  * Evaluate polynomial when coefficient of x  is 1.0.
- * Otherwise same as polevl.
+ * Otherwise same as md_polevl.
  */
 
-double p1evl( x, coef, N )
+double md_p1evl( x, coef, N )
 double x;
 double coef[];
 int N;

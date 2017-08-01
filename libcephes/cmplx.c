@@ -81,14 +81,14 @@ extern double md_sin ( double );
 extern double md_sqrt ( double );
 extern double md_frexp ( double, int * );
 extern double md_ldexp ( double, int );
-int isnan ( double );
-void cdiv ( cmplx *, cmplx *, cmplx * );
-void cadd ( cmplx *, cmplx *, cmplx * );
+int md_isnan ( double );
+void md_cdiv ( cmplx *, cmplx *, cmplx * );
+void md_cadd ( cmplx *, cmplx *, cmplx * );
 #else
 double md_fabs(), md_cabs(), md_sqrt(), md_atan2(), md_cos(), md_sin();
 double md_sqrt(), md_frexp(), md_ldexp();
-int isnan();
-void cdiv(), cadd();
+int md_isnan();
+void md_cdiv(), md_cadd();
 #endif
 
 extern double MAXNUM, MACHEP, PI, PIO2, INFINITY, NAN;
@@ -106,7 +106,7 @@ extern cmplx cone;
 
 /*	c = b + a	*/
 
-void cadd( a, b, c )
+void md_cadd( a, b, c )
 register cmplx *a, *b;
 cmplx *c;
 {
@@ -118,7 +118,7 @@ c->i = b->i + a->i;
 
 /*	c = b - a	*/
 
-void csub( a, b, c )
+void md_csub( a, b, c )
 register cmplx *a, *b;
 cmplx *c;
 {
@@ -129,7 +129,7 @@ c->i = b->i - a->i;
 
 /*	c = b * a */
 
-void cmul( a, b, c )
+void md_cmul( a, b, c )
 register cmplx *a, *b;
 cmplx *c;
 {
@@ -144,7 +144,7 @@ c->r = y;
 
 /*	c = b / a */
 
-void cdiv( a, b, c )
+void md_cdiv( a, b, c )
 register cmplx *a, *b;
 cmplx *c;
 {
@@ -174,7 +174,7 @@ c->i = q/y;
 /*	b = a
    Caution, a `short' is assumed to be 16 bits wide.  */
 
-void cmov( a, b )
+void md_cmov( a, b )
 void *a, *b;
 {
 register short *pa, *pb;
@@ -189,7 +189,7 @@ while( --i );
 }
 
 
-void cneg( a )
+void md_cneg( a )
 register cmplx *a;
 {
 
@@ -287,9 +287,9 @@ if( z->r == INFINITY || z->i == INFINITY
 #endif
 
 #ifdef NANS
-if( isnan(z->r) )
+if( md_isnan(z->r) )
   return(z->r);
-if( isnan(z->i) )
+if( md_isnan(z->i) )
   return(z->i);
 #endif
 
@@ -339,7 +339,8 @@ if( ey < MINEXP )
 b = md_ldexp( b, e );
 return( b );
 }
-/*							md_csqrt()
+
+/*							md_csqrt()
  *
  *	Complex square root
  *
@@ -443,8 +444,8 @@ r = md_sqrt(t);
 q.i = r;
 q.r = y/(2.0*r);
 /* Heron iteration in complex arithmetic */
-cdiv( &q, z, &s );
-cadd( &q, &s, w );
+md_cdiv( &q, z, &s );
+md_cadd( &q, &s, w );
 w->r *= 0.5;
 w->i *= 0.5;
 }

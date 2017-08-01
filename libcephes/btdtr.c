@@ -7,9 +7,9 @@
  *
  * SYNOPSIS:
  *
- * double a, b, x, y, btdtr();
+ * double a, b, x, y, md_btdtr();
  *
- * y = btdtr( a, b, x );
+ * y = md_btdtr( a, b, x );
  *
  *
  *
@@ -33,7 +33,7 @@
  *
  * The complemented function is
  *
- * 1 - P(1-x)  =  incbet( b, a, x );
+ * 1 - P(1-x)  =  md_incbet( b, a, x );
  *
  *
  * ACCURACY:
@@ -51,14 +51,14 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 */
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double incbet ( double, double, double );
+extern double md_incbet ( double, double, double );
 #else
-double incbet();
+double md_incbet();
 #endif
 
-double btdtr( a, b, x )
+double md_btdtr( a, b, x )
 double a, b, x;
 {
 
-return( incbet( a, b, x ) );
+return( md_incbet( a, b, x ) );
 }

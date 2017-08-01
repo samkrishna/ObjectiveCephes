@@ -7,9 +7,9 @@
  * SYNOPSIS:
  *
  * double u, m, sn, cn, dn, phi;
- * int ellpj();
+ * int md_ellpj();
  *
- * ellpj( u, m, _&sn, _&cn, _&dn, _&phi );
+ * md_ellpj( u, m, _&sn, _&cn, _&dn, _&phi );
  *
  *
  *
@@ -22,10 +22,10 @@
  *
  * These functions are periodic, with quarter-period on the
  * real axis equal to the complete elliptic integral
- * ellpk(1.0-m).
+ * md_ellpk(1.0-m).
  *
  * Relation to incomplete elliptic integral:
- * If u = ellik(phi,m), then sn(u|m) = md_sin(phi),
+ * If u = md_ellik(phi,m), then sn(u|m) = md_sin(phi),
  * and cn(u|m) = md_cos(phi).  Phi is called the amplitude of u.
  *
  * Computation is by means of the arithmetic-geometric mean
@@ -79,7 +79,7 @@ double md_sinh(), md_cosh(), md_atan(), md_exp();
 #endif
 extern double PIO2, MACHEP;
 
-int ellpj( u, m, sn, cn, dn, ph )
+int md_ellpj( u, m, sn, cn, dn, ph )
 double u, m;
 double *sn, *cn, *dn, *ph;
 {

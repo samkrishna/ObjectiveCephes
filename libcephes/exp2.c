@@ -119,15 +119,15 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_floor ( double );
 extern double md_ldexp ( double, int );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern int md_isnan ( double );
+extern int md_isfinite ( double );
 #else
-double polevl(), p1evl(), md_floor(), md_ldexp();
-int isnan(), isfinite();
+double md_polevl(), md_p1evl(), md_floor(), md_ldexp();
+int md_isnan(), md_isfinite();
 #endif
 #ifdef INFINITIES
 extern double INFINITY;
@@ -141,7 +141,7 @@ double px, xx;
 short n;
 
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
 #endif
 if( x > MAXL2)
@@ -173,8 +173,8 @@ x = x - px;
  * where xx = x**2
  */
 xx = x * x;
-px = x * polevl( xx, P, 2 );
-x =  px / ( p1evl( xx, Q, 2 ) - px );
+px = x * md_polevl( xx, P, 2 );
+x =  px / ( md_p1evl( xx, Q, 2 ) - px );
 x = 1.0 + md_ldexp( x, 1 );
 
 /* scale by power of 2 */

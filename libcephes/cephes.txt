@@ -74,7 +74,7 @@ Function                        Name      Accuracy
 Square root                     sqrt    2e-17   2e-16
 Long integer square root        lsqrt   1       1
 Cube root                       cbrt    2e-17   2e-16
-Evaluate polynomial             polevl
+Evaluate polynomial             md_polevl
 Evaluate Chebyshev series       chbevl
 Round to nearest integer value  round
 Truncate upward to integer      ceil
@@ -141,7 +141,7 @@ Sine integral                   sici    4e-17A  4e-16
 Beta                            beta    8e-15   8e-14
 Factorial                       fac     2e-17   2e-15
 Gamma                           gamma   1e-16   1e-15
-Logarithm of gamma function     lgam    5e-17   5e-16
+Logarithm of gamma function     md_lgam    5e-17   5e-16
 Incomplete beta integral        incbet  4e-14   4e-13
 Inverse beta integral           incbi   3e-13   8e-13
 Incomplete gamma integral       igam    5e-15   4e-14
@@ -170,8 +170,8 @@ Bessel, second kind, order 0    y0      7e-17A  1e-15A
 Bessel, second kind, order 1    y1      9e-17A  1e-15A
 Bessel, second kind, order n    yn      3e-16A  3e-15A
 Bessel, noninteger order        yv      see struve.c
-Modified Bessel, order 0        i0      8e-17   6e-16
-Exponentially scaled i0         i0e     8e-17   5e-16
+Modified Bessel, order 0        md_i0      8e-17   6e-16
+Exponentially scaled md_i0         md_i0e     8e-17   5e-16
 Modified Bessel, order 1        i1      1e-16   2e-15
 Exponentially scaled i1         i1e     1e-16   2e-15
 Modified Bessel, nonint. order  iv      3e-15   2e-14
@@ -189,14 +189,14 @@ Gauss hypergeometric function   hyp2f1  4e-11   9e-8
 3F0                             threef0f see struve.c
 
                 Elliptic
-Complete elliptic integral (E)   ellpe  3e-17   2e-16
-Incomplete elliptic integral (E) ellie  2e-16   2e-15
-Complete elliptic integral (K)   ellpk  4e-17   3e-16
-Incomplete elliptic integral (K) ellik  9e-17   6e-16
-Jacobian elliptic function (sn)  ellpj  5e-16A  4e-15A
-Jacobian elliptic function (cn)  ellpj          4e-15A
-Jacobian elliptic function (dn)  ellpj          1e-12A
-Jacobian elliptic function (phi) ellpj          9e-16
+Complete elliptic integral (E)   md_ellpe  3e-17   2e-16
+Incomplete elliptic integral (E) md_ellie  2e-16   2e-15
+Complete elliptic integral (K)   md_ellpk  4e-17   3e-16
+Incomplete elliptic integral (K) md_ellik  9e-17   6e-16
+Jacobian elliptic function (sn)  md_ellpj  5e-16A  4e-15A
+Jacobian elliptic function (cn)  md_ellpj          4e-15A
+Jacobian elliptic function (dn)  md_ellpj          1e-12A
+Jacobian elliptic function (phi) md_ellpj          9e-16
 
                 Probability
 Binomial distribution           bdtr    4e-14   4e-13
@@ -212,8 +212,8 @@ Gamma distribution              gdtr    5e-15   3e-14
 Complemented gamma              gdtrc   3e-15   2e-14
 Negative binomial distribution  nbdtr   4e-14   4e-13
 Complemented negative binomial  nbdtrc  4e-14   4e-13
-Normal distribution             ndtr    2e-15   3e-14
-Inverse normal distribution     ndtri   1e-16   7e-16
+Normal distribution             md_ndtr    2e-15   3e-14
+Inverse normal distribution     md_ndtri   1e-16   7e-16
 Poisson distribution            pdtr    3e-15   2e-14
 Complemented Poisson            pdtrc   5e-15   3e-14
 Inverse Poisson distribution    pdtri   3e-15   5e-14
@@ -346,7 +346,7 @@ Polynomial arithmetic (polynf.c):
   Display coefficients            polprtf
  Note, polyr.c contains routines corresponding to
  the above for polynomials with rational coefficients.
-Evaluate polynomial             polevlf (coefficients in reverse order)
+Evaluate polynomial             md_polevlf (coefficients in reverse order)
 Evaluate Chebyshev series       chbevlf (coefficients in reverse order)
 
 
@@ -421,8 +421,8 @@ Bessel, second kind, order 0    y0f     2e-7A
 Bessel, second kind, order 1    y1f     2e-7A
 Bessel, second kind, order n    ynf     2e-6A
 Bessel, second kind, order v    yvf     see struvef.c
-Modified Bessel, order 0        i0f     4e-7
-Exponentially scaled i0         i0ef    4e-7
+Modified Bessel, order 0        md_i0f     4e-7
+Exponentially scaled md_i0         md_i0ef    4e-7
 Modified Bessel, order 1        i1f     2e-6
 Exponentially scaled i1         i1ef    2e-6
 Modified Bessel, nonint. order  ivf     9e-6
@@ -443,13 +443,13 @@ Gauss hypergeometric function   hyp2f1f 2e-3
                 Elliptic
 
 Complete elliptic integral (E)   ellpef 1e-7
-Incomplete elliptic integral (E) ellief 5e-7
-Complete elliptic integral (K)   ellpkf 1e-7
-Incomplete elliptic integral (K) ellikf 3e-7
-Jacobian elliptic function (sn)  ellpjf 2e-6A
-Jacobian elliptic function (cn)  ellpjf 2e-6A
-Jacobian elliptic function (dn)  ellpjf 1e-3A
-Jacobian elliptic function (phi) ellpjf 4e-7
+Incomplete elliptic integral (E) md_ellief 5e-7
+Complete elliptic integral (K)   md_ellpkf 1e-7
+Incomplete elliptic integral (K) md_ellikf 3e-7
+Jacobian elliptic function (sn)  md_ellpjf 2e-6A
+Jacobian elliptic function (cn)  md_ellpjf 2e-6A
+Jacobian elliptic function (dn)  md_ellpjf 1e-3A
+Jacobian elliptic function (phi) md_ellpjf 4e-7
 
                 Probability
 
@@ -466,8 +466,8 @@ Gamma distribution              gdtrf   6e-5
 Complemented gamma              gdtrcf  9e-5
 Negative binomial distribution  nbdtrf  2e-4
 Complemented negative binomial  nbdtrcf 1e-4
-Normal distribution             ndtrf   2e-5
-Inverse normal distribution     ndtrif  4e-7
+Normal distribution             md_ndtrf   2e-5
+Inverse normal distribution     md_ndtrif  4e-7
 Poisson distribution            pdtrf   7e-5
 Complemented Poisson            pdtrcf  8e-5
 Inverse Poisson distribution    pdtrif  9e-6

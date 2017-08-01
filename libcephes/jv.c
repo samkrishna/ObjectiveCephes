@@ -60,11 +60,11 @@ Copyright 1984, 1987, 1989, 1992, 2000 by Stephen L. Moshier
 #endif
 
 #ifdef ANSIPROT
-extern int airy ( double, double *, double *, double *, double * );
+extern int md_airy ( double, double *, double *, double *, double * );
 extern double md_fabs ( double );
 extern double md_floor ( double );
 extern double md_frexp ( double, int * );
-extern double polevl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
 extern double md_j0 ( double );
 extern double md_j1 ( double );
 extern double md_sqrt ( double );
@@ -76,23 +76,23 @@ extern double md_cos ( double );
 extern double md_acos ( double );
 extern double md_pow ( double, double );
 extern double md_gamma ( double );
-extern double lgam ( double );
-static double recur(double *, double, double *, int);
-static double jvs(double, double);
-static double hankel(double, double);
-static double jnx(double, double);
-static double jnt(double, double);
+extern double md_lgam ( double );
+static double md_recur(double *, double, double *, int);
+static double md_jvs(double, double);
+static double md_hankel(double, double);
+static double md_jnx(double, double);
+static double md_jnt(double, double);
 #else
-int airy();
-double md_fabs(), md_floor(), md_frexp(), polevl(), md_j0(), md_j1(), md_sqrt(), md_cbrt();
-double md_exp(), md_log(), md_sin(), md_cos(), md_acos(), md_pow(), md_gamma(), lgam();
-static double recur(), jvs(), hankel(), jnx(), jnt();
+int md_airy();
+double md_fabs(), md_floor(), md_frexp(), md_polevl(), md_j0(), md_j1(), md_sqrt(), md_cbrt();
+double md_exp(), md_log(), md_sin(), md_cos(), md_acos(), md_pow(), md_gamma(), md_lgam();
+static double md_recur(), md_jvs(), md_hankel(), md_jnx(), md_jnt();
 #endif
 
 extern double MAXNUM, MACHEP, MINLOG, MAXLOG;
 #define BIG  1.44115188075855872E+17
 
-double jv( n, x )
+double md_jv( n, x )
 double n, x;
 {
 double k, q, t, y, an;
@@ -139,9 +139,9 @@ if( y < MACHEP )
 k = 3.6 * md_sqrt(y);
 t = 3.6 * md_sqrt(an);
 if( (y < t) && (an > 21.0) )
-	return( sign * jvs(n,x) );
+	return( sign * md_jvs(n,x) );
 if( (an < k) && (y > 21.0) )
-	return( sign * hankel(n,x) );
+	return( sign * md_hankel(n,x) );
 
 if( an < 500.0 )
 	{
@@ -152,7 +152,7 @@ if( an < 500.0 )
 	if( nint != 0 )
 		{
 		k = 0.0;
-		q = recur( &n, x, &k, 1 );
+		q = md_recur( &n, x, &k, 1 );
 		if( k == 0.0 )
 			{
 			y = md_j0(x)/q;
@@ -180,8 +180,8 @@ rlarger:
 		if( y < 30.0 )
 			y = 30.0;
 		y = n + md_floor(y-n);
-		q = recur( &y, x, &k, 0 );
-		y = jvs(y,x) * q;
+		q = md_recur( &y, x, &k, 0 );
+		y = md_jvs(y,x) * q;
 		goto done;
 		}
 
@@ -200,12 +200,12 @@ rlarger:
 		q = n - md_floor(n);
 		k = md_floor(k) + q;
 		if( n > 0.0 )
-			q = recur( &n, x, &k, 1 );
+			q = md_recur( &n, x, &k, 1 );
 		else
 			{
 			t = k;
 			k = n;
-			q = recur( &t, x, &k, 1 );
+			q = md_recur( &t, x, &k, 1 );
 			k = t;
 			}
 		if( q == 0.0 )
@@ -231,9 +231,9 @@ underf:
 		t = 0.9 * y;
 
 	if( x > t )
-		y = hankel(k,x);
+		y = md_hankel(k,x);
 	else
-		y = jvs(k,x);
+		y = md_jvs(k,x);
 #if DEBUG
 printf( "y = %.16e, recur q = %.16e\n", y, q );
 #endif
@@ -260,9 +260,9 @@ else
 	t = x/n;
 	t /= n;
 	if( t > 0.3 )
-		y = hankel(n,x);
+		y = md_hankel(n,x);
 	else
-		y = jnx(n,x);
+		y = md_jnx(n,x);
 	}
 
 done:	return( sign * y);
@@ -272,7 +272,7 @@ done:	return( sign * y);
  * AMS55 #9.1.27 and 9.1.73.
  */
 
-static double recur( n, x, newn, cancel )
+static double md_recur( n, x, newn, cancel )
 double *n;
 double x;
 double *newn;
@@ -426,7 +426,7 @@ return( pkm2 );
 extern double PI;
 extern int sgngam;
 
-static double jvs( n, x )
+static double md_jvs( n, x )
 double n, x;
 {
 double t, u, y, z, k;
@@ -466,11 +466,11 @@ else
 	{
 #if DEBUG
 	z = n * md_log(0.5*x);
-	k = lgam( n+1.0 );
+	k = md_lgam( n+1.0 );
 	t = z - k;
-	printf( "md_log md_pow=%.5e, lgam(%.4e)=%.5e\n", z, n+1.0, k );
+	printf( "md_log md_pow=%.5e, md_lgam(%.4e)=%.5e\n", z, n+1.0, k );
 #else
-	t = n * md_log(0.5*x) - lgam(n + 1.0);
+	t = n * md_log(0.5*x) - md_lgam(n + 1.0);
 #endif
 	if( y < 0 )
 		{
@@ -500,7 +500,7 @@ return(y);
  * AMS55 #9.2.5.
  */
 
-static double hankel( n, x )
+static double md_hankel( n, x )
 double n, x;
 {
 double t, u, z, k, sign, conv;
@@ -641,7 +641,7 @@ static double P7[] = {
 };
 
 
-static double jnx( n, x )
+static double md_jnx( n, x )
 double n, x;
 {
 double zeta, sqz, zz, zp, np;
@@ -658,7 +658,7 @@ static double ai, aip, bi, bip;
 cbn = md_cbrt(n);
 z = (x - n)/cbn;
 if( md_fabs(z) <= 0.7 )
-	return( jnt(n,x) );
+	return( md_jnt(n,x) );
 
 z = x/n;
 zz = 1.0 - z*z;
@@ -689,20 +689,20 @@ t = n23 * zeta;
 #if DEBUG
 printf("zeta %.5E, Airy(%.5E)\n", zeta, t );
 #endif
-airy( t, &ai, &aip, &bi, &bip );
+md_airy( t, &ai, &aip, &bi, &bip );
 
 /* polynomials in expansion */
 u[0] = 1.0;
 zzi = 1.0/zz;
-u[1] = polevl( zzi, P1, 1 )/sz;
-u[2] = polevl( zzi, P2, 2 )/zz;
-u[3] = polevl( zzi, P3, 3 )/(sz*zz);
+u[1] = md_polevl( zzi, P1, 1 )/sz;
+u[2] = md_polevl( zzi, P2, 2 )/zz;
+u[3] = md_polevl( zzi, P3, 3 )/(sz*zz);
 pp = zz*zz;
-u[4] = polevl( zzi, P4, 4 )/pp;
-u[5] = polevl( zzi, P5, 5 )/(pp*sz);
+u[4] = md_polevl( zzi, P4, 4 )/pp;
+u[5] = md_polevl( zzi, P5, 5 )/(pp*sz);
 pp *= zz;
-u[6] = polevl( zzi, P6, 6 )/pp;
-u[7] = polevl( zzi, P7, 7 )/(pp*sz);
+u[6] = md_polevl( zzi, P6, 6 )/pp;
+u[7] = md_polevl( zzi, P7, 7 )/(pp*sz);
 
 #if DEBUG
 for( k=0; k<=7; k++ )
@@ -826,7 +826,7 @@ static double PG3[] = {
 };
 
 
-static double jnt( n, x )
+static double md_jnt( n, x )
 double n, x;
 {
 double z, zz, z3;
@@ -842,20 +842,20 @@ cbtwo = md_cbrt( 2.0 );
 
 /* Airy function */
 zz = -cbtwo * z;
-airy( zz, &ai, &aip, &bi, &bip );
+md_airy( zz, &ai, &aip, &bi, &bip );
 
 /* polynomials in expansion */
 zz = z * z;
 z3 = zz * z;
 F[0] = 1.0;
 F[1] = -z/5.0;
-F[2] = polevl( z3, PF2, 1 ) * zz;
-F[3] = polevl( z3, PF3, 2 );
-F[4] = polevl( z3, PF4, 3 ) * z;
+F[2] = md_polevl( z3, PF2, 1 ) * zz;
+F[3] = md_polevl( z3, PF3, 2 );
+F[4] = md_polevl( z3, PF4, 3 ) * z;
 G[0] = 0.3 * zz;
-G[1] = polevl( z3, PG1, 1 );
-G[2] = polevl( z3, PG2, 2 ) * z;
-G[3] = polevl( z3, PG3, 2 ) * zz;
+G[1] = md_polevl( z3, PG1, 1 );
+G[2] = md_polevl( z3, PG2, 2 ) * z;
+G[3] = md_polevl( z3, PG3, 2 ) * zz;
 #if DEBUG
 for( k=0; k<=4; k++ )
 	printf( "F[%d] = %.5E\n", k, F[k] );

@@ -175,11 +175,11 @@ static double lossth = 1.0e14;
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
 extern double md_floor ( double );
 extern double md_ldexp ( double, int );
 #else
-double polevl(), md_floor(), md_ldexp();
+double md_polevl(), md_floor(), md_ldexp();
 #endif
 extern double PIO4;
 
@@ -231,11 +231,11 @@ zz = z * z;
 
 if( (j==1) || (j==2) )
 	{
-	y = 1.0 - zz * polevl( zz, coscof, 6 );
+	y = 1.0 - zz * md_polevl( zz, coscof, 6 );
 	}
 else
 	{
-	y = z  +  z * (zz * polevl( zz, sincof, 5 ));
+	y = z  +  z * (zz * md_polevl( zz, sincof, 5 ));
 	}
 
 if(sign < 0)
@@ -294,11 +294,11 @@ zz = z * z;
 
 if( (j==1) || (j==2) )
 	{
-	y = z  +  z * (zz * polevl( zz, sincof, 5 ));
+	y = z  +  z * (zz * md_polevl( zz, sincof, 5 ));
 	}
 else
 	{
-	y = 1.0 - zz * polevl( zz, coscof, 6 );
+	y = 1.0 - zz * md_polevl( zz, coscof, 6 );
 	}
 
 if(sign < 0)

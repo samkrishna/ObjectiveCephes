@@ -9,7 +9,7 @@
  * int n;
  * double A[n*n], T[n*n];
  *
- * mtransp( n, A, T );
+ * md_mtransp( n, A, T );
  *
  *
  *
@@ -26,8 +26,7 @@
  *
  */
 
-void
-mtransp( n, A, T )
+void md_mtransp( n, A, T )
 int n;
 double *A, *T;
 {

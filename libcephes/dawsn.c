@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, dawsn();
+ * double x, y, md_dawsn();
  *
- * y = dawsn( x );
+ * y = md_dawsn( x );
  *
  *
  *
@@ -16,13 +16,13 @@
  *
  * Approximates the integral
  *
- *                             x
- *                             -
- *                      2     | |        2
- *  dawsn(x)  =  md_exp( -x  )   |    md_exp( t  ) dt
- *                          | |
- *                           -
- *                           0
+ *                              x
+ *                              -
+ *                              2     | |        2
+ *  md_dawsn(x)  =     md_exp( -x  )   |    md_exp( t  ) dt
+ *                                    | |
+ *                                     -
+ *                                     0
  *
  * Three different rational approximations are employed, for
  * the intervals 0 to 3.25; 3.25 to 6.25; and 6.25 up.
@@ -342,17 +342,17 @@ static unsigned short CD[20] = {
 #endif
 
 #ifdef ANSIPROT
-extern double chbevl ( double, void *, int );
+extern double md_chbevl ( double, void *, int );
 extern double md_sqrt ( double );
 extern double md_fabs ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 #else
-double chbevl(), md_sqrt(), md_fabs(), polevl(), p1evl();
+double md_chbevl(), md_sqrt(), md_fabs(), md_polevl(), md_p1evl();
 #endif
 extern double PI, MACHEP;
 
-double dawsn( xx )
+double md_dawsn( xx )
 double xx;
 {
 double x, y;
@@ -369,7 +369,7 @@ if( xx < 0.0 )
 if( xx < 3.25 )
 {
 x = xx*xx;
-y = xx * polevl( x, AN, 9 )/polevl( x, AD, 10 );
+y = xx * md_polevl( x, AN, 9 )/md_polevl( x, AD, 10 );
 return( sign * y );
 }
 
@@ -378,7 +378,7 @@ x = 1.0/(xx*xx);
 
 if( xx < 6.25 )
 	{
-	y = 1.0/xx + x * polevl( x, BN, 10) / (p1evl( x, BD, 10) * xx);
+	y = 1.0/xx + x * md_polevl( x, BN, 10) / (md_p1evl( x, BD, 10) * xx);
 	return( sign * 0.5 * y );
 	}
 
@@ -387,6 +387,6 @@ if( xx > 1.0e9 )
 	return( (sign * 0.5)/xx );
 
 /* 6.25 to infinity */
-y = 1.0/xx + x * polevl( x, CN, 4) / (p1evl( x, CD, 5) * xx);
+y = 1.0/xx + x * md_polevl( x, CN, 4) / (md_p1evl( x, CD, 5) * xx);
 return( sign * 0.5 * y );
 }

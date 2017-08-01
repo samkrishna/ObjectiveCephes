@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double phi, m, y, ellie();
+ * double phi, m, y, md_ellie();
  *
- * y = ellie( phi, m );
+ * y = md_ellie( phi, m );
  *
  *
  *
@@ -61,15 +61,15 @@ extern double md_sin ( double x );
 extern double md_tan ( double x );
 extern double md_atan ( double );
 extern double md_floor ( double );
-extern double ellpe ( double );
-extern double ellpk ( double );
-double ellie ( double, double );
+extern double md_ellpe ( double );
+extern double md_ellpk ( double );
+double md_ellie ( double, double );
 #else
 double md_sqrt(), md_fabs(), md_log(), md_sin(), md_tan(), md_atan(), md_floor();
-double ellpe(), ellpk(), ellie();
+double md_ellpe(), md_ellpk(), md_ellie();
 #endif
 
-double ellie( phi, m )
+double md_ellie( phi, m )
 double phi, m;
 {
 double a, b, c, e, temp;
@@ -93,7 +93,7 @@ else
 	sign = 1;
 	}
 a = 1.0 - m;
-E = ellpe( a );
+E = md_ellpe( a );
 if( a == 0.0 )
 	{
 	temp = md_sin( lphi );
@@ -111,7 +111,7 @@ if( md_fabs(t) > 10.0 )
 	if( md_fabs(e) < 10.0 )
 		{
 		e = md_atan(e);
-		temp = E + m * md_sin( lphi ) * md_sin( e ) - ellie( e, m );
+		temp = E + m * md_sin( lphi ) * md_sin( e ) - md_ellie( e, m );
 		goto done;
 		}
 	}
@@ -135,7 +135,7 @@ while( md_fabs(c/a) > MACHEP )
 	e += c * md_sin(lphi);
 	}
 
-temp = E / ellpk( 1.0 - m );
+temp = E / md_ellpk( 1.0 - m );
 temp *= (md_atan(t) + mod * PI)/(d * a);
 temp += e;
 

@@ -13,11 +13,11 @@
  *      double d;  denominator
  *      }fract;
  *
- * radd( a, b, c )      c = b + a
- * rsub( a, b, c )      c = b - a
- * rmul( a, b, c )      c = b * a
- * rdiv( a, b, c )      c = b / a
- * euclid( &n, &d )     Reduce n/d to lowest terms,
+ * md_radd( a, b, c )      c = b + a
+ * md_rsub( a, b, c )      c = b - a
+ * md_rmul( a, b, c )      c = b * a
+ * md_rdiv( a, b, c )      c = b / a
+ * md_euclid( &n, &d )     Reduce n/d to lowest terms,
  *                      return greatest common divisor.
  *
  * Arguments of the routines are pointers to the structures.
@@ -30,9 +30,9 @@
 #ifdef ANSIPROT
 extern double md_fabs ( double );
 extern double md_floor ( double );
-double euclid( double *, double * );
+double md_euclid( double *, double * );
 #else
-double md_fabs(), md_floor(), euclid();
+double md_fabs(), md_floor(), md_euclid();
 #endif
 
 extern double MACHEP;
@@ -46,7 +46,7 @@ typedef struct
 
 /* Add fractions. */
 
-void radd( f1, f2, f3 )
+void md_radd( f1, f2, f3 )
 fract *f1, *f2, *f3;
 {
 double gcd, d1, d2, gcn, n1, n2;
@@ -68,20 +68,20 @@ if( n2 == 0.0 )
 	return;
 	}
 
-gcd = euclid( &d1, &d2 ); /* common divisors of denominators */
-gcn = euclid( &n1, &n2 ); /* common divisors of numerators */
+gcd = md_euclid( &d1, &d2 ); /* common divisors of denominators */
+gcn = md_euclid( &n1, &n2 ); /* common divisors of numerators */
 /* Note, factoring the numerators
  * makes overflow slightly less likely.
  */
 f3->n = ( n1 * d2 + n2 * d1) * gcn;
 f3->d = d1 * d2 * gcd;
-euclid( &f3->n, &f3->d );
+md_euclid( &f3->n, &f3->d );
 }
 
 
 /* Subtract fractions. */
 
-void rsub( f1, f2, f3 )
+void md_rsub( f1, f2, f3 )
 fract *f1, *f2, *f3;
 {
 double gcd, d1, d2, gcn, n1, n2;
@@ -103,11 +103,11 @@ if( n2 == 0.0 )
 	return;
 	}
 
-gcd = euclid( &d1, &d2 );
-gcn = euclid( &n1, &n2 );
+gcd = md_euclid( &d1, &d2 );
+gcn = md_euclid( &n1, &n2 );
 f3->n = (n2 * d1 - n1 * d2) * gcn;
 f3->d = d1 * d2 * gcd;
-euclid( &f3->n, &f3->d );
+md_euclid( &f3->n, &f3->d );
 }
 
 
@@ -115,7 +115,7 @@ euclid( &f3->n, &f3->d );
 
 /* Multiply fractions. */
 
-void rmul( ff1, ff2, ff3 )
+void md_rmul( ff1, ff2, ff3 )
 fract *ff1, *ff2, *ff3;
 {
 double d1, d2, n1, n2;
@@ -131,8 +131,8 @@ if( (n1 == 0.0) || (n2 == 0.0) )
 	ff3->d = 1.0;
 	return;
 	}
-euclid( &n1, &d2 ); /* cross cancel common divisors */
-euclid( &n2, &d1 );
+md_euclid( &n1, &d2 ); /* cross cancel common divisors */
+md_euclid( &n2, &d1 );
 ff3->n = n1 * n2;
 ff3->d = d1 * d2;
 /* Report overflow. */
@@ -141,14 +141,14 @@ if( (md_fabs(ff3->n) >= BIG) || (md_fabs(ff3->d) >= BIG) )
 	mtherr( "rmul", OVERFLOW );
 	return;
 	}
-/* euclid( &ff3->n, &ff3->d );*/
+/* md_euclid( &ff3->n, &ff3->d );*/
 }
 
 
 
 /* Divide fractions. */
 
-void rdiv( ff1, ff2, ff3 )
+void md_rdiv( ff1, ff2, ff3 )
 fract *ff1, *ff2, *ff3;
 {
 double d1, d2, n1, n2;
@@ -169,8 +169,8 @@ if( (n1 == 0.0) || (n2 == 0.0) )
 	return;
 	}
 
-euclid( &n1, &d2 ); /* cross cancel any common divisors */
-euclid( &n2, &d1 );
+md_euclid( &n1, &d2 ); /* cross cancel any common divisors */
+md_euclid( &n2, &d1 );
 ff3->n = n1 * n2;
 ff3->d = d1 * d2;
 /* Report overflow. */
@@ -179,7 +179,7 @@ if( (md_fabs(ff3->n) >= BIG) || (md_fabs(ff3->d) >= BIG) )
 	mtherr( "rdiv", OVERFLOW );
 	return;
 	}
-/* euclid( &ff3->n, &ff3->d );*/
+/* md_euclid( &ff3->n, &ff3->d );*/
 }
 
 
@@ -192,7 +192,7 @@ if( (md_fabs(ff3->n) >= BIG) || (md_fabs(ff3->d) >= BIG) )
  */
 
 
-double euclid( num, den )
+double md_euclid( num, den )
 double *num, *den;
 {
 double n, d, q, r;
@@ -242,7 +242,7 @@ while( d > 0.5 )
 	}
 
 if( n < 0.0 )
-	mtherr( "euclid", UNDERFLOW );
+	mtherr( "md_euclid", UNDERFLOW );
 
 *num /= n;
 *den /= n;

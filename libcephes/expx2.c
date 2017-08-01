@@ -6,10 +6,10 @@
  *
  * SYNOPSIS:
  *
- * double x, y, expx2();
+ * double x, y, md_expx2();
  * int sign;
  *
- * y = expx2( x, sign );
+ * y = md_expx2( x, sign );
  *
  *
  *
@@ -58,7 +58,7 @@ double md_exp();
 extern double MAXLOG;
 extern double INFINITY;
 
-double expx2 (x, sign)
+double md_expx2 (x, sign)
      double x;
      int sign;
 {

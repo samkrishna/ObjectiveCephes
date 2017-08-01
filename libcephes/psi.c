@@ -5,9 +5,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, psi();
+ * double x, y, md_psi();
  *
- * y = psi( x );
+ * y = md_psi( x );
  *
  *
  * DESCRIPTION:
@@ -112,14 +112,14 @@ static unsigned short A[] = {
 extern double md_floor ( double );
 extern double md_log ( double );
 extern double md_tan ( double );
-extern double polevl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
 #else
-double md_floor(), md_log(), md_tan(), polevl();
+double md_floor(), md_log(), md_tan(), md_polevl();
 #endif
 extern double PI, MAXNUM;
 
 
-double psi(x)
+double md_psi(x)
 double x;
 {
 double p, q, nz, s, w, y, z;
@@ -183,7 +183,7 @@ while( s < 10.0 )
 if( s < 1.0e17 )
 	{
 	z = 1.0/(s * s);
-	y = z * polevl( z, A, 6 );
+	y = z * md_polevl( z, A, 6 );
 	}
 else
 	y = 0.0;

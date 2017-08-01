@@ -142,9 +142,9 @@ static unsigned short B[32] = {
 #ifdef ANSIPROT
 extern double md_fabs ( double );
 extern double md_log ( double );
-extern double polevl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
 #else
-double md_fabs(), md_log(), polevl();
+double md_fabs(), md_log(), md_polevl();
 #endif
 extern double PI, MACHEP;
 
@@ -190,7 +190,7 @@ else
 	w = x - 1.0;
 
 
-y = -w * polevl( w, A, 7) / polevl( w, B, 7 );
+y = -w * md_polevl( w, A, 7) / md_polevl( w, B, 7 );
 
 if( flag & 1 )
 	y = (PI * PI)/6.0  - md_log(x) * md_log(1.0-x) - y;

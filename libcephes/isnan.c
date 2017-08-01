@@ -1,6 +1,6 @@
-/*							isnan()
- *							signbit()
- *							isfinite()
+/*							md_isnan()
+ *							md_signbit()
+ *							md_isfinite()
  *
  *	Floating point numeric utilities
  *
@@ -9,7 +9,7 @@
  * SYNOPSIS:
  *
  * double md_ceil(), md_floor(), md_frexp(), md_ldexp();
- * int signbit(), isnan(), isfinite();
+ * int md_signbit(), md_isnan(), md_isfinite();
  * double x, y;
  * int expnt, n;
  *
@@ -17,9 +17,9 @@
  * y = md_ceil(x);
  * y = md_frexp( x, &expnt );
  * y = md_ldexp( x, n );
- * n = signbit(x);
- * n = isnan(x);
- * n = isfinite(x);
+ * n = md_signbit(x);
+ * n = md_isnan(x);
+ * n = md_isfinite(x);
  *
  *
  *
@@ -75,7 +75,7 @@ Copyright 1984, 1995 by Stephen L. Moshier
 
 /* Return 1 if the sign bit of x is 1, else 0.  */
 
-int signbit(x)
+int md_signbit(x)
 double x;
 {
 union
@@ -116,7 +116,7 @@ else
 
 /* Return 1 if x is a number that is Not a Number, else return 0.  */
 
-int isnan(x)
+int md_isnan(x)
 double x;
 {
 #ifdef NANS
@@ -185,7 +185,7 @@ return(0);
 
 /* Return 1 if x is not infinite and is not a NaN.  */
 
-int isfinite(x)
+int md_isfinite(x)
 double x;
 {
 #ifdef INFINITIES

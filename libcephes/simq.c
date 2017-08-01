@@ -10,9 +10,9 @@
  * double A[n*n], B[n], X[n];
  * int n, flag;
  * int IPS[];
- * int simq();
+ * int md_simq();
  *
- * ercode = simq( A, B, X, n, flag, IPS );
+ * ercode = md_simq( A, B, X, n, flag, IPS );
  *
  *
  *
@@ -50,7 +50,7 @@
 #include <stdio.h>
 #define md_fabs(x) ((x) < 0 ? -(x) : (x))
 
-int simq( A, B, X, n, flag, IPS )
+int md_simq( A, B, X, n, flag, IPS )
 double A[], B[], X[];
 int n, flag;
 int IPS[];

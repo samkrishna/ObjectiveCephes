@@ -6,16 +6,16 @@
  *
  * SYNOPSIS:
  *
- * double a, x, p, igami();
+ * double a, x, p, md_igami();
  *
- * x = igami( a, p );
+ * x = md_igami( a, p );
  *
  * DESCRIPTION:
  *
  * Given p, the function finds x such that
  *
  * It is valid in the right-hand-tail of the distribution, p < 0.5.
- *  igamc( a, x ) = p.
+ *  md_igamc( a, x ) = p.
  *
  * Starting with the approximate value
  *
@@ -24,14 +24,14 @@
  *
  *  where
  *
- *  t = 1 - d - ndtri(p) md_sqrt(d)
+ *  t = 1 - d - md_ndtri(p) md_sqrt(d)
  * 
  * and
  *
  *  d = 1/9a,
  *
  * the routine performs up to 10 Newton iterations to find the
- * root of igamc(a,x) - p = 0.
+ * root of md_igamc(a,x) - p = 0.
  *
  * ACCURACY:
  *
@@ -53,18 +53,18 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 extern double MACHEP, MAXNUM, MAXLOG, MINLOG;
 #ifdef ANSIPROT
-extern double igamc ( double, double );
-extern double ndtri ( double );
+extern double md_igamc ( double, double );
+extern double md_ndtri ( double );
 extern double md_exp ( double );
 extern double md_fabs ( double );
 extern double md_log ( double );
 extern double md_sqrt ( double );
-extern double lgam ( double );
+extern double md_lgam ( double );
 #else
-double igamc(), ndtri(), md_exp(), md_fabs(), md_log(), md_sqrt(), lgam();
+double md_igamc(), md_ndtri(), md_exp(), md_fabs(), md_log(), md_sqrt(), md_lgam();
 #endif
 
-double igami( a, md_y0 )
+double md_igami( a, md_y0 )
 double a, md_y0;
 {
 double x0, x1, x, yl, yh, y, d, lgm, dithresh;
@@ -82,16 +82,16 @@ dithresh = 5.0 * MACHEP;
 
 /* approximation to inverse function */
 d = 1.0/(9.0*a);
-y = ( 1.0 - d - ndtri(md_y0) * md_sqrt(d) );
+y = ( 1.0 - d - md_ndtri(md_y0) * md_sqrt(d) );
 x = a * y * y * y;
 
-lgm = lgam(a);
+lgm = md_lgam(a);
 
 for( i=0; i<10; i++ )
 	{
 	if( x > x0 || x < x1 )
 		goto ihalve;
-	y = igamc(a,x);
+	y = md_igamc(a,x);
 	if( y < yl || y > yh )
 		goto ihalve;
 	if( y < md_y0 )
@@ -127,7 +127,7 @@ if( x0 == MAXNUM )
 	while( x0 == MAXNUM )
 		{
 		x = (1.0 + d) * x;
-		y = igamc( a, x );
+		y = md_igamc( a, x );
 		if( y < md_y0 )
 			{
 			x0 = x;
@@ -143,7 +143,7 @@ dir = 0;
 for( i=0; i<400; i++ )
 	{
 	x = x1  +  d * (x0 - x1);
-	y = igamc( a, x );
+	y = md_igamc( a, x );
 	lgm = (x0 - x1)/(x1 + x0);
 	if( md_fabs(lgm) < dithresh )
 		break;

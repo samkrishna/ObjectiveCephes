@@ -51,11 +51,11 @@ static double CBRT4I = 0.62996052494743658238361;
 #ifdef ANSIPROT
 extern double md_frexp ( double, int * );
 extern double md_ldexp ( double, int );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern int md_isnan ( double );
+extern int md_isfinite ( double );
 #else
 double md_frexp(), md_ldexp();
-int isnan(), isfinite();
+int md_isnan(), md_isfinite();
 #endif
 
 double md_cbrt(x)
@@ -65,11 +65,11 @@ int e, rem, sign;
 double z;
 
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
   return x;
 #endif
 #ifdef INFINITIES
-if( !isfinite(x) )
+if( !md_isfinite(x) )
   return x;
 #endif
 if( x == 0 )

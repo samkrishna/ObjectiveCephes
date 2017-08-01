@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double phi, m, y, ellik();
+ * double phi, m, y, md_ellik();
  *
- * y = ellik( phi, m );
+ * y = md_ellik( phi, m );
  *
  *
  *
@@ -61,15 +61,15 @@ extern double md_log ( double );
 extern double md_tan ( double );
 extern double md_atan ( double );
 extern double md_floor ( double );
-extern double ellpk ( double );
-double ellik ( double, double );
+extern double md_ellpk ( double );
+double md_ellik ( double, double );
 #else
-double md_sqrt(), md_fabs(), md_log(), md_tan(), md_atan(), md_floor(), ellpk();
-double ellik();
+double md_sqrt(), md_fabs(), md_log(), md_tan(), md_atan(), md_floor(), md_ellpk();
+double md_ellik();
 #endif
 extern double PI, PIO2, MACHEP, MAXNUM;
 
-double ellik( phi, m )
+double md_ellik( phi, m )
 double phi, m;
 {
 double a, b, c, e, temp, t, K;
@@ -92,7 +92,7 @@ if( npio2 & 1 )
 	npio2 += 1;
 if( npio2 )
 	{
-	K = ellpk( a );
+	K = md_ellpk( a );
 	phi = phi - npio2 * PIO2;
 	}
 else
@@ -115,8 +115,8 @@ if( md_fabs(t) > 10.0 )
 		{
 		e = md_atan(e);
 		if( npio2 == 0 )
-			K = ellpk( a );
-		temp = K - ellik( e, m );
+			K = md_ellpk( a );
+		temp = K - md_ellik( e, m );
 		goto done;
 		}
 	}

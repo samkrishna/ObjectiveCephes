@@ -339,17 +339,17 @@ extern double md_floor ( double );
 extern double md_fabs ( double );
 extern double md_frexp ( double, int * );
 extern double md_ldexp ( double, int );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_powi ( double, int );
-extern int signbit ( double );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern int md_signbit ( double );
+extern int md_isnan ( double );
+extern int md_isfinite ( double );
 static double reduc ( double );
 #else
 double md_floor(), md_fabs(), md_frexp(), md_ldexp();
-double polevl(), p1evl(), md_powi();
-int signbit(), isnan(), isfinite();
+double md_polevl(), md_p1evl(), md_powi();
+int signbit(), md_isnan(), md_isfinite();
 static double reduc();
 #endif
 extern double MAXNUM;
@@ -374,9 +374,9 @@ int e, i, nflg, iyflg, yoddint;
 if( y == 0.0 )
 	return( 1.0 );
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return( x );
-if( isnan(y) )
+if( md_isnan(y) )
 	return( y );
 #endif
 if( y == 1.0 )
@@ -384,7 +384,7 @@ if( y == 1.0 )
 
 
 #ifdef INFINITIES
-if( !isfinite(y) && (x == 1.0 || x == -1.0) )
+if( !md_isfinite(y) && (x == 1.0 || x == -1.0) )
 	{
 	mtherr( "md_pow", DOMAIN );
 #ifdef NANS
@@ -501,7 +501,7 @@ if( x <= 0.0 )
 		if( y < 0.0 )
 			{
 #ifdef MINUSZERO
-			if( signbit(x) && yoddint )
+			if( md_signbit(x) && yoddint )
 				return( -INFINITY );
 #endif
 #ifdef INFINITIES
@@ -513,7 +513,7 @@ if( x <= 0.0 )
 		if( y > 0.0 )
 			{
 #ifdef MINUSZERO
-			if( signbit(x) && yoddint )
+			if( md_signbit(x) && yoddint )
 				return( NEGZERO );
 #endif
 			return( 0.0 );
@@ -627,7 +627,7 @@ x /= douba(i);
  * md_log(1+v)  =  v  -  v**2/2  +  v**3 P(v) / Q(v)
  */
 z = x*x;
-w = x * ( z * polevl( x, P, 3 ) / p1evl( x, Q, 4 ) );
+w = x * ( z * md_polevl( x, P, 3 ) / md_p1evl( x, Q, 4 ) );
 w = w - md_ldexp( z, -1 );   /*  w - 0.5 * z  */
 
 /* Convert to base 2 logarithm:
@@ -712,7 +712,7 @@ if( Hb > 0.0 )
  * Compute base 2 exponential of Hb,
  * where -0.0625 <= Hb <= 0.
  */
-z = Hb * polevl( Hb, R, 6 );  /*    z  =  2**Hb - 1    */
+z = Hb * md_polevl( Hb, R, 6 );  /*    z  =  2**Hb - 1    */
 
 /* Express e/16 as an integer plus a negative number of 16ths.
  * Find lookup table entry for the fractional power of 2.

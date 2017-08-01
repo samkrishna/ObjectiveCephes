@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double v, x, y, struve();
+ * double v, x, y, md_struve();
  *
- * y = struve( v, x );
+ * y = md_struve( v, x );
  *
  *
  *
@@ -45,23 +45,23 @@ extern double md_gamma ( double );
 extern double md_pow ( double, double );
 extern double md_sqrt ( double );
 extern double md_yn ( int, double );
-extern double jv ( double, double );
+extern double md_jv ( double, double );
 extern double md_fabs ( double );
 extern double md_floor ( double );
 extern double md_sin ( double );
 extern double md_cos ( double );
-double yv ( double, double );
-double onef2 (double, double, double, double, double * );
-double threef0 (double, double, double, double, double * );
+double md_yv ( double, double );
+double md_onef2 (double, double, double, double, double * );
+double md_threef0 (double, double, double, double, double * );
 #else
-double md_gamma(), md_pow(), md_sqrt(), md_yn(), yv(), jv(), md_fabs(), md_floor();
+double md_gamma(), md_pow(), md_sqrt(), md_yn(), md_yv(), md_jv(), md_fabs(), md_floor();
 double md_sin(), md_cos();
-double onef2(), threef0();
+double md_onef2(), md_threef0();
 #endif
 static double stop = 1.37e-17;
 extern double MACHEP;
 
-double onef2( a, b, c, x, err )
+double md_onef2( a, b, c, x, err )
 double a, b, c, x;
 double *err;
 {
@@ -130,7 +130,7 @@ return(sum);
 
 
 
-double threef0( a, b, c, x, err )
+double md_threef0( a, b, c, x, err )
 double a, b, c, x;
 double *err;
 {
@@ -227,7 +227,7 @@ double onef2err, threef0err;
 f = md_floor(v);
 if( (v < 0) && ( v-f == 0.5 ) )
 	{
-	y = jv( -v, x );
+	y = md_jv( -v, x );
 	f = 1.0 - f;
 	g =  2.0 * md_floor(f/2.0);
 	if( g != f )
@@ -244,7 +244,7 @@ if( (f > 30.0) && (f > g) )
 	}
 else
 	{
-	y = onef2( 1.0, 1.5, 1.5+v, -t, &onef2err );
+	y = md_onef2( 1.0, 1.5, 1.5+v, -t, &onef2err );
 	}
 
 if( (f < 18.0) || (x < 0.0) )
@@ -254,7 +254,7 @@ if( (f < 18.0) || (x < 0.0) )
 	}
 else
 	{
-	ya = threef0( 1.0, 0.5, 0.5-v, -1.0/t, &threef0err );
+	ya = md_threef0( 1.0, 0.5, 0.5-v, -1.0/t, &threef0err );
 	}
 
 f = md_sqrt( PI );
@@ -270,7 +270,7 @@ else
 	{
 	g = md_gamma( v + 0.5 );
 	ya = ya * h / ( f * g );
-	ya = ya + yv( v, x );
+	ya = ya + md_yv( v, x );
 	return(ya);
 	}
 }
@@ -281,7 +281,7 @@ else
 /* Bessel function of noninteger order
  */
 
-double yv( v, x )
+double md_yv( v, x )
 double v, x;
 {
 double y, t;
@@ -295,7 +295,7 @@ if( y == v )
 	return( y );
 	}
 t = PI * v;
-y = (md_cos(t) * jv( v, x ) - jv( -v, x ))/md_sin(t);
+y = (md_cos(t) * md_jv( v, x ) - md_jv( -v, x ))/md_sin(t);
 return( y );
 }
 

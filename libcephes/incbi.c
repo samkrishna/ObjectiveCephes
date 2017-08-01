@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double a, b, x, y, incbi();
+ * double a, b, x, y, md_incbi();
  *
- * x = incbi( a, b, y );
+ * x = md_incbi( a, b, y );
  *
  *
  *
@@ -16,7 +16,7 @@
  *
  * Given y, the function finds x such that
  *
- *  incbet( a, b, x ) = y .
+ *  md_incbet( a, b, x ) = y .
  *
  * The routine performs interval halving or Newton iterations to find the
  * root of incbet(a,b,x) - y = 0.
@@ -48,18 +48,18 @@ Copyright 1984, 1996, 2000 by Stephen L. Moshier
 
 extern double MACHEP, MAXNUM, MAXLOG, MINLOG;
 #ifdef ANSIPROT
-extern double ndtri ( double );
+extern double md_ndtri ( double );
 extern double md_exp ( double );
 extern double md_fabs ( double );
 extern double md_log ( double );
 extern double md_sqrt ( double );
-extern double lgam ( double );
-extern double incbet ( double, double, double );
+extern double md_lgam ( double );
+extern double md_incbet ( double, double, double );
 #else
-double ndtri(), md_exp(), md_fabs(), md_log(), md_sqrt(), lgam(), incbet();
+double md_ndtri(), md_exp(), md_fabs(), md_log(), md_sqrt(), md_lgam(), md_incbet();
 #endif
 
-double incbi( aa, bb, yy0 )
+double md_incbi( aa, bb, yy0 )
 double aa, bb, yy0;
 {
 double a, b, md_y0, d, y, x, x0, x1, lgm, yp, di, dithresh, yl, yh, xt;
@@ -85,7 +85,7 @@ if( aa <= 1.0 || bb <= 1.0 )
 	b = bb;
 	md_y0 = yy0;
 	x = a/(a+b);
-	y = incbet( a, b, x );
+	y = md_incbet( a, b, x );
 	goto ihalve;
 	}
 else
@@ -94,7 +94,7 @@ else
 	}
 /* approximation to inverse function */
 
-yp = -ndtri(yy0);
+yp = -md_ndtri(yy0);
 
 if( yy0 > 0.5 )
 	{
@@ -124,7 +124,7 @@ if( d < MINLOG )
 	goto under;
 	}
 x = a/( a + b * md_exp(d) );
-y = incbet( a, b, x );
+y = md_incbet( a, b, x );
 yp = (y - md_y0)/md_y0;
 if( md_fabs(yp) < 0.2 )
 	goto newt;
@@ -148,7 +148,7 @@ for( i=0; i<100; i++ )
 			if( x == 0.0 )
 				goto under;
 			}
-		y = incbet( a, b, x );
+		y = md_incbet( a, b, x );
 		yp = (x1 - x0)/(x1 + x0);
 		if( md_fabs(yp) < dithresh )
 			goto newt;
@@ -189,7 +189,7 @@ for( i=0; i<100; i++ )
 				md_y0 = 1.0 - yy0;
 				}
 			x = 1.0 - x;
-			y = incbet( a, b, x );
+			y = md_incbet( a, b, x );
 			x0 = 0.0;
 			yl = 0.0;
 			x1 = 1.0;
@@ -239,13 +239,13 @@ newt:
 if( nflg )
 	goto done;
 nflg = 1;
-lgm = lgam(a+b) - lgam(a) - lgam(b);
+lgm = md_lgam(a+b) - md_lgam(a) - md_lgam(b);
 
 for( i=0; i<8; i++ )
 	{
 	/* Compute the function at this point. */
 	if( i != 0 )
-		y = incbet(a,b,x);
+		y = md_incbet(a,b,x);
 	if( y < yl )
 		{
 		x = x0;

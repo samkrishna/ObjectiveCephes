@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double m1, y, ellpk();
+ * double m1, y, md_ellpk();
  *
- * y = ellpk( m1 );
+ * y = md_ellpk( m1 );
  *
  *
  *
@@ -48,7 +48,7 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * ellpk domain       x<0, x>1           0.0
+ * md_ellpk domain       x<0, x>1           0.0
  *
  */
 
@@ -197,15 +197,15 @@ static double C1 = 1.3862943611198906188E0; /* md_log(4) */
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_log ( double );
 #else
-double polevl(), p1evl(), md_log();
+double md_polevl(), md_p1evl(), md_log();
 #endif
 extern double MACHEP, MAXNUM;
 
-double ellpk(x)
+double md_ellpk(x)
 double x;
 {
 
@@ -217,7 +217,7 @@ if( (x < 0.0) || (x > 1.0) )
 
 if( x > MACHEP )
 	{
-	return( polevl(x,P,10) - md_log(x) * polevl(x,Q,10) );
+	return( md_polevl(x,P,10) - md_log(x) * md_polevl(x,Q,10) );
 	}
 else
 	{

@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double m1, y, ellpe();
+ * double m1, y, md_ellpe();
  *
- * y = ellpe( m1 );
+ * y = md_ellpe( m1 );
  *
  *
  *
@@ -30,7 +30,7 @@
  *      P(x)  -  x md_log x Q(x).
  *
  * Though there are no singularities, the argument m1 is used
- * rather than m for compatibility with ellpk().
+ * rather than m for compatibility with md_ellpk().
  *
  * E(1) = 1; E(0) = pi/2.
  *
@@ -46,7 +46,7 @@
  * ERROR MESSAGES:
  *
  *   message         condition      value returned
- * ellpe domain      x<0, x>1            0.0
+ * md_ellpe domain      x<0, x>1            0.0
  *
  */
 
@@ -174,13 +174,13 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
 extern double md_log ( double );
 #else
-double polevl(), md_log();
+double md_polevl(), md_log();
 #endif
 
-double ellpe(x)
+double md_ellpe(x)
 double x;
 {
 
@@ -191,5 +191,5 @@ if( (x <= 0.0) || (x > 1.0) )
 	mtherr( "ellpe", DOMAIN );
 	return( 0.0 );
 	}
-return( polevl(x,P,10) - md_log(x) * (x * polevl(x,Q,9)) );
+return( md_polevl(x,P,10) - md_log(x) * (x * md_polevl(x,Q,9)) );
 }

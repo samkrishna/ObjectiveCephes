@@ -1,14 +1,14 @@
 /*						rgamma.c
  *
- *	Reciprocal md_gamma function
+ *	Reciprocal gamma function
  *
  *
  *
  * SYNOPSIS:
  *
- * double x, y, rgamma();
+ * double x, y, md_rgamma();
  *
- * y = rgamma( x );
+ * y = md_rgamma( x );
  *
  *
  *
@@ -134,21 +134,21 @@ static unsigned short R[] = {
 };
 #endif
 
-static char name[] = "rgamma";
+static char name[] = "md_rgamma";
 
 #ifdef ANSIPROT
-extern double chbevl ( double, void *, int );
+extern double md_chbevl ( double, void *, int );
 extern double md_exp ( double );
 extern double md_log ( double );
 extern double md_sin ( double );
-extern double lgam ( double );
+extern double md_lgam ( double );
 #else
-double chbevl(), md_exp(), md_log(), md_sin(), lgam();
+double md_chbevl(), md_exp(), md_log(), md_sin(), md_lgam();
 #endif
 extern double PI, MAXLOG, MAXNUM;
 
 
-double rgamma(x)
+double md_rgamma(x)
 double x;
 {
 double w, y, z;
@@ -173,7 +173,7 @@ if( x < -34.034 )
 	else
 		sign = -1;
 
-	y = md_log( w * z ) - md_log(PI) + lgam(w);
+	y = md_log( w * z ) - md_log(PI) + md_lgam(w);
 	if( y < -MAXLOG )
 		{
 		mtherr( name, UNDERFLOW );
@@ -204,6 +204,6 @@ if( w == 0.0 )		/* Nonpositive integer */
 if( w == 1.0 )		/* Other integer */
 	return( 1.0/z );
 
-y = w * ( 1.0 + chbevl( 4.0*w-2.0, R, 16 ) ) / z;
+y = w * ( 1.0 + md_chbevl( 4.0*w-2.0, R, 16 ) ) / z;
 return(y);
 }

@@ -207,8 +207,8 @@ static short B4[48] = {
 
 #ifdef ANSIPROT
 extern double spence ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double zetac ( double );
 extern double md_pow ( double, double );
 extern double md_powi ( double, int );
@@ -217,7 +217,7 @@ extern double fac ( int i );
 extern double md_fabs (double);
 double polylog (int, double);
 #else
-extern double spence(), polevl(), p1evl(), zetac();
+extern double spence(), md_polevl(), md_p1evl(), zetac();
 extern double md_pow(), md_powi(), md_log();
 extern double fac(); /* factorial */
 extern double md_fabs();
@@ -383,7 +383,7 @@ if (n == 4)
     if (x >= 0.875)
       {
 	u = 1.0 - x;
-	s = polevl(u, A4, 12) / p1evl(u, B4, 12);
+	s = md_polevl(u, A4, 12) / md_p1evl(u, B4, 12);
 	s =  s * u * u - 1.202056903159594285400 * u;
 	s +=  1.0823232337111381915160;
 	return s;

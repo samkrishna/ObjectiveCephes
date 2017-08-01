@@ -168,15 +168,15 @@ static unsigned short T3P8A[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_atan ( double );
 extern double md_fabs ( double );
-extern int signbit ( double );
-extern int isnan ( double );
+extern int md_signbit ( double );
+extern int md_isnan ( double );
 #else
-double polevl(), p1evl(), md_atan(), md_fabs();
-int signbit(), isnan();
+double md_polevl(), md_p1evl(), md_atan(), md_fabs();
+int md_signbit(), md_isnan();
 #endif
 extern double PI, PIO2, PIO4, INFINITY, NEGZERO, MAXNUM;
 
@@ -230,7 +230,7 @@ else
 	x = (x-1.0)/(x+1.0);
 	}
 z = x * x;
-z = z * polevl( z, P, 4 ) / p1evl( z, Q, 5 );
+z = z * md_polevl( z, P, 4 ) / md_p1evl( z, Q, 5 );
 z = x * z + x;
 if( flag == 2 )
 	z += 0.5 * MOREBITS;
@@ -257,15 +257,15 @@ short code;
 code = 0;
 
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
-if( isnan(y) )
+if( md_isnan(y) )
 	return(y);
 #endif
 #ifdef MINUSZERO
 if( y == 0.0 )
 	{
-	if( signbit(y) )
+	if( md_signbit(y) )
 		{
 		if( x > 0.0 )
 			z = y;
@@ -273,7 +273,7 @@ if( y == 0.0 )
 			z = -PI;
 		else
 			{
-			if( signbit(x) )
+			if( md_signbit(x) )
 				z = -PI;
 			else
 				z = y;
@@ -283,7 +283,7 @@ if( y == 0.0 )
 		{
 		if( x == 0.0 )
 			{
-			if( signbit(x) )
+			if( md_signbit(x) )
 				z = PI;
 			else
 				z = 0.0;

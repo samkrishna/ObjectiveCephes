@@ -204,13 +204,13 @@ static unsigned short S[12] = {
 #ifdef ANSIPROT
 extern double md_frexp ( double, int * );
 extern double md_ldexp ( double, int );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
+extern int md_isnan ( double );
+extern int md_isfinite ( double );
 #else
-double md_frexp(), md_ldexp(), polevl(), p1evl();
-int isnan(), isfinite();
+double md_frexp(), md_ldexp(), md_polevl(), md_p1evl();
+int md_isnan(), md_isfinite();
 #endif
 #define SQRTH 0.70710678118654752440
 extern double LOGE2, INFINITY, NAN;
@@ -226,7 +226,7 @@ short *q;
 #endif
 
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
 #endif
 #ifdef INFINITIES
@@ -304,7 +304,7 @@ else
 
 x = z / y;
 z = x*x;
-y = x * ( z * polevl( z, R, 2 ) / p1evl( z, S, 3 ) );
+y = x * ( z * md_polevl( z, R, 2 ) / md_p1evl( z, S, 3 ) );
 goto ldone;
 }
 
@@ -324,9 +324,9 @@ else
 
 z = x*x;
 #if DEC
-y = x * ( z * polevl( x, P, 5 ) / p1evl( x, Q, 6 ) ) - md_ldexp( z, -1 );
+y = x * ( z * md_polevl( x, P, 5 ) / md_p1evl( x, Q, 6 ) ) - md_ldexp( z, -1 );
 #else
-y = x * ( z * polevl( x, P, 5 ) / p1evl( x, Q, 5 ) ) - md_ldexp( z, -1 );
+y = x * ( z * md_polevl( x, P, 5 ) / md_p1evl( x, Q, 5 ) ) - md_ldexp( z, -1 );
 #endif
 
 ldone:

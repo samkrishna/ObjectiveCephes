@@ -47,11 +47,11 @@ Copyright 1985, 1995, 2000 by Stephen L. Moshier
 #include "mconf.h"
 #ifdef ANSIPROT
 extern double md_exp ( double );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern int md_isnan ( double );
+extern int md_isfinite ( double );
 #else
 double md_exp();
-int isnan(), isfinite();
+int md_isnan(), md_isfinite();
 #endif
 extern double MAXLOG, INFINITY, LOGE2;
 
@@ -61,7 +61,7 @@ double x;
 double y;
 
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
 #endif
 if( x < 0 )

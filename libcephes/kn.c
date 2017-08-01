@@ -91,7 +91,7 @@ double md_fabs(), md_exp(), md_log(), md_sqrt();
 #endif
 extern double MACHEP, MAXNUM, MAXLOG, PI;
 
-double kn( nn, x )
+double md_kn( nn, x )
 int nn;
 double x;
 {

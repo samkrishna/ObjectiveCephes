@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, q, y, zeta();
+ * double x, q, y, md_zeta();
  *
- * y = zeta( x, q );
+ * y = md_zeta( x, q );
  *
  *
  *
@@ -26,11 +26,11 @@
  * The Euler-Maclaurin summation formula is used to obtain
  * the expansion
  *
- *                n         
- *                -       -x
- * zeta(x,q)  =   >  (k+q)  
- *                -         
- *               k=1        
+ *                   n
+ *                   -       -x
+ * md_zeta(x,q)  =   >  (k+q)
+ *                   -
+ *                  k=1
  *
  *           1-x                 inf.  B   x(x+1)...(x+2j)
  *      (n+q)           1         -     2j
@@ -39,7 +39,7 @@
  *                   2(n+q)      j=1       (2j)! (n+q)
  *
  * where the B2j are Bernoulli numbers.  Note that (see zetac.c)
- * zeta(x,1) = zetac(x) + 1.
+ * md_zeta(x,1) = md_zetac(x) + 1.
  *
  *
  *
@@ -91,7 +91,7 @@ static double A[] = {
 /* 30 Nov 86 -- error in third coefficient fixed */
 
 
-double zeta(x,q)
+double md_zeta(x,q)
 double x,q;
 {
 int i;

@@ -242,12 +242,12 @@ static short S[16] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_sqrt ( double );
 double md_asin ( double );
 #else
-double md_sqrt(), polevl(), p1evl();
+double md_sqrt(), md_polevl(), md_p1evl();
 double md_asin();
 #endif
 extern double PIO2, PIO4, NAN;
@@ -279,7 +279,7 @@ if( a > 0.625 )
 	{
 	/* arcsin(1-x) = pi/2 - md_sqrt(2x)(1+R(x))  */
 	zz = 1.0 - a;
-	p = zz * polevl( zz, R, 4)/p1evl( zz, S, 4);
+	p = zz * md_polevl( zz, R, 4)/md_p1evl( zz, S, 4);
 	zz = md_sqrt(zz+zz);
 	z = PIO4 - zz;
 	zz = zz * p - MOREBITS;
@@ -293,7 +293,7 @@ else
 		return(x);
 		}
 	zz = a * a;
-	z = zz * polevl( zz, P, 5)/p1evl( zz, Q, 5);
+	z = zz * md_polevl( zz, P, 5)/md_p1evl( zz, Q, 5);
 	z = a * z + a;
 	}
 if( sign < 0 )

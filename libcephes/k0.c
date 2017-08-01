@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, k0();
+ * double x, y, md_k0();
  *
- * y = k0( x );
+ * y = md_k0( x );
  *
  *
  *
@@ -76,11 +76,11 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-/* Chebyshev coefficients for K0(x) + md_log(x/2) I0(x)
+/* Chebyshev coefficients for K0(x) + md_log(x/2) md_i0(x)
  * in the interval [0,2].  The odd order coefficients are all
  * zero; only the even order coefficients are listed.
  * 
- * lim(x->0){ K0(x) + md_log(x/2) I0(x) } = -EUL.
+ * lim(x->0){ K0(x) + md_log(x/2) md_i0(x) } = -EUL.
  */
 
 #ifdef UNK
@@ -274,18 +274,18 @@ static unsigned short B[] = {
 
 /*							k0.c	*/
 #ifdef ANSIPROT 
-extern double chbevl ( double, void *, int );
+extern double md_chbevl ( double, void *, int );
 extern double md_exp ( double );
-extern double i0 ( double );
+extern double md_i0 ( double );
 extern double md_log ( double );
 extern double md_sqrt ( double );
 #else
-double chbevl(), md_exp(), i0(), md_log(), md_sqrt();
+double md_chbevl(), md_exp(), md_i0(), md_log(), md_sqrt();
 #endif
 extern double PI;
 extern double MAXNUM;
 
-double k0(x)
+double md_k0(x)
 double x;
 {
 double y, z;
@@ -299,18 +299,18 @@ if( x <= 0.0 )
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y = chbevl( y, A, 10 ) - md_log( 0.5 * x ) * i0(x);
+	y = md_chbevl( y, A, 10 ) - md_log( 0.5 * x ) * md_i0(x);
 	return( y );
 	}
 z = 8.0/x - 2.0;
-y = md_exp(-x) * chbevl( z, B, 25 ) / md_sqrt(x);
+y = md_exp(-x) * md_chbevl( z, B, 25 ) / md_sqrt(x);
 return(y);
 }
 
 
 
 
-double k0e( x )
+double md_k0e( x )
 double x;
 {
 double y;
@@ -324,10 +324,10 @@ if( x <= 0.0 )
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y = chbevl( y, A, 10 ) - md_log( 0.5 * x ) * i0(x);
+	y = md_chbevl( y, A, 10 ) - md_log( 0.5 * x ) * md_i0(x);
 	return( y * md_exp(x) );
 	}
 
-y = chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x);
+y = md_chbevl( 8.0/x - 2.0, B, 25 ) / md_sqrt(x);
 return(y);
 }

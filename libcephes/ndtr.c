@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, ndtr();
+ * double x, y, md_ndtr();
  *
- * y = ndtr( x );
+ * y = md_ndtr( x );
  *
  *
  *
@@ -20,7 +20,7 @@
  *                            x
  *                             -
  *                   1        | |          2
- *    ndtr(x)  = ---------    |    md_exp( - t /2 ) dt
+ *    md_ndtr(x)  = ---------    |    md_exp( - t /2 ) dt
  *               md_sqrt(2pi)  | |
  *                           -
  *                          -inf.
@@ -118,7 +118,7 @@
  * For small x, md_erfc(x) = 1 - md_erf(x); otherwise rational
  * approximations are computed.
  *
- * A special function expx2.c is used to suppress error amplification
+ * A special function md_expx2.c is used to suppress error amplification
  * in computing md_exp(-x^2).
  *
  *
@@ -150,7 +150,7 @@ extern double SQRTH;
 extern double MAXLOG;
 
 /* Define this macro to suppress error propagation in md_exp(x^2)
-   by using the expx2 function.  The tradeoff is that doing so
+   by using the md_expx2 function.  The tradeoff is that doing so
    generates two calls to the exponential function instead of one.  */
 #define USE_EXPXSQ 1
 
@@ -385,23 +385,23 @@ static unsigned short U[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_exp ( double );
 extern double md_log ( double );
 extern double md_fabs ( double );
 extern double md_sqrt ( double );
-extern double expx2 ( double, int );
+extern double md_expx2 ( double, int );
 double md_erf ( double );
 double md_erfc ( double );
 static double erfce ( double );
 #else
-double polevl(), p1evl(), md_exp(), md_log(), md_fabs();
-double md_erf(), md_erfc(), expx2(), md_sqrt();
+double md_polevl(), md_p1evl(), md_exp(), md_log(), md_fabs();
+double md_erf(), md_erfc(), md_expx2(), md_sqrt();
 static double erfce();
 #endif
 
-double ndtr(a)
+double md_ndtr(a)
 double a;
 {
 double x, y, z;
@@ -419,7 +419,7 @@ else
 	/* See below for erfce. */
 	y = 0.5 * erfce(z);
 	/* Multiply by md_exp(-x^2 / 2)  */
-	z = expx2(a, -1);
+	z = md_expx2(a, -1);
 	y = y * md_sqrt(z);
 #else
 	y = 0.5 * md_erfc(z);
@@ -460,19 +460,19 @@ under:
 
 #ifdef USE_EXPXSQ
 /* Compute z = md_exp(z).  */
-z = expx2(a, -1);
+z = md_expx2(a, -1);
 #else
 z = md_exp(z);
 #endif
 if( x < 8.0 )
 	{
-	p = polevl( x, P, 8 );
-	q = p1evl( x, Q, 8 );
+	p = md_polevl( x, P, 8 );
+	q = md_p1evl( x, Q, 8 );
 	}
 else
 	{
-	p = polevl( x, R, 5 );
-	q = p1evl( x, S, 6 );
+	p = md_polevl( x, R, 5 );
+	q = md_p1evl( x, S, 6 );
 	}
 y = (z * p)/q;
 
@@ -489,7 +489,7 @@ return(y);
 /* Exponentially scaled md_erfc function
    md_exp(x^2) md_erfc(x)
    valid for x > 1.
-   Use with ndtr and expx2.  */
+   Use with md_ndtr and md_expx2.  */
 static double erfce(x)
 double x;
 {
@@ -497,13 +497,13 @@ double p,q;
 
 if( x < 8.0 )
 	{
-	p = polevl( x, P, 8 );
-	q = p1evl( x, Q, 8 );
+	p = md_polevl( x, P, 8 );
+	q = md_p1evl( x, Q, 8 );
 	}
 else
 	{
-	p = polevl( x, R, 5 );
-	q = p1evl( x, S, 6 );
+	p = md_polevl( x, R, 5 );
+	q = md_p1evl( x, S, 6 );
 	}
 return (p/q);
 }
@@ -518,7 +518,7 @@ double y, z;
 if( md_fabs(x) > 1.0 )
 	return( 1.0 - md_erfc(x) );
 z = x * x;
-y = x * polevl( z, T, 4 ) / p1evl( z, U, 5 );
+y = x * md_polevl( z, T, 4 ) / md_p1evl( z, U, 5 );
 return( y );
 
 }

@@ -6,22 +6,22 @@
  *
  * SYNOPSIS:
  *
- * double a, b, y, beta();
+ * double a, b, y, md_beta();
  *
- * y = beta( a, b );
+ * y = md_beta( a, b );
  *
  *
  *
  * DESCRIPTION:
  *
- *                   -     -
- *                  | (a) | (b)
- * beta( a, b )  =  -----------.
- *                     -
- *                    | (a+b)
+ *                      -     -
+ *                     | (a) | (b)
+ * md_beta( a, b )  =  -----------.
+ *                        -
+ *                       | (a+b)
  *
  * For large arguments the logarithm of the function is
- * evaluated using lgam(), then exponentiated.
+ * evaluated using md_lgam(), then exponentiated.
  *
  *
  *
@@ -36,7 +36,7 @@
  *
  *   message         condition          value returned
  * beta overflow    md_log(beta) > MAXLOG       0.0
- *                  a or b <0 integer        0.0
+ *                     a or b <0 integer        0.0
  *
  */
 
@@ -67,17 +67,17 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 #ifdef ANSIPROT
 extern double md_fabs ( double );
 extern double md_gamma ( double );
-extern double lgam ( double );
+extern double md_lgam ( double );
 extern double md_exp ( double );
 extern double md_log ( double );
 extern double md_floor ( double );
 #else
-double md_fabs(), md_gamma(), lgam(), md_exp(), md_log(), md_floor();
+double md_fabs(), md_gamma(), md_lgam(), md_exp(), md_log(), md_floor();
 #endif
 extern double MAXLOG, MAXNUM;
 extern int sgngam;
 
-double beta( a, b )
+double md_beta( a, b )
 double a, b;
 {
 double y;
@@ -100,11 +100,11 @@ if( b <= 0.0 )
 y = a + b;
 if( md_fabs(y) > MAXGAM )
 	{
-	y = lgam(y);
+	y = md_lgam(y);
 	sign *= sgngam; /* keep track of the sign */
-	y = lgam(b) - y;
+	y = md_lgam(b) - y;
 	sign *= sgngam;
-	y = lgam(a) + y;
+	y = md_lgam(a) + y;
 	sign *= sgngam;
 	if( y > MAXLOG )
 		{
@@ -137,7 +137,7 @@ return(y);
 
 /* Natural md_log of |beta|.  Return the sign of beta in sgngam.  */
 
-double lbeta( a, b )
+double md_lbeta( a, b )
 double a, b;
 {
 double y;
@@ -160,11 +160,11 @@ if( b <= 0.0 )
 y = a + b;
 if( md_fabs(y) > MAXGAM )
 	{
-	y = lgam(y);
+	y = md_lgam(y);
 	sign *= sgngam; /* keep track of the sign */
-	y = lgam(b) - y;
+	y = md_lgam(b) - y;
 	sign *= sgngam;
-	y = lgam(a) + y;
+	y = md_lgam(a) + y;
 	sign *= sgngam;
 	sgngam = sign;
 	return( y );

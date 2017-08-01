@@ -6,9 +6,9 @@
  *
  * SYNOPSIS:
  *
- * double x, y, i1();
+ * double x, y, md_i1();
  *
- * y = i1( x );
+ * y = md_i1( x );
  *
  *
  *
@@ -351,15 +351,15 @@ static unsigned short B[] = {
 
 /*							i1.c	*/
 #ifdef ANSIPROT
-extern double chbevl ( double, void *, int );
+extern double md_chbevl ( double, void *, int );
 extern double md_exp ( double );
 extern double md_sqrt ( double );
 extern double md_fabs ( double );
 #else
-double chbevl(), md_exp(), md_sqrt(), md_fabs();
+double md_chbevl(), md_exp(), md_sqrt(), md_fabs();
 #endif
 
-double i1(x)
+double md_i1(x)
 double x;
 { 
 double y, z;
@@ -368,11 +368,11 @@ z = md_fabs(x);
 if( z <= 8.0 )
 	{
 	y = (z/2.0) - 2.0;
-	z = chbevl( y, A, 29 ) * z * md_exp(z);
+	z = md_chbevl( y, A, 29 ) * z * md_exp(z);
 	}
 else
 	{
-	z = md_exp(z) * chbevl( 32.0/z - 2.0, B, 25 ) / md_sqrt(z);
+	z = md_exp(z) * md_chbevl( 32.0/z - 2.0, B, 25 ) / md_sqrt(z);
 	}
 if( x < 0.0 )
 	z = -z;
@@ -381,7 +381,7 @@ return( z );
 
 /*							i1e()	*/
 
-double i1e( x )
+double md_i1e( x )
 double x;
 { 
 double y, z;
@@ -390,11 +390,11 @@ z = md_fabs(x);
 if( z <= 8.0 )
 	{
 	y = (z/2.0) - 2.0;
-	z = chbevl( y, A, 29 ) * z;
+	z = md_chbevl( y, A, 29 ) * z;
 	}
 else
 	{
-	z = chbevl( 32.0/z - 2.0, B, 25 ) / md_sqrt(z);
+	z = md_chbevl( 32.0/z - 2.0, B, 25 ) / md_sqrt(z);
 	}
 if( x < 0.0 )
 	z = -z;

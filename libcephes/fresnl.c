@@ -449,10 +449,10 @@ static unsigned short gd[44] = {
 extern double md_fabs ( double );
 extern double md_cos ( double );
 extern double md_sin ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 #else
-double md_fabs(), md_cos(), md_sin(), polevl(), p1evl();
+double md_fabs(), md_cos(), md_sin(), md_polevl(), md_p1evl();
 #endif
 extern double PI, PIO2, MACHEP;
 
@@ -467,8 +467,8 @@ x2 = x * x;
 if( x2 < 2.5625 )
 	{
 	t = x2 * x2;
-	ss = x * x2 * polevl( t, sn, 5)/p1evl( t, sd, 6 );
-	cc = x * polevl( t, cn, 5)/polevl(t, cd, 6 );
+	ss = x * x2 * md_polevl( t, sn, 5)/md_p1evl( t, sd, 6 );
+	cc = x * md_polevl( t, cn, 5)/md_polevl(t, cd, 6 );
 	goto done;
 	}
 
@@ -492,8 +492,8 @@ if( x > 36974.0 )
 	t = PI * x2;
 	u = 1.0/(t * t);
 	t = 1.0/t;
-	f = 1.0 - u * polevl( u, fn, 9)/p1evl(u, fd, 10);
-	g = t * polevl( u, gn, 10)/p1evl(u, gd, 11);
+	f = 1.0 - u * md_polevl( u, fn, 9)/md_p1evl(u, fd, 10);
+	g = t * md_polevl( u, gn, 10)/md_p1evl(u, gd, 11);
 
 	t = PIO2 * x2;
 	c = md_cos(t);

@@ -136,15 +136,15 @@ static unsigned short sc2[] = {0x3eb7,0xf7d1,0xcf79,0xabca};
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double md_polevl ( double, void *, int );
+extern double md_p1evl ( double, void *, int );
 extern double md_floor ( double );
 extern double md_ldexp ( double, int );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern int md_isnan ( double );
+extern int md_isfinite ( double );
 #else
-double polevl(), p1evl(), md_floor(), md_ldexp();
-int isnan(), isfinite();
+double md_polevl(), md_p1evl(), md_floor(), md_ldexp();
+int md_isnan(), md_isfinite();
 #endif
 extern double LOGE2, LOG2E, MAXLOG, MINLOG, MAXNUM;
 #ifdef INFINITIES
@@ -158,7 +158,7 @@ double px, xx;
 int n;
 
 #ifdef NANS
-if( isnan(x) )
+if( md_isnan(x) )
 	return(x);
 #endif
 if( x > MAXLOG)
@@ -193,8 +193,8 @@ x -= px * C2;
  * e**x = 1 + 2x P(x**2)/( Q(x**2) - P(x**2) )
  */
 xx = x * x;
-px = x * polevl( xx, P, 2 );
-x =  px/( polevl( xx, Q, 3 ) - px );
+px = x * md_polevl( xx, P, 2 );
+x =  px/( md_polevl( xx, Q, 3 ) - px );
 x = 1.0 + 2.0 * x;
 
 /* multiply by power of 2 */

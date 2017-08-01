@@ -54,18 +54,18 @@ Copyright 1984, 1987, 1988, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double hyperg ( double, double, double );
+extern double md_hyperg ( double, double, double );
 extern double md_exp ( double );
 extern double md_gamma ( double );
 extern double md_log ( double );
 extern double md_fabs ( double );
 extern double md_floor ( double );
 #else
-double hyperg(), md_exp(), md_gamma(), md_log(), md_fabs(), md_floor();
+double md_hyperg(), md_exp(), md_gamma(), md_log(), md_fabs(), md_floor();
 #endif
 extern double MACHEP, MAXNUM;
 
-double iv( v, x )
+double md_iv( v, x )
 double v, x;
 {
 int sign;
@@ -112,5 +112,5 @@ ax = md_fabs(x);
 t = v * md_log( 0.5 * ax )  -  x;
 t = sign * md_exp(t) / md_gamma( v + 1.0 );
 ax = v + 0.5;
-return( t * hyperg( ax,  2.0 * ax,  2.0 * x ) );
+return( t * md_hyperg( ax,  2.0 * ax,  2.0 * x ) );
 }
