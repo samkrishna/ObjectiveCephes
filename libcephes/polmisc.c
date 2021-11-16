@@ -16,7 +16,7 @@ extern void polmov ( double *a, int na, double *b );
 extern void cfs_polmul ( double a[], int na, double b[], int nb, double c[] );
 extern void poladd ( double a[], int na, double b[], int nb, double c[] );
 extern void polsub ( double a[], int na, double b[], int nb, double c[] );
-extern int poldiv ( double a[], int na, double b[], int nb, double c[] );
+extern int cfs_poldiv ( double a[], int na, double b[], int nb, double c[] );
 extern void polsbt ( double a[], int na, double b[], int nb, double c[] );
 //extern void * malloc ( long );
 extern void	*malloc(size_t __size) __result_use_check;
@@ -24,7 +24,7 @@ extern void free ( void * );
 #else
 double cfs_atan2(), cfs_sqrt(), cfs_fabs(), cfs_sin(), cfs_cos();
 void cfs_polclr(), polmov(), polsbt(), poladd(), polsub(), cfs_polmul();
-int poldiv();
+int cfs_poldiv();
 void * malloc();
 void free ();
 #endif
@@ -94,7 +94,7 @@ polatn( num, den, ans, nn )
   polu = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   polt = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   cfs_polclr( polq, MAXPOL );
-  i = poldiv( den, nn, num, nn, polq );
+  i = cfs_poldiv( den, nn, num, nn, polq );
   a = polq[0]; /* a */
   polq[0] = 0.0; /* b */
   polmov( polq, nn, polu ); /* b */
@@ -104,7 +104,7 @@ polatn( num, den, ans, nn )
   for( i=0; i<=nn; i++ )
     polu[i] *= a;
   polu[0] += 1.0 + a * a;
-  poldiv( polu, nn, polq, nn, polt ); /* divide into b */
+  cfs_poldiv( polu, nn, polq, nn, polt ); /* divide into b */
   polsbt( polt, nn, patan, nn, polu ); /* arctan(b)  */
   polu[0] += t; /* plus arctan(a) */
   polmov( polu, nn, ans );
@@ -164,7 +164,7 @@ nzero:
 	}
       /* Divide by x^n.  */
       y[n] = x[n];
-      poldiv (y, nn, pol, N, x);
+      cfs_poldiv (y, nn, pol, N, x);
     }
 
   t = x[0];
@@ -190,7 +190,7 @@ nzero:
 /* Newton iterations */
 for( n=0; n<10; n++ )
 	{
-	poldiv( y, nn, pol, nn, z );
+	cfs_poldiv( y, nn, pol, nn, z );
 	poladd( y, nn, z, nn, y );
 	for( i=0; i<=nn; i++ )
 		y[i] *= 0.5;

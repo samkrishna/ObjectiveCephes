@@ -37,7 +37,7 @@
  *
  * Division:
  *
- * i = poldiv( a, na, b, nb, c );	c = b / a, nc = MAXPOL
+ * i = cfs_poldiv( a, na, b, nb, c );	c = b / a, nc = MAXPOL
  *
  * returns i = the degree of the first nonzero coefficient of a.
  * The computed quotient c must be divided by x^i.  An error message
@@ -54,7 +54,7 @@
  *
  *
  * Notes:
- * poldiv() is an integer routine; poleva() is double.
+ * cfs_poldiv() is an integer routine; poleva() is double.
  * Any of the arguments a, b, c may refer to the same array.
  *
  */
@@ -69,13 +69,13 @@ extern void free ( void * );
 void cfs_polclr ( double *, int );
 void polmov ( double *, int, double * );
 void cfs_polmul ( double *, int, double *, int, double * );
-int poldiv ( double *, int, double *, int, double * );
+int cfs_poldiv ( double *, int, double *, int, double * );
 #else
 void exit();
 void * malloc();
 void free ();
 void cfs_polclr(), polmov(), cfs_polmul();
-int poldiv();
+int cfs_poldiv();
 #endif
 #ifndef NULL
 #define NULL 0
@@ -87,7 +87,7 @@ int poldiv();
 #define free _nfree
 */
 
-/* Pointers to internal arrays.  Note poldiv() allocates
+/* Pointers to internal arrays.  Note cfs_poldiv() allocates
  * and deallocates some temporary arrays every time it is called.
  */
 static double *pt1 = 0;
@@ -315,7 +315,7 @@ for( i=0; i<=n; i++ )
 
 /* c = b/a
  */
-int poldiv( a, na, b, nb, c )
+int cfs_poldiv( a, na, b, nb, c )
 double a[], b[], c[];
 int na, nb;
 {
@@ -350,7 +350,7 @@ if( a[0] == 0.0 )
 		if( ta[i] != 0.0 )
 			goto nzero;
 		}
-	mtherr( "poldiv", SING );
+	mtherr( "cfs_poldiv", SING );
 	goto done;
 
 nzero:
@@ -362,7 +362,7 @@ nzero:
 	if( b[0] != 0.0 )
 		{
 /* Optional message:
-		printf( "poldiv singularity, divide quotient by x\n" );
+		printf( "cfs_poldiv singularity, divide quotient by x\n" );
 */
 		sing += 1;
 		}
@@ -374,7 +374,7 @@ nzero:
 		tb[nb] = 0.0;
 		}
 /* Call self, using reduced polynomials. */
-	sing += poldiv( ta, na, tb, nb, c );
+	sing += cfs_poldiv( ta, na, tb, nb, c );
 	goto done;
 	}
 
