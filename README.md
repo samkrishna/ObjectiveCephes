@@ -10,7 +10,7 @@ Next step is to port the Math-Cephes test cases to XCTest-based Unit Tests. Here
 
 - ~~bessels.t~~
 - ~~betas.t~~
-- cmplx.t
+- ~~cmplx.t~~
 - ~~dists.t~~
 - ~~elliptics.t~~
 - ~~explog.t~~
