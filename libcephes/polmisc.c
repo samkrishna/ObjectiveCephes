@@ -11,7 +11,7 @@ extern double cfs_sqrt ( double );
 extern double cfs_fabs ( double );
 extern double cfs_sin ( double );
 extern double cfs_cos ( double );
-extern void polclr ( double *a, int n );
+extern void cfs_polclr ( double *a, int n );
 extern void polmov ( double *a, int na, double *b );
 extern void polmul ( double a[], int na, double b[], int nb, double c[] );
 extern void poladd ( double a[], int na, double b[], int nb, double c[] );
@@ -23,7 +23,7 @@ extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
 #else
 double cfs_atan2(), cfs_sqrt(), cfs_fabs(), cfs_sin(), cfs_cos();
-void polclr(), polmov(), polsbt(), poladd(), polsub(), polmul();
+void cfs_polclr(), polmov(), polsbt(), poladd(), polsub(), polmul();
 int poldiv();
 void * malloc();
 void free ();
@@ -93,7 +93,7 @@ polatn( num, den, ans, nn )
   polq = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   polu = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   polt = (double * )malloc( (MAXPOL+1) * sizeof (double) );
-  polclr( polq, MAXPOL );
+  cfs_polclr( polq, MAXPOL );
   i = poldiv( den, nn, num, nn, polq );
   a = polq[0]; /* a */
   polq[0] = 0.0; /* b */
@@ -141,7 +141,7 @@ polsqt( pol, ans, nn )
   x = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   y = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   polmov( pol, nn, x );
-  polclr( y, MAXPOL );
+  cfs_polclr( y, MAXPOL );
 
   /* Find lowest degree nonzero term.  */
   t = 0.0;
@@ -182,7 +182,7 @@ nzero:
      x^(n/2).  */
   if (n > 0)
     {
-      polclr (x, MAXPOL);
+      cfs_polclr (x, MAXPOL);
       x[n/2] = 1.0;
       polmul (x, nn, y, nn, y);
     }
@@ -239,8 +239,8 @@ polsin( x, y, nn )
   w = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   c = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   polmov( x, nn, w );
-  polclr( c, MAXPOL );
-  polclr( y, nn );
+  cfs_polclr( c, MAXPOL );
+  cfs_polclr( y, nn );
   /* a, in the description, is x[0].  b is the polynomial x - x[0].  */
   a = w[0];
   /* c = cfs_cos (b) */
@@ -287,8 +287,8 @@ polcos( x, y, nn )
   w = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   c = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   polmov( x, nn, w );
-  polclr( c, MAXPOL );
-  polclr( y, nn );
+  cfs_polclr( c, MAXPOL );
+  cfs_polclr( y, nn );
   a = w[0];
   w[0] = 0.0;
   /* c = cfs_cos(b)  */

@@ -28,7 +28,7 @@
  *
  * sum = poleva( a, na, x );	Evaluate polynomial a(t) at t = x.
  * polprt( a, na, D );		Print the coefficients of a to D digits.
- * polclr( a, na );		Set a identically equal to zero, up to a[na].
+ * cfs_polclr( a, na );		Set a identically equal to zero, up to a[na].
  * polmov( a, na, b );		Set b = a.
  * poladd( a, na, b, nb, c );	c = b + a, nc = max(na,nb)
  * polsub( a, na, b, nb, c );	c = b - a, nc = max(na,nb)
@@ -66,7 +66,7 @@ void exit (int);
 //extern void * malloc ( long );
 extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
-void polclr ( double *, int );
+void cfs_polclr ( double *, int );
 void polmov ( double *, int, double * );
 void polmul ( double *, int, double *, int, double * );
 int poldiv ( double *, int, double *, int, double * );
@@ -74,7 +74,7 @@ int poldiv ( double *, int, double *, int, double * );
 void exit();
 void * malloc();
 void free ();
-void polclr(), polmov(), polmul();
+void cfs_polclr(), polmov(), polmul();
 int poldiv();
 #endif
 #ifndef NULL
@@ -189,7 +189,7 @@ printf( "\n" );
 
 /* Set a = 0.
  */
-void polclr( a, n )
+void cfs_polclr( a, n )
 register double *a;
 int n;
 {
@@ -232,7 +232,7 @@ int i, j, k, nc;
 double x;
 
 nc = na + nb;
-polclr( pt3, MAXPOL );
+cfs_polclr( pt3, MAXPOL );
 
 for( i=0; i<=na; i++ )
 	{
@@ -330,15 +330,15 @@ sing = 0;
  * may be hard to obtain on a small computer.
  */
 ta = (double * )malloc( psize );
-polclr( ta, MAXPOL );
+cfs_polclr( ta, MAXPOL );
 polmov( a, na, ta );
 
 tb = (double * )malloc( psize );
-polclr( tb, MAXPOL );
+cfs_polclr( tb, MAXPOL );
 polmov( b, nb, tb );
 
 tq = (double * )malloc( psize );
-polclr( tq, MAXPOL );
+cfs_polclr( tq, MAXPOL );
 
 /* What to do if leading (constant) coefficient
  * of denominator is zero.
@@ -422,10 +422,10 @@ double x;
 
 /* 0th degree term:
  */
-polclr( pt1, MAXPOL );
+cfs_polclr( pt1, MAXPOL );
 pt1[0] = b[0];
 
-polclr( pt2, MAXPOL );
+cfs_polclr( pt2, MAXPOL );
 pt2[0] = 1.0;
 n2 = 0;
 
