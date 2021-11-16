@@ -17,13 +17,13 @@ extern void cfs_polmul ( double a[], int na, double b[], int nb, double c[] );
 extern void cfs_poladd ( double a[], int na, double b[], int nb, double c[] );
 extern void cfs_polsub ( double a[], int na, double b[], int nb, double c[] );
 extern int cfs_poldiv ( double a[], int na, double b[], int nb, double c[] );
-extern void polsbt ( double a[], int na, double b[], int nb, double c[] );
+extern void cfs_polsbt ( double a[], int na, double b[], int nb, double c[] );
 //extern void * malloc ( long );
 extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
 #else
 double cfs_atan2(), cfs_sqrt(), cfs_fabs(), cfs_sin(), cfs_cos();
-void cfs_polclr(), cfs_polmov(), polsbt(), cfs_poladd(), cfs_polsub(), cfs_polmul();
+void cfs_polclr(), cfs_polmov(), cfs_polsbt(), cfs_poladd(), cfs_polsub(), cfs_polmul();
 int cfs_poldiv();
 void * malloc();
 void free ();
@@ -105,7 +105,7 @@ polatn( num, den, ans, nn )
     polu[i] *= a;
   polu[0] += 1.0 + a * a;
   cfs_poldiv( polu, nn, polq, nn, polt ); /* divide into b */
-  polsbt( polt, nn, patan, nn, polu ); /* arctan(b)  */
+  cfs_polsbt( polt, nn, patan, nn, polu ); /* arctan(b)  */
   polu[0] += t; /* plus arctan(a) */
   cfs_polmov( polu, nn, ans );
   free( polt );
@@ -173,7 +173,7 @@ nzero:
   x[0] = 0.0;
   /* series development cfs_sqrt(1+x) = 1  +  x / 2  -  x**2 / 8  +  x**3 / 16
      hopes that first (constant) term is greater than what follows   */
-  polsbt( x, nn, psqrt, nn, y);
+  cfs_polsbt( x, nn, psqrt, nn, y);
   t = cfs_sqrt( t );
   for( i=0; i<=nn; i++ )
     y[i] *= t;
@@ -245,13 +245,13 @@ polsin( x, y, nn )
   a = w[0];
   /* c = cfs_cos (b) */
   w[0] = 0.0;
-  polsbt( w, nn, pcos, nn, c );
+  cfs_polsbt( w, nn, pcos, nn, c );
   sc = cfs_sin(a);
   /* cfs_sin(a) cfs_cos (b) */
   for( i=0; i<=nn; i++ )
     c[i] *= sc;
   /* y = cfs_sin (b)  */
-  polsbt( w, nn, psin, nn, y );
+  cfs_polsbt( w, nn, psin, nn, y );
   sc = cfs_cos(a);
   /* cfs_cos(a) cfs_sin(b) */
   for( i=0; i<=nn; i++ )
@@ -292,13 +292,13 @@ polcos( x, y, nn )
   a = w[0];
   w[0] = 0.0;
   /* c = cfs_cos(b)  */
-  polsbt( w, nn, pcos, nn, c );
+  cfs_polsbt( w, nn, pcos, nn, c );
   sc = cfs_cos(a);
   /* cfs_cos(a) cfs_cos(b)  */
   for( i=0; i<=nn; i++ )
     c[i] *= sc;
   /* y = cfs_sin(b) */
-  polsbt( w, nn, psin, nn, y );
+  cfs_polsbt( w, nn, psin, nn, y );
   sc = cfs_sin(a);
   /* cfs_sin(a) cfs_sin(b) */
   for( i=0; i<=nn; i++ )

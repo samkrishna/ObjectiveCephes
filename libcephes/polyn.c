@@ -50,7 +50,7 @@
  * is a polynomial found by substituting a(x) for t.  The
  * subroutine call for this is
  *
- * polsbt( a, na, b, nb, c );
+ * cfs_polsbt( a, na, b, nb, c );
  *
  *
  * Notes:
@@ -121,8 +121,8 @@ if( pt1 )
 	free(pt1);
 
 /* Allocate new arrays */
-pt1 = (double * )malloc(psize); /* used by polsbt */
-pt2 = (double * )malloc(psize); /* used by polsbt */
+pt1 = (double * )malloc(psize); /* used by cfs_polsbt */
+pt2 = (double * )malloc(psize); /* used by cfs_polsbt */
 pt3 = (double * )malloc(psize); /* used by cfs_polmul */
 
 /* Report if failure */
@@ -413,7 +413,7 @@ return( sing );
  * c(x) = b(x) = b(a(y)).
  */
 
-void polsbt( a, na, b, nb, c )
+void cfs_polsbt( a, na, b, nb, c )
 double a[], b[], c[];
 int na, nb;
 {
