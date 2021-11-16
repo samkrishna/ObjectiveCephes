@@ -43,7 +43,7 @@ int polrt_wrap( xcof, cof, m, r, i )
 double xcof[], cof[], r[], i[];
 int m;
 {
-  extern int polrt( double xcof[], double cof[], int m, cmplx root[] );
+  extern int cfs_polrt( double xcof[], double cof[], int m, cmplx root[] );
   cmplx *root;
   int j, ret;
   root = (cmplx *) malloc( (m+1) * sizeof (cmplx) ); 
@@ -51,7 +51,7 @@ int m;
     root[j].r = 0;
     root[j].i = 0;
   }
-  ret = polrt( xcof, cof, m, root );
+  ret = cfs_polrt( xcof, cof, m, root );
   for (j=0; j<=m; j++) {
     r[j] = root[j].r;
     i[j] = root[j].i;

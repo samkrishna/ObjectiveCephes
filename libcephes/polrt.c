@@ -16,7 +16,7 @@
  * int m;
  * cmplx root[];
  *
- * polrt( xcof, cof, m, root )
+ * cfs_polrt( xcof, cof, m, root )
  *
  *
  *
@@ -41,7 +41,7 @@
  *
  */
 
-/*							polrt	*/
+/*							cfs_polrt	*/
 /* Complex roots of real polynomial */
 /* number of coefficients is m + 1 ( i.e., m is degree of polynomial) */
 
@@ -59,7 +59,7 @@ extern double cfs_fabs ( double );
 double cfs_fabs();
 #endif
 
-int polrt( xcof, cof, m, root )
+int cfs_polrt( xcof, cof, m, root )
 double xcof[], cof[];
 int m;
 cmplx root[];
