@@ -12,7 +12,7 @@ extern double cfs_fabs ( double );
 extern double cfs_sin ( double );
 extern double cfs_cos ( double );
 extern void cfs_polclr ( double *a, int n );
-extern void polmov ( double *a, int na, double *b );
+extern void cfs_polmov ( double *a, int na, double *b );
 extern void cfs_polmul ( double a[], int na, double b[], int nb, double c[] );
 extern void poladd ( double a[], int na, double b[], int nb, double c[] );
 extern void polsub ( double a[], int na, double b[], int nb, double c[] );
@@ -23,7 +23,7 @@ extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
 #else
 double cfs_atan2(), cfs_sqrt(), cfs_fabs(), cfs_sin(), cfs_cos();
-void cfs_polclr(), polmov(), polsbt(), poladd(), polsub(), cfs_polmul();
+void cfs_polclr(), cfs_polmov(), polsbt(), poladd(), polsub(), cfs_polmul();
 int cfs_poldiv();
 void * malloc();
 void free ();
@@ -97,7 +97,7 @@ polatn( num, den, ans, nn )
   i = cfs_poldiv( den, nn, num, nn, polq );
   a = polq[0]; /* a */
   polq[0] = 0.0; /* b */
-  polmov( polq, nn, polu ); /* b */
+  cfs_polmov( polq, nn, polu ); /* b */
   /* Form the polynomial
      1 + ab + a**2
      where a is a scalar.  */
@@ -107,7 +107,7 @@ polatn( num, den, ans, nn )
   cfs_poldiv( polu, nn, polq, nn, polt ); /* divide into b */
   polsbt( polt, nn, patan, nn, polu ); /* arctan(b)  */
   polu[0] += t; /* plus arctan(a) */
-  polmov( polu, nn, ans );
+  cfs_polmov( polu, nn, ans );
   free( polt );
   free( polu );
   free( polq );
@@ -140,7 +140,7 @@ polsqt( pol, ans, nn )
     }
   x = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   y = (double * )malloc( (MAXPOL+1) * sizeof (double) );
-  polmov( pol, nn, x );
+  cfs_polmov( pol, nn, x );
   cfs_polclr( y, MAXPOL );
 
   /* Find lowest degree nonzero term.  */
@@ -150,7 +150,7 @@ polsqt( pol, ans, nn )
       if( x[n] != 0.0 )
 	goto nzero;
     }
-  polmov( y, nn, ans );
+  cfs_polmov( y, nn, ans );
   return;
 
 nzero:
@@ -207,7 +207,7 @@ printf( "square root did not converge\n" );
 done:
 #endif /* 0 */
 
-polmov( y, nn, ans );
+cfs_polmov( y, nn, ans );
 free( y );
 free( x );
 }
@@ -238,7 +238,7 @@ polsin( x, y, nn )
     }
   w = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   c = (double * )malloc( (MAXPOL+1) * sizeof (double) );
-  polmov( x, nn, w );
+  cfs_polmov( x, nn, w );
   cfs_polclr( c, MAXPOL );
   cfs_polclr( y, nn );
   /* a, in the description, is x[0].  b is the polynomial x - x[0].  */
@@ -286,7 +286,7 @@ polcos( x, y, nn )
     }
   w = (double * )malloc( (MAXPOL+1) * sizeof (double) );
   c = (double * )malloc( (MAXPOL+1) * sizeof (double) );
-  polmov( x, nn, w );
+  cfs_polmov( x, nn, w );
   cfs_polclr( c, MAXPOL );
   cfs_polclr( y, nn );
   a = w[0];

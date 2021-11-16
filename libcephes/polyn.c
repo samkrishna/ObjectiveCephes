@@ -29,7 +29,7 @@
  * sum = poleva( a, na, x );	Evaluate polynomial a(t) at t = x.
  * polprt( a, na, D );		Print the coefficients of a to D digits.
  * cfs_polclr( a, na );		Set a identically equal to zero, up to a[na].
- * polmov( a, na, b );		Set b = a.
+ * cfs_polmov( a, na, b );		Set b = a.
  * poladd( a, na, b, nb, c );	c = b + a, nc = max(na,nb)
  * polsub( a, na, b, nb, c );	c = b - a, nc = max(na,nb)
  * cfs_polmul( a, na, b, nb, c );	c = b * a, nc = na+nb
@@ -67,14 +67,14 @@ void exit (int);
 extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
 void cfs_polclr ( double *, int );
-void polmov ( double *, int, double * );
+void cfs_polmov ( double *, int, double * );
 void cfs_polmul ( double *, int, double *, int, double * );
 int cfs_poldiv ( double *, int, double *, int, double * );
 #else
 void exit();
 void * malloc();
 void free ();
-void cfs_polclr(), polmov(), cfs_polmul();
+void cfs_polclr(), cfs_polmov(), cfs_polmul();
 int cfs_poldiv();
 #endif
 #ifndef NULL
@@ -206,7 +206,7 @@ for( i=0; i<=n; i++ )
 
 /* Set b = a.
  */
-void polmov( a, na, b )
+void cfs_polmov( a, na, b )
 register double *a, *b;
 int na;
 {
@@ -331,11 +331,11 @@ sing = 0;
  */
 ta = (double * )malloc( psize );
 cfs_polclr( ta, MAXPOL );
-polmov( a, na, ta );
+cfs_polmov( a, na, ta );
 
 tb = (double * )malloc( psize );
 cfs_polclr( tb, MAXPOL );
-polmov( b, nb, tb );
+cfs_polmov( b, nb, tb );
 
 tq = (double * )malloc( psize );
 cfs_polclr( tq, MAXPOL );
@@ -393,7 +393,7 @@ for( i=0; i<=MAXPOL; i++ )
 	tq[i] = quot;
 	}
 /* Send quotient to output array. */
-polmov( tq, MAXPOL, c );
+cfs_polmov( tq, MAXPOL, c );
 
 done:
 
