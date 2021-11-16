@@ -186,18 +186,18 @@
     cfs_cmov(&x, &z);
     XCTAssertEqualWithAccuracy(z.r, 5.0, tolerance);
     XCTAssertEqualWithAccuracy(z.i, 6, tolerance);
-    XCTAssertEqualWithAccuracy(cfs_cabs(&z), sqrt(61), tolerance);
+    XCTAssertEqualWithAccuracy(cfs_cabs(&z), cfs_sqrt(61), tolerance);
 
     cfs_clog(&x, &z);
-    XCTAssertEqualWithAccuracy(z.r, log(hypot(5, 6)), tolerance);
-    XCTAssertEqualWithAccuracy(z.i, atan2(6, 5), tolerance);
+    XCTAssertEqualWithAccuracy(z.r, cfs_log(cfs_hypot(5, 6)), tolerance);
+    XCTAssertEqualWithAccuracy(z.i, cfs_atan2(6, 5), tolerance);
 
     cfs_cexp(&x, &z);
-    XCTAssertEqualWithAccuracy(z.r, exp(5)*cos(6), tolerance);
-    XCTAssertEqualWithAccuracy(z.i, exp(5)*sin(6), tolerance);
+    XCTAssertEqualWithAccuracy(z.r, cfs_exp(5)*cfs_cos(6), tolerance);
+    XCTAssertEqualWithAccuracy(z.i, cfs_exp(5)*cfs_sin(6), tolerance);
 
     cfs_csin(&x, &z);
-    cmplx d = { (sin(5) * cosh(6)), (cos(5) * sinh(6)) };
+    cmplx d = { (cfs_sin(5) * cfs_cosh(6)), (cfs_cos(5) * cfs_sinh(6)) };
     XCTAssertEqualWithAccuracy(z.r, d.r, tolerance);
     XCTAssertEqualWithAccuracy(z.i, d.i, tolerance);
 
@@ -205,8 +205,8 @@
     XCTAssertEqualWithAccuracy(z.r, 5-2*PI, tolerance);
     XCTAssertEqualWithAccuracy(z.i, 6.0, tolerance);
 
-    d.r = cos(5)*cosh(6);
-    d.i = -sin(5)*sinh(6);
+    d.r = cfs_cos(5)*cfs_cosh(6);
+    d.i = -cfs_sin(5)*cfs_sinh(6);
     cfs_ccos(&x, &z);
     XCTAssertEqualWithAccuracy(z.r, d.r, tolerance);
     XCTAssertEqualWithAccuracy(z.i, d.i, tolerance);
@@ -215,9 +215,9 @@
     XCTAssertEqualWithAccuracy(z.r, 5-2*PI, tolerance);
     XCTAssertEqualWithAccuracy(z.i, 6.0, tolerance);
 
-    double den = cos(10) + cosh(12);
-    d.r = sin(10) / den;
-    d.i = sinh(12) / den;
+    double den = cfs_cos(10) + cfs_cosh(12);
+    d.r = cfs_sin(10) / den;
+    d.i = cfs_sinh(12) / den;
     cfs_ctan(&x, &z);
     XCTAssertEqualWithAccuracy(z.r, d.r, tolerance);
     XCTAssertEqualWithAccuracy(z.i, d.i, tolerance);
@@ -227,36 +227,36 @@
     XCTAssertEqualWithAccuracy(z.i, 6.0, tolerance);
 
     cfs_ccot(&x, &z);
-    den = cosh(12) - cos(10);
-    XCTAssertEqualWithAccuracy(z.r, (sin(10) / den), tolerance);
-    XCTAssertEqualWithAccuracy(z.i, (-sinh(12) / den), tolerance);
+    den = cfs_cosh(12) - cfs_cos(10);
+    XCTAssertEqualWithAccuracy(z.r, (cfs_sin(10) / den), tolerance);
+    XCTAssertEqualWithAccuracy(z.i, (-cfs_sinh(12) / den), tolerance);
 
     cfs_csqrt(&x, &z);
     XCTAssertEqualWithAccuracy(z.r, (3/z.i), tolerance);
-    XCTAssertEqualWithAccuracy(z.i, sqrt((sqrt(61) - 5) / 2), tolerance);
+    XCTAssertEqualWithAccuracy(z.i, cfs_sqrt((cfs_sqrt(61) - 5) / 2), tolerance);
 
     d.r = 2;
     d.i = 3;
     cfs_csinh(&d, &z);
-    XCTAssertEqualWithAccuracy(z.r, sinh(2)*cos(3), tolerance);
-    XCTAssertEqualWithAccuracy(z.i, cosh(2)*sin(3), tolerance);
+    XCTAssertEqualWithAccuracy(z.r, cfs_sinh(2)*cfs_cos(3), tolerance);
+    XCTAssertEqualWithAccuracy(z.i, cfs_cosh(2)*cfs_sin(3), tolerance);
 
     cfs_casinh(&z, &y);
     XCTAssertEqualWithAccuracy(y.r, 2.0, tolerance);
     XCTAssertEqualWithAccuracy(y.i, 3.0, tolerance);
 
     cfs_ccosh(&d, &z);
-    XCTAssertEqualWithAccuracy(z.r, cosh(2)*cos(3), tolerance);
-    XCTAssertEqualWithAccuracy(z.i, sinh(2)*sin(3), tolerance);
+    XCTAssertEqualWithAccuracy(z.r, cfs_cosh(2)*cfs_cos(3), tolerance);
+    XCTAssertEqualWithAccuracy(z.i, cfs_sinh(2)*cfs_sin(3), tolerance);
 
     cfs_cacosh(&z, &y);
     XCTAssertEqualWithAccuracy(y.r, 2.0, tolerance);
     XCTAssertEqualWithAccuracy(y.i, 3.0, tolerance);
 
-    den = cosh(4) + cos(6);
+    den = cfs_cosh(4) + cfs_cos(6);
     cfs_ctanh(&d, &z);
-    XCTAssertEqualWithAccuracy(z.r, sinh(4)/den, tolerance);
-    XCTAssertEqualWithAccuracy(z.i, sin(6)/den, tolerance);
+    XCTAssertEqualWithAccuracy(z.r, cfs_sinh(4)/den, tolerance);
+    XCTAssertEqualWithAccuracy(z.i, cfs_sin(6)/den, tolerance);
 
     cfs_catanh(&z, &y);
     XCTAssertEqualWithAccuracy(y.r, 2.0, tolerance);
