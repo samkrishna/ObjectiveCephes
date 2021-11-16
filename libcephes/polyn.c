@@ -31,7 +31,7 @@
  * cfs_polclr( a, na );		Set a identically equal to zero, up to a[na].
  * cfs_polmov( a, na, b );		Set b = a.
  * cfs_poladd( a, na, b, nb, c );	c = b + a, nc = max(na,nb)
- * polsub( a, na, b, nb, c );	c = b - a, nc = max(na,nb)
+ * cfs_polsub( a, na, b, nb, c );	c = b - a, nc = max(na,nb)
  * cfs_polmul( a, na, b, nb, c );	c = b * a, nc = na+nb
  *
  *
@@ -285,7 +285,7 @@ for( i=0; i<=n; i++ )
 
 /* c = b - a.
  */
-void polsub( a, na, b, nb, c )
+void cfs_polsub( a, na, b, nb, c )
 double a[], b[], c[];
 int na, nb;
 {
