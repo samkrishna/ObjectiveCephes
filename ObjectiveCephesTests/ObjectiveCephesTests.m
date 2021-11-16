@@ -153,9 +153,7 @@
     XCTAssertEqualWithAccuracy(cfs_expm1(0.5), cfs_exp(0.5)-1, 0.0000000000005);
     XCTAssertEqualWithAccuracy(cfs_expx2(2, -1), cfs_exp(-4), 0.0000000000005);
     XCTAssertEqualWithAccuracy(cfs_expx2(0.5, 1), cfs_exp(0.25), 0.0000000000005);
-
-    // No idea what to do with this since SQRTH has the unusual unsigned short array
-//    XCTAssertEqualWithAccuracy(cfs_exp2(-1/2), SQRTH, 0.01);
+    XCTAssertEqualWithAccuracy(cfs_exp2(-0.5), SQRTH, 0.01);
 }
 
 @end
