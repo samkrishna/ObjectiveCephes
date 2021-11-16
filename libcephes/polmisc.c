@@ -14,7 +14,7 @@ extern double cfs_cos ( double );
 extern void cfs_polclr ( double *a, int n );
 extern void cfs_polmov ( double *a, int na, double *b );
 extern void cfs_polmul ( double a[], int na, double b[], int nb, double c[] );
-extern void poladd ( double a[], int na, double b[], int nb, double c[] );
+extern void cfs_poladd ( double a[], int na, double b[], int nb, double c[] );
 extern void polsub ( double a[], int na, double b[], int nb, double c[] );
 extern int cfs_poldiv ( double a[], int na, double b[], int nb, double c[] );
 extern void polsbt ( double a[], int na, double b[], int nb, double c[] );
@@ -23,7 +23,7 @@ extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
 #else
 double cfs_atan2(), cfs_sqrt(), cfs_fabs(), cfs_sin(), cfs_cos();
-void cfs_polclr(), cfs_polmov(), polsbt(), poladd(), polsub(), cfs_polmul();
+void cfs_polclr(), cfs_polmov(), polsbt(), cfs_poladd(), polsub(), cfs_polmul();
 int cfs_poldiv();
 void * malloc();
 void free ();
@@ -191,7 +191,7 @@ nzero:
 for( n=0; n<10; n++ )
 	{
 	cfs_poldiv( y, nn, pol, nn, z );
-	poladd( y, nn, z, nn, y );
+	cfs_poladd( y, nn, z, nn, y );
 	for( i=0; i<=nn; i++ )
 		y[i] *= 0.5;
 	for( i=0; i<=nn; i++ )
@@ -256,7 +256,7 @@ polsin( x, y, nn )
   /* cfs_cos(a) cfs_sin(b) */
   for( i=0; i<=nn; i++ )
     y[i] *= sc;
-  poladd( c, nn, y, nn, y );
+  cfs_poladd( c, nn, y, nn, y );
   free( c );
   free( w );
 }
