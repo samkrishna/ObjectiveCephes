@@ -7,7 +7,7 @@
 //
 
 #include "protos.h"
-#import <XCTest/XCTest.h>
+@import XCTest;
 
 @interface ObjectiveCephesTests : XCTestCase
 
@@ -276,6 +276,17 @@
     x.i = 66;
     XCTAssertEqualWithAccuracy(x.r, 55.0, tolerance);
     XCTAssertEqualWithAccuracy(x.i, 66.0, tolerance);
+}
+
+- (void)testHypergeometricsCases
+{
+    double x = 0.1;
+    double y = 0.2;
+    double z = 0.3;
+    double u = 0.4;
+
+    XCTAssertEqualWithAccuracy(cfs_hyp2f1(x, y, z, u), 1.03417940155, 0.000000001);
+    XCTAssertEqualWithAccuracy(cfs_hyperg(x, y, z), 1.17274559901, 0.000000001);
 }
 
 @end

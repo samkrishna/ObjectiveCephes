@@ -16,7 +16,7 @@ Next step is to port the Math-Cephes test cases to XCTest-based Unit Tests. Here
 - ~~explog.t~~
 - fract.t
 - gammas.t
-- hypergeometrics.t
+- ~~hypergeometrics.t~~
 - hypers.t
 - mat.t
 - misc.t
