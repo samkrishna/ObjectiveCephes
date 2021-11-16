@@ -13,7 +13,7 @@ extern double cfs_sin ( double );
 extern double cfs_cos ( double );
 extern void cfs_polclr ( double *a, int n );
 extern void polmov ( double *a, int na, double *b );
-extern void polmul ( double a[], int na, double b[], int nb, double c[] );
+extern void cfs_polmul ( double a[], int na, double b[], int nb, double c[] );
 extern void poladd ( double a[], int na, double b[], int nb, double c[] );
 extern void polsub ( double a[], int na, double b[], int nb, double c[] );
 extern int poldiv ( double a[], int na, double b[], int nb, double c[] );
@@ -23,7 +23,7 @@ extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
 #else
 double cfs_atan2(), cfs_sqrt(), cfs_fabs(), cfs_sin(), cfs_cos();
-void cfs_polclr(), polmov(), polsbt(), poladd(), polsub(), polmul();
+void cfs_polclr(), polmov(), polsbt(), poladd(), polsub(), cfs_polmul();
 int poldiv();
 void * malloc();
 void free ();
@@ -184,7 +184,7 @@ nzero:
     {
       cfs_polclr (x, MAXPOL);
       x[n/2] = 1.0;
-      polmul (x, nn, y, nn, y);
+      cfs_polmul (x, nn, y, nn, y);
     }
 #if 0
 /* Newton iterations */

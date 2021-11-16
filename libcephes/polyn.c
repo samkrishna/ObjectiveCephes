@@ -32,7 +32,7 @@
  * polmov( a, na, b );		Set b = a.
  * poladd( a, na, b, nb, c );	c = b + a, nc = max(na,nb)
  * polsub( a, na, b, nb, c );	c = b - a, nc = max(na,nb)
- * polmul( a, na, b, nb, c );	c = b * a, nc = na+nb
+ * cfs_polmul( a, na, b, nb, c );	c = b * a, nc = na+nb
  *
  *
  * Division:
@@ -68,13 +68,13 @@ extern void	*malloc(size_t __size) __result_use_check;
 extern void free ( void * );
 void cfs_polclr ( double *, int );
 void polmov ( double *, int, double * );
-void polmul ( double *, int, double *, int, double * );
+void cfs_polmul ( double *, int, double *, int, double * );
 int poldiv ( double *, int, double *, int, double * );
 #else
 void exit();
 void * malloc();
 void free ();
-void cfs_polclr(), polmov(), polmul();
+void cfs_polclr(), polmov(), cfs_polmul();
 int poldiv();
 #endif
 #ifndef NULL
@@ -123,7 +123,7 @@ if( pt1 )
 /* Allocate new arrays */
 pt1 = (double * )malloc(psize); /* used by polsbt */
 pt2 = (double * )malloc(psize); /* used by polsbt */
-pt3 = (double * )malloc(psize); /* used by polmul */
+pt3 = (double * )malloc(psize); /* used by cfs_polmul */
 
 /* Report if failure */
 if( (pt1 == NULL) || (pt2 == NULL) || (pt3 == NULL) )
@@ -224,7 +224,7 @@ for( i=0; i<= na; i++ )
 
 /* c = b * a.
  */
-void polmul( a, na, b, nb, c )
+void cfs_polmul( a, na, b, nb, c )
 double a[], b[], c[];
 int na, nb;
 {
@@ -432,7 +432,7 @@ n2 = 0;
 for( i=1; i<=nb; i++ )
 	{
 /* Form ith power of a. */
-	polmul( a, na, pt2, n2, pt2 );
+	cfs_polmul( a, na, pt2, n2, pt2 );
 	n2 += na;
 	x = b[i];
 /* Add the ith coefficient of b times the ith power of a. */
