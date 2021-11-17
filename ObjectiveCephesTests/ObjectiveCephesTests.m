@@ -365,13 +365,6 @@
 
 - (void)testMatrixCases
 {
-//    my $M = Math::Cephes::Matrix->new([ [1, 2, -1], [2, -3, 1], [1, 0, 3]]);
-//    my $B = [2, -1, 10];
-//    my $X = $M->simq($B);
-//    ok( $X->[0], 1);
-//    ok( $X->[1], 2);
-//    ok( $X->[2], 3);
-
     double M[3][3] = {
         {1, 2, -1},
         {2, -3, 1},
