@@ -456,7 +456,7 @@ double cfs_fabs(), cfs_cos(), cfs_sin(), cfs_polevl(), cfs_p1evl();
 #endif
 extern double PI, PIO2, MACHEP;
 
-int fresnl( xxa, ssa, cca )
+int cfs_fresnl( xxa, ssa, cca )
 double xxa, *ssa, *cca;
 {
 double f, g, cc, ss, c, s, t, u;
