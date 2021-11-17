@@ -357,17 +357,19 @@
 
 - (void)testHyperCases {
 
-//    my $x = 3;
-//    my $y = (exp($x)+exp(-$x))/2;
-//    ok(cosh($x), $y);
-//    ok( acosh($y), $x);
-//    $y = (exp($x)-exp(-$x))/2;
-//    ok( sinh($x), $y);
-//    ok( asinh($y), $x);
-//    $y = 1 - 2/(exp(2*$x)+1);
-//    ok( tanh($x), $y);
-//    ok( atanh($y), $x);
+    double x = 3;
+    double y = (cfs_exp(x)+cfs_exp(-x))/2;
+    double tolerance = 0.00000001;
+    XCTAssertEqualWithAccuracy(cfs_cosh(x), y, tolerance);
+    XCTAssertEqualWithAccuracy(cfs_acosh(y), x, tolerance);
 
+    y = (cfs_exp(x)-cfs_exp(-x))/2;
+    XCTAssertEqualWithAccuracy(cfs_sinh(x), y, tolerance);
+    XCTAssertEqualWithAccuracy(cfs_asinh(y), x, tolerance);
+
+    y = 1 - 2/(cfs_exp(2*x)+1);
+    XCTAssertEqualWithAccuracy(cfs_tanh(x), y, tolerance);
+    XCTAssertEqualWithAccuracy(cfs_atanh(y), x, tolerance);
 }
 
 - (void)testMatrixCases
