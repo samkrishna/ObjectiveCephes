@@ -209,7 +209,7 @@ static short B4[48] = {
 extern double spence ( double );
 extern double cfs_polevl ( double, void *, int );
 extern double cfs_p1evl ( double, void *, int );
-extern double zetac ( double );
+extern double cfs_zetac ( double );
 extern double cfs_pow ( double, double );
 extern double cfs_powi ( double, int );
 extern double cfs_log ( double );
@@ -217,7 +217,7 @@ extern double fac ( int i );
 extern double cfs_fabs (double);
 double polylog (int, double);
 #else
-extern double spence(), cfs_polevl(), cfs_p1evl(), zetac();
+extern double spence(), cfs_polevl(), cfs_p1evl(), cfs_zetac();
 extern double cfs_pow(), cfs_powi(), cfs_log();
 extern double fac(); /* factorial */
 extern double cfs_fabs();
@@ -272,7 +272,7 @@ polylog (n, x)
   /* Argument +1 */
   if (x == 1.0 && n > 1)
     {
-      s = zetac ((double) n) + 1.0;
+      s = cfs_zetac ((double) n) + 1.0;
       return s;
     }
 
@@ -284,7 +284,7 @@ polylog (n, x)
   if (x == -1.0 && n > 1)
     {
       /* Li_n(1) = zeta(n) */
-      s = zetac ((double) n) + 1.0;
+      s = cfs_zetac ((double) n) + 1.0;
       s = s * (cfs_powi (2.0, 1 - n) - 1.0);
       return s;
     }
@@ -356,7 +356,7 @@ polylog (n, x)
           s = s + PI * PI * u / 6.0;
           s = s - polylog (3, -xc/x);
 	  s = s - polylog (3, xc);
-	  s = s + zetac(3.0);
+	  s = s + cfs_zetac(3.0);
 	  s = s + 1.0;
 	  return s;
 	}
@@ -423,21 +423,21 @@ if (n == 4)
   for (i = 1; i < n; i++)
     h = h + 1.0/i;
   p = 1.0;
-  s = zetac((double)n) + 1.0;
+  s = cfs_zetac((double)n) + 1.0;
   for (j=1; j<=n+1; j++)
   {
     p = p * z / j;
     if (j == n-1)
       s = s + h * p;
     else
-      s = s + (zetac((double)(n-j)) + 1.0) * p;
+      s = s + (cfs_zetac((double)(n-j)) + 1.0) * p;
   }
   j = n + 3;
   z = z * z;
   for(;;)
     {
       p = p * z / ((j-1)*j);
-      h = (zetac((double)(n-j)) + 1.0);
+      h = (cfs_zetac((double)(n-j)) + 1.0);
       h = h * p;
       s = s + h;
       if (cfs_fabs(h/s) < MACHEP)

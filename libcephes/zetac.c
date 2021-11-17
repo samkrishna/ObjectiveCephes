@@ -501,14 +501,14 @@ extern double cfs_pow ( double, double );
 extern double cfs_exp ( double );
 extern double cfs_polevl ( double, void *, int );
 extern double cfs_p1evl ( double, void *, int );
-double zetac ( double );
+double cfs_zetac ( double );
 #else
 double cfs_sin(), cfs_floor(), cfs_gamma(), cfs_pow(), cfs_exp();
-double cfs_polevl(), cfs_p1evl(), zetac();
+double cfs_polevl(), cfs_p1evl(), cfs_zetac();
 #endif
 extern double MACHEP;
 
-double zetac(x)
+double cfs_zetac(x)
 double x;
 {
 int i;
@@ -526,7 +526,7 @@ if( x < 0.0 )
 		return(0.0);
 		}
 	s = 1.0 - x;
-	w = zetac( s );
+	w = cfs_zetac( s );
 	b = cfs_sin(0.5*PI*x) * cfs_pow(2.0*PI, x) * cfs_gamma(s) * (1.0 + w) / PI;
 	return(b - 1.0);
 	}
