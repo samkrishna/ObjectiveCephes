@@ -280,43 +280,34 @@
 
 - (void)testFractionalCases {
 
-//    my $y = fract(5, 6);
-//    my $x = fract(1, 3);
-//    my $z = $x->radd( $y);
-//    ok( $z->n, 7);
-//    ok( $z->d, 6);
-//    $z = $x->rsub($y);
-//    ok( $z->n, -1);
-//    ok( $z->d, 2);
-//    $z = $x->rmul($y);
-//    ok( $z->n, 5);
-//    ok( $z->d, 18);
-//    $z = $x->rdiv( $y);
-//    ok( $z->n, 2);
-//    ok( $z->d, 5);
-//    my @a = mixed_fract($z);
-//    ok( $a[0], 0);
-//    ok( $a[1], 2);
-//    ok( $a[2], 5);
-//    my $n1 = 60;
-//    my $n2 = 144;
-//    @a = euclid($n1, $n2);
-//    ok( $a[0], 12);
-//    ok( $a[1], 5);
-//    ok( $a[2], 12);
-//    $z->n(16);
-//    $z->d(3);
-//    ok( $z->n, 16);
-//    ok( $z->d, 3);
-//    @a = mixed_fract($z);
-//    ok( $a[0], 5);
-//    ok( $a[1], 1);
-//    ok( $a[2], 3);
-//    $x->n(44);
-//    $x->d(55);
-//    ok( $x->n, 44);
-//    ok( $x->d, 55);
+    fract y = { 5, 6 };
+    fract x = { 1, 3 };
+    fract z;
+    cfs_radd(&x, &y, &z);
+    XCTAssertTrue(z.n == 7);
+    XCTAssertTrue(z.d == 6);
 
+    cfs_rsub(&y, &x, &z);
+    XCTAssertTrue(z.n == -1);
+    XCTAssertTrue(z.d == 2);
+
+    cfs_rmul(&y, &x, &z);
+    XCTAssertTrue(z.n == 5);
+    XCTAssertTrue(z.d == 18);
+
+    cfs_rdiv(&y, &x, &z);
+    XCTAssertTrue(z.n == 2);
+    XCTAssertTrue(z.d == 5);
+
+    double n1 = 60;
+    double n2 = 144;
+    double a = cfs_euclid(&n1, &n2);
+    XCTAssertTrue(a == 12);
+
+    z.n = 16;
+    z.d = 3;
+    XCTAssertTrue(z.n == 16);
+    XCTAssertTrue(z.d == 3);
 }
 
 - (void)testGammasCases {
