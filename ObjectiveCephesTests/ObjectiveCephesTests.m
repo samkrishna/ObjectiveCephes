@@ -371,6 +371,21 @@
 //    ok( $X->[0], 1);
 //    ok( $X->[1], 2);
 //    ok( $X->[2], 3);
+
+    double M[3][3] = {
+        {1, 2, -1},
+        {2, -3, 1},
+        {1, 0, 3}
+    };
+    double B[3] = {2, -1, 10};
+    double X[3];
+    int Z[3];
+    cfs_simq(M[0], B, X, 3, 0, Z);
+
+    XCTAssertTrue(X[0] == 1);
+    XCTAssertTrue(X[1] == 2);
+    XCTAssertTrue(X[2] == 3);
+
 //    my $C = Math::Cephes::Matrix->new([ [1, 2, 4], [2, 9, 2], [6, 2, 7]]);
 //    my $I = $C->inv();
 //    my $T = $I->mul($C)->coef;
