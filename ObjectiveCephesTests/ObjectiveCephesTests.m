@@ -16,8 +16,8 @@
 @implementation ObjectiveCephesTests
 
 - (void)testBesselCases {
-    // This is modified from the bessel.t code from the Math-Cephes Perl Module
 
+    // This is modified from the bessel.t code from the Math-Cephes Perl Module
     int x = 2;
     int y = 20;
     int n = 5;
@@ -52,23 +52,23 @@
     XCTAssertEqualWithAccuracy(cfs_kn(n, x), 9.431049101, .0000000005, @"result = %.14f", cfs_kn(n, x));
 }
 
-- (void)testBetaCases
-{
+- (void)testBetaCases {
+
     double x = 5.57;
     double y = 2.2;
     double u = 0.3;
     double z = cfs_beta(x, y);
-    double gammaResult = cfs_gamma(x) * cfs_gamma(y) / cfs_gamma(7.77);
+    double gammaResult = (cfs_gamma(x) * cfs_gamma(y)) / cfs_gamma(7.77);
     XCTAssertEqualWithAccuracy(z, gammaResult, 0.0000000000000005, @"result is %.20f", gammaResult);
     XCTAssertEqual(cfs_lbeta(x, y), cfs_log(z));
+
     z = cfs_incbet(x, y, u);
     XCTAssertEqualWithAccuracy(z, 0.00761009624, 0.00000000001, @"result = %0.12f", z);
     XCTAssertEqual(cfs_incbi(x, y, z), u);
-
 }
 
-- (void)testDistributionCases
-{
+- (void)testDistributionCases {
+
     double k = 2;
     double n = 10;
     double p = 0.5;
@@ -103,8 +103,8 @@
     XCTAssertEqualWithAccuracy(cfs_stdtri(k, w), y, 0.0000000000005);
 }
 
-- (void)testEllipticCases
-{
+- (void)testEllipticCases {
+
     double x = 0.3;
     XCTAssertEqualWithAccuracy(cfs_ellpk(1-x*x), 1.608048620, 0.0000000005);
     XCTAssertEqualWithAccuracy(cfs_ellik(cfs_asin(0.2), x*x), .2014795901, 0.0000000005);
@@ -136,8 +136,8 @@
     free(phi_out);
 }
 
-- (void)testExpLogCases
-{
+- (void)testExpLogCases {
+
     double e = cfs_exp(1);
     XCTAssertEqualWithAccuracy(cfs_log(cfs_pow(e, e)), e, 0.0000000000005);
     XCTAssertEqualWithAccuracy(cfs_log(e*e), 2, 0.0000000000005);
@@ -156,8 +156,8 @@
     XCTAssertEqualWithAccuracy(cfs_exp2(-0.5), SQRTH, 0.01);
 }
 
-- (void)testComplexCases
-{
+- (void)testComplexCases {
+
     cmplx x = {5, 6};
     cmplx y = {1, 3};
     cmplx z;
@@ -278,8 +278,8 @@
     XCTAssertEqualWithAccuracy(x.i, 66.0, tolerance);
 }
 
-- (void)testFractionalCases
-{
+- (void)testFractionalCases {
+
 //    my $y = fract(5, 6);
 //    my $x = fract(1, 3);
 //    my $z = $x->radd( $y);
@@ -319,26 +319,12 @@
 
 }
 
-- (void)testGammasCases
-{
-//    my $x = 0.5;
-//    my $euler = 0.57721566490153286061;
-//    my $e = exp(1);
-//    ok( gamma($x), sqrt($PI));
-//    ok( lgam($x), log(sqrt($PI)));
-//    ok( gamma(10), fac(9));
-//    ok( fac(9), 362880);
-//    ok( rgamma($x), 1/sqrt($PI));
-//    ok( psi(1/2), -$euler - 2*$LOGE2);
-//    ok( igam(4,4), 1-71/3*pow($e,-4));
-//    my $p = igamc(4,4);
-//    ok( $p, 71/3*pow($e, -4));
-//    ok( igami(4,$p), 4);
+- (void)testGammasCases {
 
 }
 
-- (void)testHypergeometricsCases
-{
+- (void)testHypergeometricsCases {
+
     double x = 0.1;
     double y = 0.2;
     double z = 0.3;
@@ -348,8 +334,8 @@
     XCTAssertEqualWithAccuracy(cfs_hyperg(x, y, z), 1.17274559901, 0.000000001);
 }
 
-- (void)testHyperCases
-{
+- (void)testHyperCases {
+
 //    my $x = 3;
 //    my $y = (exp($x)+exp(-$x))/2;
 //    ok(cosh($x), $y);
