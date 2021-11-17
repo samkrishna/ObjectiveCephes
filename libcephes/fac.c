@@ -213,7 +213,7 @@ double cfs_gamma();
 #endif
 extern double MAXNUM;
 
-double fac(i)
+double cfs_fac(i)
 int i;
 {
 double x, f, n;

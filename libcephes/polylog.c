@@ -213,13 +213,13 @@ extern double cfs_zetac ( double );
 extern double cfs_pow ( double, double );
 extern double cfs_powi ( double, int );
 extern double cfs_log ( double );
-extern double fac ( int i );
+extern double cfs_fac ( int i );
 extern double cfs_fabs (double);
 double polylog (int, double);
 #else
 extern double spence(), cfs_polevl(), cfs_p1evl(), cfs_zetac();
 extern double cfs_pow(), cfs_powi(), cfs_log();
-extern double fac(); /* factorial */
+extern double cfs_fac(); /* factorial */
 extern double cfs_fabs();
 double polylog();
 #endif
@@ -314,7 +314,7 @@ polylog (n, x)
 	      break;
 	    }
 	  q = (double) j;
-	  q = cfs_pow (w, q) * p / fac (j);
+	  q = cfs_pow (w, q) * p / cfs_fac (j);
 	  s = s + q;
 	}
       s = 2.0 * s;
@@ -322,7 +322,7 @@ polylog (n, x)
       if (n & 1)
 	q = -q;
       s = s - q;
-      s = s - cfs_pow (w, (double) n) / fac (n);
+      s = s - cfs_pow (w, (double) n) / cfs_fac (n);
       return s;
     }
 
