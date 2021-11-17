@@ -148,7 +148,7 @@ double cfs_fabs(), cfs_log(), cfs_polevl();
 #endif
 extern double PI, MACHEP;
 
-double spence(x)
+double cfs_spence(x)
 double x;
 {
 double w, y, z;
@@ -156,7 +156,7 @@ int flag;
 
 if( x < 0.0 )
 	{
-	mtherr( "spence", DOMAIN );
+	mtherr( "cfs_spence", DOMAIN );
 	return(0.0);
 	}
 

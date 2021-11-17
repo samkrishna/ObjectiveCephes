@@ -218,7 +218,7 @@ return(sum);
 
 extern double PI;
 
-double struve( v, x )
+double cfs_struve( v, x )
 double v, x;
 {
 double y, ya, f, g, h, t;

@@ -58,15 +58,15 @@ Copyright 1999 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double polylog (int, double);
+extern double cfs_polylog (int, double);
 extern double cfs_exp (double);
 extern double cfs_log1p (double); /* cfs_log(1+x) */
-extern double expm1 (double); /* cfs_exp(x) - 1 */
-double planckc(double, double);
-double plancki(double, double);
+extern double cfs_expm1 (double); /* cfs_exp(x) - 1 */
+double cfs_planckc(double, double);
+double cfs_plancki(double, double);
 #else
-double polylog(), cfs_exp(), cfs_log1p(), expm1();
-double planckc(), plancki();
+double cfs_polylog(), cfs_exp(), cfs_log1p(), cfs_expm1();
+double cfs_planckc(), cfs_plancki();
 #endif
 
 /*  NIST value (1999): 2 pi h c^2 = 3.741 7749(22) Å◊ 10-16 W m2  */
@@ -76,7 +76,7 @@ double planck_c2 = 0.01438769;
 
 
 double
-plancki(w, T)
+cfs_plancki(w, T)
   double w, T;
 {
   double b, h, y, bw;
@@ -89,16 +89,16 @@ plancki(w, T)
       y = b * b;
       h = y * y;
       /* Right tail.  */
-      y = planckc (w, T);
+      y = cfs_planckc (w, T);
       /* pi^4 / 15  */
       y =  6.493939402266829149096 * planck_c1 * h  -  y;
       return y;
     }
 
   h = cfs_exp(-planck_c2/(w*T));
-  y =      6. * polylog (4, h)  * bw;
-  y = (y + 6. * polylog (3, h)) * bw;
-  y = (y + 3. * polylog (2, h)) * bw;
+  y =      6. * cfs_polylog (4, h)  * bw;
+  y = (y + 6. * cfs_polylog (3, h)) * bw;
+  y = (y + 3. * cfs_polylog (2, h)) * bw;
   y = (y          - cfs_log1p (-h)) * bw;
   h = w * w;
   h = h * h;
@@ -138,7 +138,7 @@ plancki(w, T)
  */
 
 double
-planckc (w, T)
+cfs_planckc (w, T)
      double w;
      double T;
 {
@@ -149,7 +149,7 @@ planckc (w, T)
   if (d <= 0.59375)
     {
       y =  6.493939402266829149096 * planck_c1 * b*b*b*b;
-      return (y - plancki(w,T));
+      return (y - cfs_plancki(w,T));
     }
   u = 1.0/d;
   p = u * u;

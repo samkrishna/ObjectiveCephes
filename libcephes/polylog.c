@@ -206,7 +206,7 @@ static short B4[48] = {
 #endif
 
 #ifdef ANSIPROT
-extern double spence ( double );
+extern double cfs_spence ( double );
 extern double cfs_polevl ( double, void *, int );
 extern double cfs_p1evl ( double, void *, int );
 extern double cfs_zetac ( double );
@@ -215,18 +215,18 @@ extern double cfs_powi ( double, int );
 extern double cfs_log ( double );
 extern double cfs_fac ( int i );
 extern double cfs_fabs (double);
-double polylog (int, double);
+double cfs_polylog (int, double);
 #else
-extern double spence(), cfs_polevl(), cfs_p1evl(), cfs_zetac();
+extern double cfs_spence(), cfs_polevl(), cfs_p1evl(), cfs_zetac();
 extern double cfs_pow(), cfs_powi(), cfs_log();
 extern double cfs_fac(); /* factorial */
 extern double cfs_fabs();
-double polylog();
+double cfs_polylog();
 #endif
 extern double MACHEP;
 
 double
-polylog (n, x)
+cfs_polylog (n, x)
      int n;
      double x;
 {
@@ -259,7 +259,7 @@ polylog (n, x)
      Not defined for x > 1.  Use cpolylog if you need that.  */
   if (x > 1.0 || n < -1)
     {
-      mtherr("polylog", DOMAIN);
+      mtherr("cfs_polylog", DOMAIN);
       return 0.0;
     }
 
@@ -306,7 +306,7 @@ polylog (n, x)
       for (r = 1; r <= n / 2; r++)
 	{
 	  j = 2 * r;
-	  p = polylog (j, -1.0);
+	  p = cfs_polylog (j, -1.0);
 	  j = n - j;
 	  if (j == 0)
 	    {
@@ -318,7 +318,7 @@ polylog (n, x)
 	  s = s + q;
 	}
       s = 2.0 * s;
-      q = polylog (n, 1.0 / x);
+      q = cfs_polylog (n, 1.0 / x);
       if (n & 1)
 	q = -q;
       s = s - q;
@@ -329,7 +329,7 @@ polylog (n, x)
   if (n == 2)
     {
       if (x < 0.0 || x > 1.0)
-	return (spence (1.0 - x));
+	return (cfs_spence (1.0 - x));
     }
 
 
@@ -354,8 +354,8 @@ polylog (n, x)
 	  xc = 1.0 - x;
 	  s = s - 0.5 * u * u * cfs_log(xc);
           s = s + PI * PI * u / 6.0;
-          s = s - polylog (3, -xc/x);
-	  s = s - polylog (3, xc);
+          s = s - cfs_polylog (3, -xc/x);
+	  s = s - cfs_polylog (3, xc);
 	  s = s + cfs_zetac(3.0);
 	  s = s + 1.0;
 	  return s;

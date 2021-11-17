@@ -588,7 +588,7 @@ double cfs_log(), cfs_sin(), cfs_cos(), cfs_polevl(), cfs_p1evl();
 extern double MAXNUM, PIO2, MACHEP;
 
 
-int sici( x, si, ci )
+int cfs_sici( x, si, ci )
 double x;
 double *si, *ci;
 {
