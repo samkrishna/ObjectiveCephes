@@ -1,6 +1,6 @@
 //
-//  ObjectiveCephesTests.m
-//  ObjectiveCephesTests
+//  PrimitiveCephesTests.m
+//  PrimitiveCephesTests
 //
 //  Created by Sam Krishna on 7/25/17.
 //  Copyright © 2017 Sam Krishna. All rights reserved.
@@ -9,11 +9,11 @@
 #include "protos.h"
 @import XCTest;
 
-@interface ObjectiveCephesTests : XCTestCase
+@interface PrimitiveCephesTests : XCTestCase
 
 @end
 
-@implementation ObjectiveCephesTests
+@implementation PrimitiveCephesTests
 
 - (void)testBesselCases {
 

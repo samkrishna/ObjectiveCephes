@@ -115,7 +115,7 @@
 		6F695BCE1F285A97004B4C3A /* zeta.c in Sources */ = {isa = PBXBuildFile; fileRef = 6F695B501F285A97004B4C3A /* zeta.c */; };
 		6F695BCF1F285A97004B4C3A /* zetac.c in Sources */ = {isa = PBXBuildFile; fileRef = 6F695B511F285A97004B4C3A /* zetac.c */; };
 		6FD8D2791F27CAC000509708 /* ObjectiveCephes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD8D26F1F27CABF00509708 /* ObjectiveCephes.framework */; };
-		6FD8D27E1F27CAC000509708 /* ObjectiveCephesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD8D27D1F27CAC000509708 /* ObjectiveCephesTests.m */; };
+		6FD8D27E1F27CAC000509708 /* PrimitiveCephesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD8D27D1F27CAC000509708 /* PrimitiveCephesTests.m */; };
 		6FD8D2801F27CAC000509708 /* ObjectiveCephes.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FD8D2721F27CABF00509708 /* ObjectiveCephes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -243,7 +243,7 @@
 		6FD8D2721F27CABF00509708 /* ObjectiveCephes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveCephes.h; sourceTree = "<group>"; };
 		6FD8D2731F27CABF00509708 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6FD8D2781F27CAC000509708 /* ObjectiveCephesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ObjectiveCephesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FD8D27D1F27CAC000509708 /* ObjectiveCephesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ObjectiveCephesTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		6FD8D27D1F27CAC000509708 /* PrimitiveCephesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PrimitiveCephesTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6FD8D27F1F27CAC000509708 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6FD8D7441F27CDA700509708 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6FD8D7451F27CDDD00509708 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -303,7 +303,7 @@
 		6FD8D27C1F27CAC000509708 /* ObjectiveCephesTests */ = {
 			isa = PBXGroup;
 			children = (
-				6FD8D27D1F27CAC000509708 /* ObjectiveCephesTests.m */,
+				6FD8D27D1F27CAC000509708 /* PrimitiveCephesTests.m */,
 				6FD8D27F1F27CAC000509708 /* Info.plist */,
 			);
 			path = ObjectiveCephesTests;
@@ -505,6 +505,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 6FD8D2651F27CABF00509708;
@@ -652,7 +653,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FD8D27E1F27CAC000509708 /* ObjectiveCephesTests.m in Sources */,
+				6FD8D27E1F27CAC000509708 /* PrimitiveCephesTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
