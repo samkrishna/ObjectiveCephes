@@ -105,7 +105,7 @@ static int psize = 0;
 /* Initialize max degree of polynomials
  * and allocate temporary storage.
  */
-void polini( maxdeg )
+void cfs_polini( maxdeg )
 int maxdeg;
 {
 
@@ -128,7 +128,7 @@ pt3 = (double * )malloc(psize); /* used by cfs_polmul */
 /* Report if failure */
 if( (pt1 == NULL) || (pt2 == NULL) || (pt3 == NULL) )
 	{
-	mtherr( "polini", ERANGE );
+	mtherr( "cfs_polini", ERANGE );
 	exit(1);
 	}
 }
