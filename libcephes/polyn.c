@@ -139,7 +139,7 @@ if( (pt1 == NULL) || (pt2 == NULL) || (pt3 == NULL) )
  */
 static char *form = "abcdefghijk";
 
-void polprt( a, na, d )
+void cfs_polprt( a, na, d )
 double a[];
 int na, d;
 {
