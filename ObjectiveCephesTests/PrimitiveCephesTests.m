@@ -518,6 +518,7 @@
 
 - (void)testPolynomialCases
 {
+    cfs_polini(256);
     double a[3] = { 1, -2, 3 };
     cfs_polclr(a, 2);
     XCTAssertTrue(a[0] == 0);
