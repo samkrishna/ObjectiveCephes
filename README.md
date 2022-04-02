@@ -27,6 +27,6 @@ Next step is to port the Math-Cephes test cases to XCTest-based Unit Tests. Here
 - trig.t
 - utils.t
 
-I've also taken the liberty to put the Cephes Math C functions into their own "namespace". Currently the vast majority of the functions are prefixed by the `cfs_` prefix. The intention here is that when the Objective-C / Swift API wrappers are built, all possible collisions with the `math.h` library will be avoided. **NOTE:** most, but not all functions have been namespaced yet.
+I've also taken the liberty to put the Cephes Math C functions into their own "namespace". Currently the vast majority of the functions are prefixed by the `cfs_` prefix. The intention here is that when the Objective-C / Swift API wrappers are built, all possible collisions with the `math.h` library will be avoided. **NOTE:** Most, but not all functions have been namespaced.
 
 PRs are welcome.
