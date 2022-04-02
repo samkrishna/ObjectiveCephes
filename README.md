@@ -22,7 +22,7 @@ Next step is to port the Math-Cephes test cases to XCTest-based Unit Tests. Here
 - misc.t
 - new_cmplx-2.t
 - new_cmplx.t
-- ~~poly.t~~ (Can't figure out how to test this)
+- poly.t (Currently working on this one)
 - ~~style-trailing-space.t~~ (Can't test in Perl. Not going to attempt in Objective-C)
 - trig.t
 - utils.t
