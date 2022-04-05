@@ -528,23 +528,28 @@
 //    my $d = $b->add($c)->coef;
 //    ok( $d->[0], 5);
 //    ok( $d->[1], 8);
-
     double b[3] = { 1, 2, 3 };
-    double c[4] = { 4, 6, 6, 7};
-    double d[4];
+    double c[4] = { 4, 6, 6, 7 };
+    double d[4] = { 0, 0, 0, 0 };
     cfs_poladd(c, 4, b, 3, d);
 
-    NSLog(@"break");
+    XCTAssertTrue(d[0] == 5);
+    XCTAssertTrue(d[1] == 8);
 
-//    $c = Math::Cephes::Polynomial->new($c);
-//    my $e = $c->sub($b);
-//    ok( $e->coef->[0], 3);
-//    ok( $e->coef->[1], 4);
-//    ok( $e->coef->[3], 7);
+    double c1[4] = { 4, 6, 6, 7 };
+    double e[4] = { 0, 0, 0, 0};
+    cfs_polsub(b, 3, c1, 4, e);
+
+    XCTAssertTrue(e[0] == 3);
+    XCTAssertTrue(e[1] == 4);
+    XCTAssertTrue(e[3] == 7);
+
 //    my $f = $e->new()->coef;
-//    ok( $f->[0], 3);
-//    ok( $f->[1], 4);
-//    ok( $f->[3], 7);
+    double f[4] = { e[0], e[1], e[2], e[3] };
+    XCTAssertTrue(f[0] == 3);
+    XCTAssertTrue(f[1] == 4);
+    XCTAssertTrue(f[3] == 7);
+
 //    my $h = $b->cos()->coef;
 //    ok( $h->[0], 0.5403023059);
 //    ok( $h->[1], -1.68294197);
