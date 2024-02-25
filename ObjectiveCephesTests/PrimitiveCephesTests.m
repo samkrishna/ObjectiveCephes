@@ -7,6 +7,8 @@
 //
 
 #include "protos.h"
+#import "CFSPolynomial.h"
+
 @import XCTest;
 
 @interface PrimitiveCephesTests : XCTestCase
@@ -551,12 +553,14 @@
     XCTAssertTrue(f[3] == 7);
 
 //    my $h = $b->cos()->coef;
-    double h[3] = { cfs_cos(b[0]), b[1], b[2] };
+    double h[3] = { b[0], b[1], b[2] };
 //    ok( $h->[0], 0.5403023059);
 //    ok( $h->[1], -1.68294197);
 //    ok( $h->[2], -3.605017566);
-    XCTAssertEqualWithAccuracy(h[0], 0.5403023059, 0.00005);
-    XCTAssertEqualWithAccuracy(h[1], -1.68294197, 0.00005);
+    NSArray *hArray = [NSArray convertCArrayToNSArray:h size:3];
+    NSArray<NSDecimalNumber *> *result = [CFSPolynomial cos:hArray];
+    XCTAssertEqualWithAccuracy(result[0].doubleValue, 0.5403023059, 0.00005);
+    XCTAssertEqualWithAccuracy(result[1].doubleValue, -1.68294197, 0.00005);
     XCTAssertEqualWithAccuracy(result[2].doubleValue, -3.605017566, 0.00005);
 
 //    my $i = $b->sin()->coef;
