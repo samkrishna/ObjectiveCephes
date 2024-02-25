@@ -557,7 +557,7 @@
 //    ok( $h->[2], -3.605017566);
     XCTAssertEqualWithAccuracy(h[0], 0.5403023059, 0.00005);
     XCTAssertEqualWithAccuracy(h[1], -1.68294197, 0.00005);
-    XCTAssertEqualWithAccuracy(h[2], 3.605017566, 0.00005);
+    XCTAssertEqualWithAccuracy(result[2].doubleValue, -3.605017566, 0.00005);
 
 //    my $i = $b->sin()->coef;
 //    ok( $i->[0], 0.8414709848);
