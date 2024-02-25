@@ -21,6 +21,8 @@ extern double LOGSQ2;
 extern double THPIO4;
 extern double TWOOPI;
 
+extern int MAXPOL;
+
 extern double cfs_acosh ( double x );
 extern int cfs_airy ( double x, double *y, double *z, double *u, double *v );
 extern double cfs_asin ( double x );
