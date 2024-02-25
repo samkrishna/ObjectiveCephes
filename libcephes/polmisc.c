@@ -271,7 +271,7 @@ polsin( x, y, nn )
  * the value of b should be small.
  */
 void
-polcos( x, y, nn )
+cfs_polcos( x, y, nn )
      double x[], y[];
      int nn;
 {
