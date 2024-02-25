@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F26CED32B8BDBB400FF3F24 /* CFSPolynomial.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F26CED12B8BDBB400FF3F24 /* CFSPolynomial.h */; };
+		6F26CED42B8BDBB400FF3F24 /* CFSPolynomial.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F26CED22B8BDBB400FF3F24 /* CFSPolynomial.m */; };
+		6F26CED72B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F26CED52B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.h */; };
+		6F26CED82B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F26CED62B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.m */; };
 		6F695B521F285A97004B4C3A /* acosh.c in Sources */ = {isa = PBXBuildFile; fileRef = 6F695AD41F285A97004B4C3A /* acosh.c */; };
 		6F695B531F285A97004B4C3A /* airy.c in Sources */ = {isa = PBXBuildFile; fileRef = 6F695AD51F285A97004B4C3A /* airy.c */; };
 		6F695B541F285A97004B4C3A /* arcdot.c in Sources */ = {isa = PBXBuildFile; fileRef = 6F695AD61F285A97004B4C3A /* arcdot.c */; };
@@ -130,6 +134,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6F26CED12B8BDBB400FF3F24 /* CFSPolynomial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFSPolynomial.h; sourceTree = "<group>"; };
+		6F26CED22B8BDBB400FF3F24 /* CFSPolynomial.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFSPolynomial.m; sourceTree = "<group>"; };
+		6F26CED52B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+LJSAdditions.h"; sourceTree = "<group>"; };
+		6F26CED62B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDecimalNumber+LJSAdditions.m"; sourceTree = "<group>"; };
 		6F695AD41F285A97004B4C3A /* acosh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = acosh.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		6F695AD51F285A97004B4C3A /* airy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = airy.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		6F695AD61F285A97004B4C3A /* arcdot.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = arcdot.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -295,6 +303,10 @@
 			isa = PBXGroup;
 			children = (
 				6FD8D2721F27CABF00509708 /* ObjectiveCephes.h */,
+				6F26CED52B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.h */,
+				6F26CED62B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.m */,
+				6F26CED12B8BDBB400FF3F24 /* CFSPolynomial.h */,
+				6F26CED22B8BDBB400FF3F24 /* CFSPolynomial.m */,
 				6FD8D2731F27CABF00509708 /* Info.plist */,
 			);
 			path = ObjectiveCephes;
@@ -435,7 +447,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F695B971F285A97004B4C3A /* mconf.h in Headers */,
+				6F26CED32B8BDBB400FF3F24 /* CFSPolynomial.h in Headers */,
 				6FD8D2801F27CAC000509708 /* ObjectiveCephes.h in Headers */,
+				6F26CED72B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.h in Headers */,
 				6F695BAC1F285A97004B4C3A /* protos.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,6 +560,7 @@
 				6F695BCB1F285A97004B4C3A /* tanh.c in Sources */,
 				6F695B821F285A97004B4C3A /* igam.c in Sources */,
 				6F695BA51F285A97004B4C3A /* polrt.c in Sources */,
+				6F26CED82B8BDCF900FF3F24 /* NSDecimalNumber+LJSAdditions.m in Sources */,
 				6F695B701F285A97004B4C3A /* exp.c in Sources */,
 				6F695B681F285A97004B4C3A /* ei.c in Sources */,
 				6F695B671F285A97004B4C3A /* drand.c in Sources */,
@@ -573,6 +588,7 @@
 				6F695B6C1F285A97004B4C3A /* ellpe.c in Sources */,
 				6F695B541F285A97004B4C3A /* arcdot.c in Sources */,
 				6F695B5A1F285A97004B4C3A /* bernum_wrap.c in Sources */,
+				6F26CED42B8BDBB400FF3F24 /* CFSPolynomial.m in Sources */,
 				6F695B831F285A97004B4C3A /* igami.c in Sources */,
 				6F695B661F285A97004B4C3A /* dawsn.c in Sources */,
 				6F695B591F285A97004B4C3A /* bdtr.c in Sources */,
@@ -813,6 +829,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libcephes",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_CFLAGS = (
 					"-fstack-protector",
 					"-fno-strict-aliasing",
@@ -843,6 +860,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libcephes",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_CFLAGS = (
 					"-fstack-protector",
 					"-fno-strict-aliasing",
