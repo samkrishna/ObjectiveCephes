@@ -58,4 +58,32 @@
     return finalProduct;
 }
 
++ (NSArray<NSDecimalNumber *> *)sin:(NSArray<NSNumber *> *)coefficients {
+    MAXPOL = 16;
+    double *a = [coefficients convertNSArrayToCArray];
+    double *b = (double *)malloc(sizeof(double) * MAXPOL + 1);
+
+    for (int i = 0; i < MAXPOL + 1; i++) {
+        b[i] = 0;
+    }
+
+    cfs_polsin(a, b, 16);
+    NSArray *finalProduct = [NSArray convertCArrayToNSArray:b size:16];
+    return finalProduct;
+}
+
++ (NSArray<NSDecimalNumber *> *)sqrt:(NSArray<NSNumber *> *)coefficients {
+    MAXPOL = 16;
+    double *a = [coefficients convertNSArrayToCArray];
+    double *b = (double *)malloc(sizeof(double) * MAXPOL + 1);
+
+    for (int i = 0; i < MAXPOL + 1; i++) {
+        b[i] = 0;
+    }
+
+    cfs_polsqt(a, b, 16);
+    NSArray *finalProduct = [NSArray convertCArrayToNSArray:b size:16];
+    return finalProduct;
+}
+
 @end

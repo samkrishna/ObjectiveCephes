@@ -554,9 +554,6 @@
 
 //    my $h = $b->cos()->coef;
     double h[3] = { b[0], b[1], b[2] };
-//    ok( $h->[0], 0.5403023059);
-//    ok( $h->[1], -1.68294197);
-//    ok( $h->[2], -3.605017566);
     NSArray *hArray = [NSArray convertCArrayToNSArray:h size:3];
     NSArray<NSDecimalNumber *> *result = [CFSPolynomial cos:hArray];
     XCTAssertEqualWithAccuracy(result[0].doubleValue, 0.5403023059, 0.00005);
@@ -564,13 +561,17 @@
     XCTAssertEqualWithAccuracy(result[2].doubleValue, -3.605017566, 0.00005);
 
 //    my $i = $b->sin()->coef;
-//    ok( $i->[0], 0.8414709848);
-//    ok( $i->[1], 1.080604612);
-//    ok( $i->[2], -0.062035052);
+    result = [CFSPolynomial sin:hArray];
+    XCTAssertEqualWithAccuracy(result[0].doubleValue, 0.8414709848, 0.00005);
+    XCTAssertEqualWithAccuracy(result[1].doubleValue, 1.080604612, 0.00005);
+    XCTAssertEqualWithAccuracy(result[2].doubleValue, -0.062035052, 0.00005);
+
 //    my $j = $b->sqt()->coef;
-//    ok( $j->[0], 1);
-//    ok( $j->[1], 1);
-//    ok( $j->[2], 1);
+    result = [CFSPolynomial sqrt:hArray];
+    XCTAssertEqualWithAccuracy(result[0].doubleValue, 1, 0.00005);
+    XCTAssertEqualWithAccuracy(result[1].doubleValue, 1, 0.00005);
+    XCTAssertEqualWithAccuracy(result[2].doubleValue, 1, 0.00005);
+
 //    my $s = $b->eval(5);
 //    ok( $s, 86);
 //    $s = $b->eval(-2);

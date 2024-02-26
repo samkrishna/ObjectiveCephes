@@ -121,7 +121,7 @@ polatn( num, den, ans, nn )
  * if the Newton iteration does not converge.
  */
 void
-polsqt( pol, ans, nn )
+cfs_polsqt( pol, ans, nn )
      double pol[], ans[];
      int nn;
 {
@@ -223,7 +223,7 @@ free( x );
  * the value of b should be small.
  */
 void
-polsin( x, y, nn )
+cfs_polsin( x, y, nn )
      double x[], y[];
      int nn;
 {

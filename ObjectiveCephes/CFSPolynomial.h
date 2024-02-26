@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CFSPolynomial : NSObject
 
 + (NSArray<NSDecimalNumber *> *)cos:(NSArray<NSNumber*> *)coefficients;
++ (NSArray<NSDecimalNumber *> *)sin:(NSArray<NSNumber*> *)coefficients;
++ (NSArray<NSDecimalNumber *> *)sqrt:(NSArray<NSNumber*> *)coefficients;
 
 @end
 
